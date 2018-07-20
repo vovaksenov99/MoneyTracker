@@ -11,11 +11,8 @@ import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.dpToPixel
 import com.moneytracker.akscorp.moneytracker.roundToDigit
 import com.moneytracker.akscorp.moneytracker.spToPixel
-import kotlinx.android.synthetic.main.money_balance_item.view.*
-import java.math.RoundingMode
-import java.text.DecimalFormat
+import kotlinx.android.synthetic.main.item_money_balance.view.*
 import java.text.NumberFormat
-import java.util.*
 
 /**
  * Created by AksCorp on 03.04.2018.
@@ -36,7 +33,7 @@ class CurrencyAdapter(private val context: Context, val currencies: List<Money>)
     {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.money_balance_item, parent, false)
+        val view = inflater.inflate(R.layout.item_money_balance, parent, false)
 
         view.amountTextView.textSize = spToPixel(context, 14f).toFloat()
         view.currencyTextView.textSize = spToPixel(context, 9f).toFloat()

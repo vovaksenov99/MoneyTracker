@@ -1,23 +1,31 @@
 package com.moneytracker.akscorp.moneytracker.Presenters
 
-import com.moneytracker.akscorp.moneytracker.Models.Currency
+import android.view.View
 import com.moneytracker.akscorp.moneytracker.Models.Money
 import com.moneytracker.akscorp.moneytracker.Views.IBalanceTextView
 import com.moneytracker.akscorp.moneytracker.Views.ICurrencyRecyclerView
+import com.moneytracker.akscorp.moneytracker.Views.ISettingsButton
+import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.fragment_main_view.view.*
+import kotlinx.android.synthetic.main.item_money_balance.view.*
 
+interface IMainActivity : IBalanceTextView, ICurrencyRecyclerView, ISettingsButton
 
-class MainActivityPresenter(val amountTextView: IBalanceTextView,
-                            val currencyTextView: IBalanceTextView,
-                            val currencyRecyclerView: ICurrencyRecyclerView)
+class MainActivityPresenter(val view: View): IMainActivity
 {
-    fun setBalance(money: Money)
+    override fun setBalance(money: Money)
     {
-        amountTextView.setBalance(money)
-        currencyTextView.setBalance(money)
+        view.amountTextView.setBalance(money)
+        view.currencyTextView.setBalance(money)
     }
 
-    fun convertRecyclerInit(money: Money)
+    override fun initCurrencyRV(balance: Money)
     {
-        currencyRecyclerView.init(money)
+        view.currencyRecyclerView.initCurrencyRV(balance)
+    }
+
+    override fun showSettingsActivity()
+    {
+        view.settingsButton.showSettingsActivity()
     }
 }

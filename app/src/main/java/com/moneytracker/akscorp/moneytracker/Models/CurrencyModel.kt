@@ -19,7 +19,8 @@ class CurrencyConverter()
     fun currentBalanceToAnotherCurrencies(money: Money, currencies: List<Currency> = listOf(
         USD(),
         EUR(),
-        RUR())): List<Money>
+        RUR(),
+        GBP())): List<Money>
     {
         val rez = mutableListOf<Money>()
 
@@ -35,9 +36,9 @@ class CurrencyConverter()
     fun toUSD(money: Money) = money.amount / money.currency.rate
 }
 
-abstract class Currency(open val rate: Double)
-
 data class Money(var amount: Double, val currency: Currency)
+
+abstract class Currency(open val rate: Double)
 
 data class USD(override val rate: Double = 1.0) : Currency(rate)
 {
@@ -60,5 +61,13 @@ data class EUR(override val rate: Double = 0.8611) : Currency(rate)
     override fun toString(): String
     {
         return "EUR"
+    }
+}
+
+data class GBP(override val rate: Double = 0.76) : Currency(rate)
+{
+    override fun toString(): String
+    {
+        return "GBP"
     }
 }

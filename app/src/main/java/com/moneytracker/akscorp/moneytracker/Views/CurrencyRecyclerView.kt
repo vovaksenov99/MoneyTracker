@@ -18,7 +18,7 @@ import com.moneytracker.akscorp.moneytracker.Models.USD
 
 interface ICurrencyRecyclerView
 {
-    fun init(balance: Money)
+    fun initCurrencyRV(balance: Money)
 }
 
 class CurrencyRecyclerView : RecyclerView, ICurrencyRecyclerView
@@ -26,7 +26,7 @@ class CurrencyRecyclerView : RecyclerView, ICurrencyRecyclerView
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?) : super(context)
 
-    override fun init(balance: Money)
+    override fun initCurrencyRV(balance: Money)
     {
         val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         setHasFixedSize(true)
