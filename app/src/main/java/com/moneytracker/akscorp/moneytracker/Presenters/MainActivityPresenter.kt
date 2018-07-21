@@ -11,21 +11,21 @@ import kotlinx.android.synthetic.main.item_money_balance.view.*
 
 interface IMainActivity : IBalanceTextView, ICurrencyRecyclerView, ISettingsButton
 
-class MainActivityPresenter(val view: View): IMainActivity
+class MainActivityPresenter(val view: IMainActivity)
 {
-    override fun setBalance(money: Money)
+    fun setBalance(money: Money)
     {
-        view.amountTextView.setBalance(money)
-        view.currencyTextView.setBalance(money)
+        view.setBalance(money)
+        view.setBalance(money)
     }
 
-    override fun initCurrencyRV(balance: Money)
+    fun initCurrencyRV(balance: Money)
     {
-        view.currencyRecyclerView.initCurrencyRV(balance)
+        view.initCurrencyRV(balance)
     }
 
-    override fun showSettingsActivity()
+    fun showSettingsActivity()
     {
-        view.settingsButton.showSettingsActivity()
+        view.showSettingsActivity()
     }
 }
