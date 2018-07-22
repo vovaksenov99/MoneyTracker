@@ -19,7 +19,6 @@ class MainActivityPresenter(val view: IMainActivity)
     fun setBalance(balance: Money)
     {
         view.setBalance(balance)
-        view.setBalance(balance)
     }
 
     /**
