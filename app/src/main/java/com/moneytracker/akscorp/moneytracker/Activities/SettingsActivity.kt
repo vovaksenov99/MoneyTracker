@@ -15,5 +15,16 @@ class SettingsActivity : AppCompatActivity()
 
         val fragment = SettingFragment()
         supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commitNow()
+
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
+    override fun onSupportNavigateUp(): Boolean
+    {
+        onBackPressed()
+        return true
     }
 }

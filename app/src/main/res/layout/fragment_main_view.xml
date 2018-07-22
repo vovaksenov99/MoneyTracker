@@ -57,6 +57,7 @@
     <com.moneytracker.akscorp.moneytracker.Views.CurrencyRecyclerView
         android:id="@+id/currencyRecyclerView"
         android:layout_width="0dp"
+        android:scrollbars="horizontal"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
