@@ -19,6 +19,9 @@ interface ISettingsButton
     fun showSettingsActivity()
 }
 
+/**
+ * Image button which start settings activity [SettingsActivity]
+ */
 class SettingsButton : AppCompatImageButton, View.OnClickListener, ISettingsButton
 {
     init

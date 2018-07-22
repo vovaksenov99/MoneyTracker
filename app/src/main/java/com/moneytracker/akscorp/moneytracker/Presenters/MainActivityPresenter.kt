@@ -13,17 +13,26 @@ interface IMainActivity : IBalanceTextView, ICurrencyRecyclerView, ISettingsButt
 
 class MainActivityPresenter(val view: IMainActivity)
 {
-    fun setBalance(money: Money)
+    /**
+     * Establish balance count and currency
+     */
+    fun setBalance(balance: Money)
     {
-        view.setBalance(money)
-        view.setBalance(money)
+        view.setBalance(balance)
+        view.setBalance(balance)
     }
 
+    /**
+     * Init RV with different currencies [ICurrencyRecyclerView]
+     */
     fun initCurrencyRV(balance: Money)
     {
         view.initCurrencyRV(balance)
     }
 
+    /**
+     * Run setting activity [ISettingsButton]
+     */
     fun showSettingsActivity()
     {
         view.showSettingsActivity()

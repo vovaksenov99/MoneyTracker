@@ -21,6 +21,9 @@ interface ICurrencyRecyclerView
     fun initCurrencyRV(balance: Money)
 }
 
+/**
+ * Vertical RV with a balance converted to all possible currencies
+ */
 class CurrencyRecyclerView : RecyclerView, ICurrencyRecyclerView
 {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)

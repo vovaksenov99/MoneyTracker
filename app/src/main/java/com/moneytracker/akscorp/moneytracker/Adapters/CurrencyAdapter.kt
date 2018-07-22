@@ -47,7 +47,7 @@ class CurrencyAdapter(private val context: Context, val currencies: List<Money>)
     override fun onBindViewHolder(holder: CurrencyAdapter.CurrencyHolder, position: Int)
     {
         val format = NumberFormat.getNumberInstance()
-        holder.amountTextView.text = format.format(roundToDigit(currencies[position].amount, 2))
+        holder.amountTextView.text = format.format(roundToDigit(currencies[position].count, 2))
         holder.currencyTextView.text = currencies[position].currency.toString()
     }
 

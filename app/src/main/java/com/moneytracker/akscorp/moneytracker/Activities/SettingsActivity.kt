@@ -16,5 +16,4 @@ class SettingsActivity : AppCompatActivity()
         val fragment = SettingFragment()
         supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commitNow()
     }
-
 }

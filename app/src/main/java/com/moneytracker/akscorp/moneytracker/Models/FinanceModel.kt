@@ -1,8 +1,26 @@
 package com.moneytracker.akscorp.moneytracker.Models
 
 
-data class Transaction(val operationType: Int, val count: Double, val currency: Currency)
+/**
+ * @param transactionType - transaction type
+ * @param moneyQuantity - transaction money quantity. Ex: 10$
+ */
+data class Transaction(val transactionType: Int, val moneyQuantity: Money)
+{
+    /**
+     * Transaction types
+     */
+    val COMMON_TRANSACTION = 0
+}
 
+/**
+ * Sum of all transactions
+ *
+ * @param transactions - list with transactions to sum
+ * @param resultCurrency - result balance currency
+ *
+ * @return balance money quantity
+ */
 fun getBalance(transactions: List<Transaction>, resultCurrency: Currency = USD()): Money
 {
     val balance = Money(0.0, resultCurrency)
@@ -10,7 +28,7 @@ fun getBalance(transactions: List<Transaction>, resultCurrency: Currency = USD()
 
     for (transaction in transactions)
     {
-        balance.amount += currencyConverter.toUSD(Money(transaction.count, transaction.currency))
+        balance.count += currencyConverter.toUSD(transaction.moneyQuantity)
     }
 
     return balance
