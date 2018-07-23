@@ -10,7 +10,12 @@ data class Transaction(val transactionType: Int, val moneyQuantity: Money)
     /**
      * Transaction types
      */
-    val COMMON_TRANSACTION = 0
+
+    companion object
+    {
+        val INCREASE_TRANSACTION = 0
+        val SUBTRACTION_TRANSACTION = 1
+    }
 }
 
 /**
@@ -23,13 +28,24 @@ data class Transaction(val transactionType: Int, val moneyQuantity: Money)
  */
 fun getBalance(transactions: List<Transaction>, resultCurrency: Currency = USD()): Money
 {
-    val balance = Money(0.0, resultCurrency)
     val currencyConverter = CurrencyConverter()
+
+    val balance = Money(0.0, currencyConverter.defaultCurrency)
 
     for (transaction in transactions)
     {
-        balance.count += currencyConverter.toUSD(transaction.moneyQuantity)
+        when (transaction.transactionType)
+        {
+            Transaction.INCREASE_TRANSACTION ->
+            {
+                balance.count += currencyConverter.toDefaultCurrency(transaction.moneyQuantity).count
+            }
+            Transaction.SUBTRACTION_TRANSACTION ->
+            {
+                balance.count -= currencyConverter.toDefaultCurrency(transaction.moneyQuantity).count
+            }
+        }
     }
 
-    return balance
+    return currencyConverter.convertCurrency(balance, resultCurrency)
 }
