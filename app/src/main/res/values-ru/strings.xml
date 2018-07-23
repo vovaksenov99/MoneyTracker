@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MoneyTracker</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    
+    <string name="another_currencies">Другие валюты</string>
+    <string name="your_balance">Ваш баланс</string>
+    <string name="choose_default_currency">Выберите валюту по умолчанию</string>
+    <string name="general_settings">Общие настройки</string>
+    <string name="about">О приложении</string>
+</resources>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MoneyTracker</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    
+    <string name="another_currencies">Another currencies</string>
+    <string name="your_balance">Your balance</string>
+    <string name="choose_default_currency">Choose default currency</string>
+    <string name="general_settings">General settings</string>
+    <string name="about">About</string>
+    <string name="about_message">Money tracker\n\n©Aksenov Vladimir</string>
+</resources>
