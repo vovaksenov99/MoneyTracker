@@ -1,26 +1,26 @@
 package com.moneytracker.akscorp.moneytracker.Models
 
 /**
- * Main currency is USD [USD]
+ * Main currency is defaultCurrency [USD]
  */
 class CurrencyConverter()
 {
-    private val USD = USD()
+    val defaultCurrency = USD()
 
     /**
-     * Convert [USDAmount] to another [currency]
+     * Convert [money] to another [currency]
      */
-    private fun fromUSDtoCurrency(USDAmount: Double, currency: Currency) =
-        USDAmount * currency.rate
+    private fun fromDefaultCurrencyToCurrency(money: Money, currency: Currency) =
+        Money(money.count * currency.rate, currency)
 
     /**
      * @param money - money to convert
      * @param toCurrency - Currency to convert [money]
      */
-    fun convertCurrency(money: Money, toCurrency: Currency): Double
+    fun convertCurrency(money: Money, toCurrency: Currency): Money
     {
-        val USDAmount = toUSD(money)
-        return fromUSDtoCurrency(USDAmount, toCurrency)
+        val defCur = toDefaultCurrency(money)
+        return fromDefaultCurrencyToCurrency(defCur, toCurrency)
     }
 
     /**
@@ -41,15 +41,16 @@ class CurrencyConverter()
         {
             if (balance.currency == currency)
                 continue
-            rez.add(Money(convertCurrency(balance, currency), currency))
+            rez.add(convertCurrency(balance, currency))
         }
         return rez
     }
 
     /**
-     * Convert money to [USD]
+     * Convert money to [defaultCurrency]
      */
-    fun toUSD(money: Money) = money.count / money.currency.rate
+    fun toDefaultCurrency(money: Money): Money =
+        Money(money.count / money.currency.rate, defaultCurrency)
 }
 
 
