@@ -1,17 +1,11 @@
-package com.moneytracker.akscorp.moneytracker.Views
+package com.moneytracker.akscorp.moneytracker.views
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.AppCompatImageButton
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import com.moneytracker.akscorp.moneytracker.Activities.SettingsActivity
-import com.moneytracker.akscorp.moneytracker.Models.Money
+import com.moneytracker.akscorp.moneytracker.activities.SettingsActivity
 
 
 interface ISettingsButton

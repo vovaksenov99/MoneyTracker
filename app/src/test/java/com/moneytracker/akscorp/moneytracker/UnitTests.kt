@@ -1,7 +1,7 @@
 package com.moneytracker.akscorp.moneytracker
 
 
-import com.moneytracker.akscorp.moneytracker.Models.*
+import com.moneytracker.akscorp.moneytracker.models.*
 import org.junit.Test
 
 import org.junit.Assert.*

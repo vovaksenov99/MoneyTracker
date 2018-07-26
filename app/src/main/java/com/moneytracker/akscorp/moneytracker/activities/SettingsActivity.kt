@@ -1,8 +1,8 @@
-package com.moneytracker.akscorp.moneytracker.Activities
+package com.moneytracker.akscorp.moneytracker.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.moneytracker.akscorp.moneytracker.Fragments.SettingFragment
+import com.moneytracker.akscorp.moneytracker.fragments.SettingFragment
 import com.moneytracker.akscorp.moneytracker.R
 import kotlinx.android.synthetic.main.activity_settings.*
 

@@ -1,11 +1,17 @@
-package com.moneytracker.akscorp.moneytracker.Models
+package com.moneytracker.akscorp.moneytracker.models
+
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+import java.text.DecimalFormat
+import java.text.NumberFormat
+
 
 /**
  * Main currency is defaultCurrency [USD]
  */
 class CurrencyConverter()
 {
-    val defaultCurrency = USD()
+    val defaultCurrency = Currency.USD
 
     /**
      * Convert [money] to another [currency]
@@ -30,10 +36,10 @@ class CurrencyConverter()
      * @return list with balance which converted to all [currencies]
      */
     fun currentBalanceToAnotherCurrencies(balance: Money, currencies: List<Currency> = listOf(
-        USD(),
-        EUR(),
-        RUR(),
-        GBP())): List<Money>
+        Currency.USD,
+        Currency.EUR,
+        Currency.RUR,
+        Currency.GBP)): List<Money>
     {
         val rez = mutableListOf<Money>()
 
@@ -54,39 +60,54 @@ class CurrencyConverter()
 }
 
 
-data class Money(var count: Double, val currency: Currency)
-
-abstract class Currency(open val rate: Double)
-
-//List of all currencies
-data class USD(override val rate: Double = 1.0) : Currency(rate)
+@Parcelize
+data class Money(var count: Double, val currency: Currency) : Parcelable
 {
-    override fun toString(): String
+    fun normalizeCountString(): String?
     {
-        return "USD"
+        val format = NumberFormat.getNumberInstance()
+        return format.format(String.format("%.2f", count).toDouble())
     }
 }
 
-data class RUR(override val rate: Double = 63.27) : Currency(rate)
-{
-    override fun toString(): String
-    {
-        return "RUR"
-    }
-}
 
-data class EUR(override val rate: Double = 0.8611) : Currency(rate)
+enum class Currency
 {
-    override fun toString(): String
+    USD
     {
-        return "EUR"
-    }
-}
+        override val rate: Double = 1.0
+        override fun toString(): String
+        {
+            return "USD"
+        }
+    },
+    RUR
+    {
+        override val rate: Double = 63.0
+        override fun toString(): String
+        {
+            return "RUR"
+        }
+    },
 
-data class GBP(override val rate: Double = 0.76) : Currency(rate)
-{
-    override fun toString(): String
+    EUR
     {
-        return "GBP"
-    }
+        override val rate: Double = 0.8611
+        override fun toString(): String
+        {
+            return "EUR"
+        }
+    },
+
+    GBP
+    {
+        override val rate: Double = 0.76
+        override fun toString(): String
+        {
+            return "GBP"
+        }
+    };
+
+    abstract val rate: Double
+    abstract override fun toString(): String
 }

@@ -18,7 +18,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -39,7 +39,19 @@ dependencies {
     implementation 'com.android.support:preference-v14:27.1.1'
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
 
+    implementation 'com.arello-mobile:moxy:1.4.5'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:1.4.5'
+    implementation 'com.arello-mobile:moxy-android:1.4.5'
+    implementation 'com.arello-mobile:moxy-app-compat:1.4.5'
+
+
 }
 repositories {
     mavenCentral()
+}
+
+kotlin {
+    androidExtensions {
+        experimental = true
+    }
 }

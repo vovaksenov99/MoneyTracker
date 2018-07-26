@@ -1,20 +1,20 @@
-package com.moneytracker.akscorp.moneytracker.Models
+package com.moneytracker.akscorp.moneytracker.models
 
 
 /**
  * @param transactionType - transaction type
  * @param moneyQuantity - transaction money quantity. Ex: 10$
  */
-data class Transaction(val transactionType: Int, val moneyQuantity: Money)
+data class Transaction(val transactionType: TransactionType, val moneyQuantity: Money)
 {
     /**
      * Transaction types
      */
 
-    companion object
+    enum class TransactionType
     {
-        val INCREASE_TRANSACTION = 0
-        val SUBTRACTION_TRANSACTION = 1
+        INCREASE_TRANSACTION,
+        SUBTRACTION_TRANSACTION;
     }
 }
 
@@ -26,7 +26,7 @@ data class Transaction(val transactionType: Int, val moneyQuantity: Money)
  *
  * @return balance money quantity
  */
-fun getBalance(transactions: List<Transaction>, resultCurrency: Currency = USD()): Money
+fun getBalance(transactions: List<Transaction>, resultCurrency: Currency = Currency.USD): Money
 {
     val currencyConverter = CurrencyConverter()
 
@@ -36,13 +36,15 @@ fun getBalance(transactions: List<Transaction>, resultCurrency: Currency = USD()
     {
         when (transaction.transactionType)
         {
-            Transaction.INCREASE_TRANSACTION ->
+            Transaction.TransactionType.INCREASE_TRANSACTION ->
             {
-                balance.count += currencyConverter.toDefaultCurrency(transaction.moneyQuantity).count
+                balance.count += currencyConverter.toDefaultCurrency(transaction.moneyQuantity)
+                    .count
             }
-            Transaction.SUBTRACTION_TRANSACTION ->
+            Transaction.TransactionType.SUBTRACTION_TRANSACTION ->
             {
-                balance.count -= currencyConverter.toDefaultCurrency(transaction.moneyQuantity).count
+                balance.count -= currencyConverter.toDefaultCurrency(transaction.moneyQuantity)
+                    .count
             }
         }
     }

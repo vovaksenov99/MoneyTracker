@@ -20,7 +20,7 @@
             android:paddingEnd="12dp"
             android:theme="?attr/actionBarTheme">
 
-            <com.moneytracker.akscorp.moneytracker.Views.SettingsButton
+            <com.moneytracker.akscorp.moneytracker.views.SettingsButton
                 android:id="@+id/settingsButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -28,19 +28,31 @@
                 app:srcCompat="@drawable/ic_settings_black_24dp"
                 android:background="@drawable/circle_ripple_selector_common"
                  />
-
         </android.support.v7.widget.Toolbar>
 
+        <com.moneytracker.akscorp.moneytracker.views.AccountsCardViewPager
+            android:id="@+id/accountViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/fragment_main_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar">
+
+        <include
+            layout="@layout/fragment_main_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBar" />
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

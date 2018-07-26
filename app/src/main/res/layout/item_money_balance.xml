@@ -8,24 +8,27 @@
     android:clickable="true"
     android:focusable="true">
 
-    <com.moneytracker.akscorp.moneytracker.Views.BalanceAmountTextView
+    <com.moneytracker.akscorp.moneytracker.views.BalanceAmountTextView
         android:id="@+id/amountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1234.56"
+        android:text="123999999994.56"
+        android:ellipsize="end"
+        android:maxEms="5"
+        android:maxLines="1"
         android:textColor="@android:color/black"
-        android:textSize="45sp"
+        android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.moneytracker.akscorp.moneytracker.Views.BalanceCurrencyTextView
+    <com.moneytracker.akscorp.moneytracker.views.BalanceCurrencyTextView
         android:id="@+id/currencyTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:text="RUR"
-        android:textSize="18sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/amountTextView"
         app:layout_constraintStart_toEndOf="@+id/amountTextView" />
 
