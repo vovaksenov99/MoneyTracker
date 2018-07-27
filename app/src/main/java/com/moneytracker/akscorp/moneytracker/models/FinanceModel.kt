@@ -18,6 +18,15 @@ data class Transaction(val transactionType: TransactionType, val moneyQuantity: 
     }
 }
 
+fun getAllAccounts(): MutableList<Account>
+{
+    // return mutableListOf()
+    return mutableListOf(
+        Account(Money(123.6, Currency.RUR), "Acc 1", 0),
+        Account(Money(99999999.9786543, Currency.USD), "Acc 2", 1),
+        Account(Money(6048.6, Currency.EUR), "Acc 3", 2))
+}
+
 /**
  * Sum of all transactions
  *

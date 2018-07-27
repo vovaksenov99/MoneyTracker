@@ -8,10 +8,13 @@ import kotlinx.android.parcel.Parcelize
 data class Account(val balance: Money, val name: String, val id: Long): Parcelable
 
 
-fun getAllAccountsData(): MutableList<Account>
+fun getAllAccountTransactions(account: Account): MutableList<Transaction>
 {
+    //check account
+   // return mutableListOf()
     return mutableListOf(
-        Account(Money(123.6, Currency.RUR), "Acc 1", 0),
-        Account(Money(99999999.9786543, Currency.USD), "Acc 2", 1),
-        Account(Money(6048.6, Currency.EUR), "Acc 3", 2))
+        Transaction(Transaction.TransactionType.INCREASE_TRANSACTION,Money(434565234564323.234,Currency.EUR)),
+        Transaction(Transaction.TransactionType.INCREASE_TRANSACTION, Money(134.234,Currency.EUR)),
+        Transaction(Transaction.TransactionType.SUBTRACTION_TRANSACTION,
+            Money(1234.0,Currency.USD)))
 }

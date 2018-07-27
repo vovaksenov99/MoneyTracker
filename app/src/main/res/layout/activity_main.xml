@@ -1,58 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:paddingEnd="12dp"
-            android:theme="?attr/actionBarTheme">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.moneytracker.akscorp.moneytracker.views.SettingsButton
-                android:id="@+id/settingsButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                app:srcCompat="@drawable/ic_settings_black_24dp"
-                android:background="@drawable/circle_ripple_selector_common"
-                 />
-        </android.support.v7.widget.Toolbar>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:paddingEnd="12dp"
+                android:theme="?attr/actionBarTheme">
 
-        <com.moneytracker.akscorp.moneytracker.views.AccountsCardViewPager
-            android:id="@+id/accountViewPager"
+                <ImageButton
+                    android:id="@+id/settingsButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/circle_ripple_selector_common"
+                    app:srcCompat="@drawable/ic_settings_black_24dp" />
+            </android.support.v7.widget.Toolbar>
+
+            <com.moneytracker.akscorp.moneytracker.views.AccountsCardViewPager
+                android:id="@+id/accountViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Button" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBar">
 
-    </android.support.design.widget.AppBarLayout>
+            <include
+                layout="@layout/fragment_main_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar">
+        </FrameLayout>
 
-        <include
-            layout="@layout/fragment_main_view"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/last_operations"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBar" />
-    </ScrollView>
-
-
-</android.support.constraint.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@+id/container" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

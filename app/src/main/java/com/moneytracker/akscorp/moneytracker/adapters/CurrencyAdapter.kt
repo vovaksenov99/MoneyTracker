@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import com.moneytracker.akscorp.moneytracker.models.Money
 import com.moneytracker.akscorp.moneytracker.R
@@ -18,7 +20,7 @@ import java.text.NumberFormat
  * akscorp2014@gmail.com
  * web site aksenov-vladimir.herokuapp.com
  */
-class CurrencyAdapter(private val context: Context, val currencies: List<Money>) :
+class CurrencyAdapter(val currencies: List<Money>) :
     RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>()
 {
 
@@ -45,8 +47,7 @@ class CurrencyAdapter(private val context: Context, val currencies: List<Money>)
 
     override fun onBindViewHolder(holder: CurrencyAdapter.CurrencyHolder, position: Int)
     {
-        val format = NumberFormat.getNumberInstance()
-        holder.amountTextView.text = format.format(roundToDigit(currencies[position].count, 2))
+        holder.amountTextView.text = currencies[position].normalizeCountString()
         holder.currencyTextView.text = currencies[position].currency.toString()
     }
 

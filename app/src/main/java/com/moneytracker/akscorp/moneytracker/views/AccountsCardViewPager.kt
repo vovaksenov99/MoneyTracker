@@ -16,7 +16,7 @@ interface IAccountCard
     fun initCards(accounts: List<Account>)
 }
 
-class AccountsCardViewPager : ViewPager, IAccountCard
+class AccountsCardViewPager : ViewPager
 {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -24,7 +24,7 @@ class AccountsCardViewPager : ViewPager, IAccountCard
 
     init
     {
-        clipToPadding = false;
+        clipToPadding = false
         setPadding(dimen(R.dimen.currencies_padding),
             dimen(R.dimen.currencies_padding),
             dimen(R.dimen.currencies_padding),
@@ -33,31 +33,20 @@ class AccountsCardViewPager : ViewPager, IAccountCard
 
     }
 
-    override fun initCards(accounts: List<Account>)
-    {
-        adapter = AccountViewPagerAdapter((context as FragmentActivity).supportFragmentManager,
-            accounts)
-        currentItem = 0
-    }
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int)
     {
         var heightMeasureSpec = heightMeasureSpec
         try
         {
-            val wrapHeight = View.MeasureSpec.getMode(heightMeasureSpec) == View.MeasureSpec.AT_MOST
-            if (wrapHeight)
+            val child = getChildAt(0)
+            if (child != null)
             {
-                val child = getChildAt(0)
-                if (child != null)
-                {
-                    child.measure(widthMeasureSpec,
-                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
-                    val h = child.measuredHeight + paddingTop + paddingBottom
+                child.measure(widthMeasureSpec,
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+                val h = child.measuredHeight + paddingTop + paddingBottom
 
-                    heightMeasureSpec =
-                            View.MeasureSpec.makeMeasureSpec(h, View.MeasureSpec.EXACTLY)
-                }
+                heightMeasureSpec =
+                        View.MeasureSpec.makeMeasureSpec(h, View.MeasureSpec.EXACTLY)
             }
         } catch (e: Exception)
         {

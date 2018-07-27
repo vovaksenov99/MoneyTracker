@@ -1,24 +1,20 @@
 package com.moneytracker.akscorp.moneytracker.presenters
 
 import com.moneytracker.akscorp.moneytracker.models.Money
-import com.moneytracker.akscorp.moneytracker.models.getAllAccountsData
+import com.moneytracker.akscorp.moneytracker.models.getAllAccountTransactions
+import com.moneytracker.akscorp.moneytracker.models.getAllAccounts
 import com.moneytracker.akscorp.moneytracker.views.IAccountCard
-import com.moneytracker.akscorp.moneytracker.views.IBalanceTextView
 import com.moneytracker.akscorp.moneytracker.views.ICurrencyRecyclerView
 import com.moneytracker.akscorp.moneytracker.views.ISettingsButton
 
-interface IMainActivity : IBalanceTextView, ICurrencyRecyclerView, ISettingsButton,IAccountCard
+interface IMainActivity : ICurrencyRecyclerView, ISettingsButton, IAccountCard
+{
+    fun hideBottomContainer()
+    fun showBottomContainer()
+}
 
 class MainActivityPresenter(val view: IMainActivity)
 {
-    /**
-     * Establish balance count and currency
-     */
-    fun setBalance(balance: Money)
-    {
-        view.setBalance(balance)
-    }
-
     /**
      * Init RV with different currencies [ICurrencyRecyclerView]
      */
@@ -32,7 +28,7 @@ class MainActivityPresenter(val view: IMainActivity)
      */
     fun initAccountViewPager()
     {
-        val accounts = getAllAccountsData()
+        val accounts = getAllAccounts()
         view.initCards(accounts)
     }
 
@@ -43,4 +39,20 @@ class MainActivityPresenter(val view: IMainActivity)
     {
         view.showSettingsActivity()
     }
+
+    fun hideBottomContainer()
+    {
+        view.hideBottomContainer()
+    }
+
+    fun showBottomContainer()
+    {
+        view.showBottomContainer()
+    }
+
+    fun initTransactionRV()
+    {
+        val transactions = getAllAccountTransactions()
+    }
+
 }

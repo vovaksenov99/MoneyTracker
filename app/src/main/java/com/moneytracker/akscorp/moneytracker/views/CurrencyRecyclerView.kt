@@ -11,6 +11,8 @@ import com.moneytracker.akscorp.moneytracker.adapters.CurrencyAdapter
 import com.moneytracker.akscorp.moneytracker.expand
 import com.moneytracker.akscorp.moneytracker.models.CurrencyConverter
 import com.moneytracker.akscorp.moneytracker.models.Money
+import kotlinx.android.parcel.Parcelize
+import android.os.Bundle
 
 
 interface ICurrencyRecyclerView
@@ -21,22 +23,15 @@ interface ICurrencyRecyclerView
 /**
  * Vertical RV with a balance converted to all possible currencies
  */
-class CurrencyRecyclerView : RecyclerView, ICurrencyRecyclerView
+class CurrencyRecyclerView : RecyclerView
 {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?) : super(context)
-
-    override fun initCurrencyRV(balance: Money)
     {
-        val layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        setHasFixedSize(true)
-        this.layoutManager = layoutManager
-        isNestedScrollingEnabled = true
 
-        val currencies = CurrencyConverter().currentBalanceToAnotherCurrencies(balance)
+    }
 
-        val adapter = CurrencyAdapter(context!!, currencies)
-        this.adapter = adapter
+    constructor(context: Context?) : super(context)
+    {
     }
 
     private var isExpand = false
@@ -54,7 +49,7 @@ class CurrencyRecyclerView : RecyclerView, ICurrencyRecyclerView
 
     private fun getExpandSize(): Int
     {
-        measure(0, 0)
+        measure(measuredWidth, 0)
 
         var h = 0
         for (i in 0 until childCount)
@@ -68,5 +63,27 @@ class CurrencyRecyclerView : RecyclerView, ICurrencyRecyclerView
             }
         }
         return h
+    }
+
+    public override fun onSaveInstanceState(): Parcelable?
+    {
+        val bundle = Bundle()
+        bundle.putParcelable("superState", super.onSaveInstanceState())
+        bundle.putBoolean("isExpand", isExpand)
+        return bundle
+    }
+
+    public override fun onRestoreInstanceState(state: Parcelable?)
+    {
+        var state = state
+        if (state is Bundle)
+        {
+            val bundle = state as Bundle?
+            isExpand = bundle!!.getBoolean("isExpand")
+
+            layoutParams.height = if (isExpand) getExpandSize() else getStartSize()
+            state = bundle.getParcelable("superState")
+        }
+        super.onRestoreInstanceState(state)
     }
 }

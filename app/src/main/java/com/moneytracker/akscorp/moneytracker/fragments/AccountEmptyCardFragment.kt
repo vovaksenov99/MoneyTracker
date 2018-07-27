@@ -12,30 +12,13 @@ import com.moneytracker.akscorp.moneytracker.presenters.IMainActivity
 import kotlinx.android.synthetic.main.account_card.view.*
 import kotlinx.android.synthetic.main.item_money_balance.view.*
 
-class AccountCardFragment : Fragment()
+
+class AccountEmptyCardFragment : Fragment()
 {
-
-    lateinit var account: Account
-
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-
-        if (arguments != null)
-        {
-            if (arguments!!.containsKey("account"))
-                account = arguments!!.getParcelable("account") as Account
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
     {
-        val view = inflater.inflate(R.layout.account_card, null)
-
-        view.account_name.text = account.name
-        view.currencyTextView.text = account.balance.currency.toString()
-        view.amountTextView.text = account.balance.normalizeCountString()
+        val view = inflater.inflate(R.layout.account_card_empty, container, false)
 
         return view
     }
