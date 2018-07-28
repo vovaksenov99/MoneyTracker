@@ -1,26 +1,35 @@
 package com.moneytracker.akscorp.moneytracker.presenters
 
-import com.moneytracker.akscorp.moneytracker.models.Money
-import com.moneytracker.akscorp.moneytracker.models.getAllAccountTransactions
-import com.moneytracker.akscorp.moneytracker.models.getAllAccounts
+import com.moneytracker.akscorp.moneytracker.models.*
 import com.moneytracker.akscorp.moneytracker.views.IAccountCard
 import com.moneytracker.akscorp.moneytracker.views.ICurrencyRecyclerView
 import com.moneytracker.akscorp.moneytracker.views.ISettingsButton
 
 interface IMainActivity : ICurrencyRecyclerView, ISettingsButton, IAccountCard
 {
+    val account: Account
     fun hideBottomContainer()
     fun showBottomContainer()
+    fun initAccountTransactionRV(transaction: List<Transaction>)
 }
 
 class MainActivityPresenter(val view: IMainActivity)
 {
+
+    private fun getBalance(account: Account):Money
+    {
+        val transactions = getAllAccountTransactions(account)
+        return getAccountBalance(transactions)
+    }
     /**
      * Init RV with different currencies [ICurrencyRecyclerView]
      */
-    fun initCurrencyRV(balance: Money)
+    fun initCurrencyRV()
     {
-        view.initCurrencyRV(balance)
+        val currencies = CurrencyConverter().currentBalanceToAnotherCurrencies(getBalance(view.account))
+
+        view.initCurrencyRV(currencies)
+        view.initAccountTransactionRV(getAllAccountTransactions(view.account))
     }
 
     /**
@@ -52,7 +61,8 @@ class MainActivityPresenter(val view: IMainActivity)
 
     fun initTransactionRV()
     {
-        val transactions = getAllAccountTransactions()
+        val transactions = getAllAccountTransactions(view.account)
+        view.initAccountTransactionRV(transactions)
     }
 
 }

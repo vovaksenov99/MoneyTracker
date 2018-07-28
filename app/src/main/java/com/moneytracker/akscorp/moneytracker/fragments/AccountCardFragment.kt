@@ -8,14 +8,41 @@ import android.view.ViewGroup
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.models.Account
 import com.moneytracker.akscorp.moneytracker.models.Money
-import com.moneytracker.akscorp.moneytracker.presenters.IMainActivity
+import com.moneytracker.akscorp.moneytracker.models.getAllAccountTransactions
+import com.moneytracker.akscorp.moneytracker.models.getAccountBalance
 import kotlinx.android.synthetic.main.account_card.view.*
 import kotlinx.android.synthetic.main.item_money_balance.view.*
 
-class AccountCardFragment : Fragment()
-{
 
-    lateinit var account: Account
+interface AccountCard
+{
+    var account: Account
+    fun initCard(balance: Money)
+}
+
+class AccountCardPresenter(val view: AccountCard)
+{
+    fun initCard()
+    {
+        val transaction = getAllAccountTransactions(view.account)
+        val balance = getAccountBalance(transaction)
+        view.initCard(balance)
+    }
+}
+
+class AccountCardFragment : Fragment(), AccountCard
+{
+    override lateinit var account: Account
+    lateinit var fragmentView: View
+
+    val presenter = AccountCardPresenter(this)
+
+    override fun initCard(balance: Money)
+    {
+        fragmentView.account_name.text = account.name
+        fragmentView.currencyTextView.text = balance.currency.toString()
+        fragmentView.amountTextView.text = balance.normalizeCountString()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -31,12 +58,8 @@ class AccountCardFragment : Fragment()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
     {
-        val view = inflater.inflate(R.layout.account_card, null)
-
-        view.account_name.text = account.name
-        view.currencyTextView.text = account.balance.currency.toString()
-        view.amountTextView.text = account.balance.normalizeCountString()
-
-        return view
+        fragmentView = inflater.inflate(R.layout.account_card, null)
+        presenter.initCard()
+        return fragmentView
     }
 }

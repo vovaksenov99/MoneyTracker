@@ -2,30 +2,36 @@ package com.moneytracker.akscorp.moneytracker.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.moneytracker.akscorp.moneytracker.models.Account
-import com.moneytracker.akscorp.moneytracker.models.Currency
-import com.moneytracker.akscorp.moneytracker.models.Money
 import com.moneytracker.akscorp.moneytracker.presenters.IMainActivity
 import com.moneytracker.akscorp.moneytracker.presenters.MainActivityPresenter
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.adapters.AccountViewPagerAdapter
 import com.moneytracker.akscorp.moneytracker.adapters.CurrencyAdapter
-import com.moneytracker.akscorp.moneytracker.expand
-import com.moneytracker.akscorp.moneytracker.models.CurrencyConverter
+import com.moneytracker.akscorp.moneytracker.adapters.TransactionAdapter
+import com.moneytracker.akscorp.moneytracker.models.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main_view.*
-import kotlinx.android.synthetic.main.item_money_balance.*
-import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 
 
 class MainActivity : AppCompatActivity(), IMainActivity
 {
+    override fun initAccountTransactionRV(transactions: List<Transaction>)
+    {
+        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        last_transactions.setHasFixedSize(true)
+        last_transactions.layoutManager = layoutManager
+        last_transactions.isNestedScrollingEnabled = true
+
+        last_transactions.adapter = TransactionAdapter(transactions)
+    }
+
+    override lateinit var account: Account
+
     override fun hideBottomContainer()
     {
         container.visibility = View.INVISIBLE
@@ -50,9 +56,7 @@ class MainActivity : AppCompatActivity(), IMainActivity
 
     private fun init()
     {
-
         presenter.initAccountViewPager()
-
         show_currencies.setOnClickListener {
             currencyRecyclerView.switchSize()
         }
@@ -62,16 +66,15 @@ class MainActivity : AppCompatActivity(), IMainActivity
         }
     }
 
-    override fun initCurrencyRV(balance: Money)
+    override fun initCurrencyRV(balance: List<Money>)
     {
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         currencyRecyclerView.setHasFixedSize(true)
         currencyRecyclerView.layoutManager = layoutManager
         currencyRecyclerView.isNestedScrollingEnabled = true
 
-        val currencies = CurrencyConverter().currentBalanceToAnotherCurrencies(balance)
 
-        val adapter = CurrencyAdapter(currencies)
+        val adapter = CurrencyAdapter(balance)
         currencyRecyclerView.adapter = adapter
     }
 
@@ -86,7 +89,10 @@ class MainActivity : AppCompatActivity(), IMainActivity
             accounts)
         accountViewPager.currentItem = 0
         if (accounts.isNotEmpty())
-            presenter.initCurrencyRV(accounts[0].balance)
+        {
+            account = accounts[0]
+            presenter.initCurrencyRV()
+        }
         accountViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
         {
             override fun onPageScrollStateChanged(state: Int)
@@ -103,7 +109,8 @@ class MainActivity : AppCompatActivity(), IMainActivity
             {
                 if (position < accounts.size)
                 {
-                    presenter.initCurrencyRV(accounts[position].balance)
+                    account = accounts[position]
+                    presenter.initCurrencyRV()
                     presenter.showBottomContainer()
                 }
                 else

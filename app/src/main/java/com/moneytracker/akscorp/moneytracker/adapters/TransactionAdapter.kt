@@ -36,6 +36,11 @@ class TransactionAdapter(val transaction: List<Transaction>) :
 
     override fun onBindViewHolder(holder: TransactionAdapter.TransactionHolder, position: Int)
     {
+        val transaction = transaction[position]
+
+        holder.sum.text = transaction.normalizeTransactionSum()
+        holder.currency.text = transaction.moneyQuantity.currency.toString()
+        holder.icon.setImageResource(transaction.paymentPurpose.getIconResource())
 
     }
 

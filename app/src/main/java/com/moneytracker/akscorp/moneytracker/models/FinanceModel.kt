@@ -1,11 +1,14 @@
 package com.moneytracker.akscorp.moneytracker.models
 
+import android.graphics.drawable.Drawable
+import com.moneytracker.akscorp.moneytracker.R
 
 /**
  * @param transactionType - transaction type
  * @param moneyQuantity - transaction money quantity. Ex: 10$
  */
-data class Transaction(val transactionType: TransactionType, val moneyQuantity: Money)
+data class Transaction(val transactionType: TransactionType, val paymentPurpose: PaymentPurpose,
+                       val moneyQuantity: Money)
 {
     /**
      * Transaction types
@@ -16,15 +19,42 @@ data class Transaction(val transactionType: TransactionType, val moneyQuantity: 
         INCREASE_TRANSACTION,
         SUBTRACTION_TRANSACTION;
     }
+
+    enum class PaymentPurpose
+    {
+        AUTO
+        {
+            override fun getIconResource(): Int
+            {
+                return R.drawable.ic_auto
+            }
+
+        },
+        FOOD
+        {
+            override fun getIconResource(): Int
+            {
+                return R.drawable.ic_food
+            }
+        };
+
+        abstract fun getIconResource(): Int
+    }
+
+    fun normalizeTransactionSum(): String
+    {
+        return (if (transactionType == Transaction.TransactionType.INCREASE_TRANSACTION) "" else "-") + moneyQuantity.normalizeCountString()
+    }
+
 }
 
 fun getAllAccounts(): MutableList<Account>
 {
     // return mutableListOf()
     return mutableListOf(
-        Account(Money(123.6, Currency.RUR), "Acc 1", 0),
-        Account(Money(99999999.9786543, Currency.USD), "Acc 2", 1),
-        Account(Money(6048.6, Currency.EUR), "Acc 3", 2))
+        Account("Acc 1", 0),
+        Account("Acc 2", 1),
+        Account("Acc 3", 2))
 }
 
 /**
@@ -35,7 +65,8 @@ fun getAllAccounts(): MutableList<Account>
  *
  * @return balance money quantity
  */
-fun getBalance(transactions: List<Transaction>, resultCurrency: Currency = Currency.USD): Money
+fun getAccountBalance(transactions: List<Transaction>,
+                      resultCurrency: Currency = Currency.USD): Money
 {
     val currencyConverter = CurrencyConverter()
 

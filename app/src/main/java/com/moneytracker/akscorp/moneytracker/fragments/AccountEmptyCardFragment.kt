@@ -19,7 +19,6 @@ class AccountEmptyCardFragment : Fragment()
                               savedInstanceState: Bundle?): View?
     {
         val view = inflater.inflate(R.layout.account_card_empty, container, false)
-
         return view
     }
 }

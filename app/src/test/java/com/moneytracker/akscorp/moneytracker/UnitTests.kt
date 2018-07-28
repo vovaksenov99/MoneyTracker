@@ -22,7 +22,7 @@ class UnitTest
             Transaction(Transaction.SUBTRACTION_TRANSACTION, Money(100.0, USD())),
             Transaction(Transaction.INCREASE_TRANSACTION, Money(140.234, USD())))
 
-        assertEquals(Money(240.234, USD()), getBalance(transactions))
+        assertEquals(Money(240.234, USD()), getAccountBalance(transactions))
     }
 
     @Test
@@ -34,7 +34,7 @@ class UnitTest
             Transaction(Transaction.SUBTRACTION_TRANSACTION, Money(100.0, USD())),
             Transaction(Transaction.INCREASE_TRANSACTION, Money(140.234, USD())))
 
-        assertEquals(Money(15199.60518, RUR()), getBalance(transactions, RUR()))
+        assertEquals(Money(15199.60518, RUR()), getAccountBalance(transactions, RUR()))
     }
 
     @Test
@@ -46,6 +46,6 @@ class UnitTest
             Transaction(Transaction.SUBTRACTION_TRANSACTION, Money(100.0, EUR())),
             Transaction(Transaction.INCREASE_TRANSACTION, Money(140.234, USD())))
 
-        assertEquals(Money(20406.026501565444, RUR()), getBalance(transactions, RUR()))
+        assertEquals(Money(20406.026501565444, RUR()), getAccountBalance(transactions, RUR()))
     }
 }

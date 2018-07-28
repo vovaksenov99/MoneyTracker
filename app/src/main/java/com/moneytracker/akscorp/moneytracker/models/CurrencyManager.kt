@@ -1,9 +1,12 @@
 package com.moneytracker.akscorp.moneytracker.models
 
 import android.os.Parcelable
+import android.provider.Settings.System.getConfiguration
 import kotlinx.android.parcel.Parcelize
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
+import java.util.*
 
 
 /**
@@ -65,8 +68,12 @@ data class Money(var count: Double, val currency: Currency) : Parcelable
 {
     fun normalizeCountString(): String?
     {
-        val format = NumberFormat.getNumberInstance()
-        return format.format(String.format("%.2f", count).toDouble())
+        val format =  DecimalFormat.getInstance() as DecimalFormat
+        val custom = DecimalFormatSymbols()
+        custom.decimalSeparator = custom.decimalSeparator
+        format.decimalFormatSymbols = custom
+        val f = String.format("%.2f", count)
+        return format.format(format.parse(f))
     }
 }
 

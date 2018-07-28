@@ -17,7 +17,7 @@ import android.os.Bundle
 
 interface ICurrencyRecyclerView
 {
-    fun initCurrencyRV(balance: Money)
+    fun initCurrencyRV(balance: List<Money>)
 }
 
 /**
