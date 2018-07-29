@@ -6,4 +6,13 @@
     <string name="about">About</string>
     <string name="about_message">Money tracker\n\n©Aksenov Vladimir</string>
     <string name="add_payment">Add payment</string>
+    <string name="note">Note</string>
+    <string name="currency">Currency</string>
+    <string name="transaction_sum">Transaction sum</string>
+    <string name="sum">Sum</string>
+    <string name="transaction_desc">Transaction description</string>
+
+    <string name="auto">Auto</string>
+    <string name="food">Food</string>
+    <string name="confirm">Confirm</string>
 </resources>

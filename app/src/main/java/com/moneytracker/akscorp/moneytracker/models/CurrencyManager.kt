@@ -62,13 +62,12 @@ class CurrencyConverter()
         Money(money.count / money.currency.rate, defaultCurrency)
 }
 
-
 @Parcelize
 data class Money(var count: Double, val currency: Currency) : Parcelable
 {
     fun normalizeCountString(): String?
     {
-        val format =  DecimalFormat.getInstance() as DecimalFormat
+        val format = DecimalFormat.getInstance() as DecimalFormat
         val custom = DecimalFormatSymbols()
         custom.decimalSeparator = custom.decimalSeparator
         format.decimalFormatSymbols = custom
@@ -77,11 +76,11 @@ data class Money(var count: Double, val currency: Currency) : Parcelable
     }
 }
 
-
 enum class Currency
 {
     USD
     {
+        override val currencySymbol = "$"
         override val rate: Double = 1.0
         override fun toString(): String
         {
@@ -90,6 +89,7 @@ enum class Currency
     },
     RUR
     {
+        override val currencySymbol = "\u20BD"
         override val rate: Double = 63.0
         override fun toString(): String
         {
@@ -99,6 +99,7 @@ enum class Currency
 
     EUR
     {
+        override val currencySymbol = "€"
         override val rate: Double = 0.8611
         override fun toString(): String
         {
@@ -108,6 +109,7 @@ enum class Currency
 
     GBP
     {
+        override val currencySymbol = "£"
         override val rate: Double = 0.76
         override fun toString(): String
         {
@@ -117,4 +119,5 @@ enum class Currency
 
     abstract val rate: Double
     abstract override fun toString(): String
+    abstract val currencySymbol: String
 }

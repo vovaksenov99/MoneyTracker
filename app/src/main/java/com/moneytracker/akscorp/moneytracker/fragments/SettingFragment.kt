@@ -21,7 +21,10 @@ class SettingFragment : PreferenceFragmentCompat()
         initAboutPref()
     }
 
-    fun initAboutPref()
+    /**
+     * Show about alert dialog
+     */
+    private fun initAboutPref()
     {
         val aboutPref = findPreference(getString(R.string.about_pref)) as Preference
 

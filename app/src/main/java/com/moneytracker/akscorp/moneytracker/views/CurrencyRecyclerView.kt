@@ -14,35 +14,35 @@ import com.moneytracker.akscorp.moneytracker.models.Money
 import kotlinx.android.parcel.Parcelize
 import android.os.Bundle
 
-
-interface ICurrencyRecyclerView
-{
-    fun initCurrencyRV(balance: List<Money>)
-}
-
 /**
  * Vertical RV with a balance converted to all possible currencies
  */
 class CurrencyRecyclerView : RecyclerView
 {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    {
-
-    }
 
     constructor(context: Context?) : super(context)
-    {
-    }
 
     private var isExpand = false
+
     fun switchSize()
     {
         if (isExpand)
-            expand(this, getStartSize())
+            close()
         else
-            expand(this, getExpandSize())
+            open()
+    }
 
-        isExpand = !isExpand
+    fun close()
+    {
+        expand(this, getStartSize())
+        isExpand = false
+    }
+
+    fun open()
+    {
+        expand(this, getExpandSize())
+        isExpand = true
     }
 
     private fun getStartSize() = 0
@@ -82,6 +82,7 @@ class CurrencyRecyclerView : RecyclerView
             isExpand = bundle!!.getBoolean("isExpand")
 
             layoutParams.height = if (isExpand) getExpandSize() else getStartSize()
+
             state = bundle.getParcelable("superState")
         }
         super.onRestoreInstanceState(state)

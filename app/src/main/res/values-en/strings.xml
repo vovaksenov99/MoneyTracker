@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MoneyTracker</string>
+    <string name="app_name">Scash</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -11,4 +11,9 @@
     <string name="about">About</string>
     <string name="about_message">Money tracker\n\n©Aksenov Vladimir</string>
     <string name="add_payment">Add payment</string>
+    <string name="note">Note</string>
+    <string name="transaction_sum">Transaction sum</string>
+    <string name="sum">Sum</string>
+    <string name="transaction_desc">Transaction description</string>
+    <string name="confirm">Confirm</string>
 </resources>

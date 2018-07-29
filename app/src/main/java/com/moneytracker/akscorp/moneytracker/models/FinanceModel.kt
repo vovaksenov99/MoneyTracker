@@ -2,13 +2,16 @@ package com.moneytracker.akscorp.moneytracker.models
 
 import android.graphics.drawable.Drawable
 import com.moneytracker.akscorp.moneytracker.R
+import java.util.*
 
 /**
  * @param transactionType - transaction type
  * @param moneyQuantity - transaction money quantity. Ex: 10$
  */
 data class Transaction(val transactionType: TransactionType, val paymentPurpose: PaymentPurpose,
-                       val moneyQuantity: Money)
+                       val paymentDescription: String,
+                       val moneyQuantity: Money,
+                       val date: Calendar)
 {
     /**
      * Transaction types
@@ -24,6 +27,11 @@ data class Transaction(val transactionType: TransactionType, val paymentPurpose:
     {
         AUTO
         {
+            override fun getStringResource(): Int
+            {
+                return R.string.auto
+            }
+
             override fun getIconResource(): Int
             {
                 return R.drawable.ic_auto
@@ -32,6 +40,11 @@ data class Transaction(val transactionType: TransactionType, val paymentPurpose:
         },
         FOOD
         {
+            override fun getStringResource(): Int
+            {
+                return R.string.food
+            }
+
             override fun getIconResource(): Int
             {
                 return R.drawable.ic_food
@@ -39,6 +52,7 @@ data class Transaction(val transactionType: TransactionType, val paymentPurpose:
         };
 
         abstract fun getIconResource(): Int
+        abstract fun getStringResource(): Int
     }
 
     fun normalizeTransactionSum(): String

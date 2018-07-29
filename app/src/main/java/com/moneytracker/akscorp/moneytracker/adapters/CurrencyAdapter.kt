@@ -20,10 +20,9 @@ import java.text.NumberFormat
  * akscorp2014@gmail.com
  * web site aksenov-vladimir.herokuapp.com
  */
-class CurrencyAdapter(val currencies: List<Money>) :
+class CurrencyAdapter(private val currencies: List<Money>) :
     RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>()
 {
-
     override fun getItemCount(): Int
     {
         return currencies.size

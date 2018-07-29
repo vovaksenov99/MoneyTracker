@@ -11,26 +11,33 @@ import com.moneytracker.akscorp.moneytracker.presenters.IMainActivity
 import com.moneytracker.akscorp.moneytracker.presenters.MainActivityPresenter
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.adapters.AccountViewPagerAdapter
-import com.moneytracker.akscorp.moneytracker.adapters.CurrencyAdapter
 import com.moneytracker.akscorp.moneytracker.adapters.TransactionAdapter
 import com.moneytracker.akscorp.moneytracker.models.*
+import kotlinx.android.synthetic.main.account_card.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_main_view.*
+import android.util.DisplayMetrics
 
 
 class MainActivity : AppCompatActivity(), IMainActivity
 {
+
+    lateinit var presenter: MainActivityPresenter
+
+    override fun hideCurrencies()
+    {
+        if (currencyRecyclerView != null)
+            currencyRecyclerView.close()
+    }
+
     override fun initAccountTransactionRV(transactions: List<Transaction>)
     {
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        last_transactions.setHasFixedSize(true)
+        last_transactions.setHasFixedSize(false)
         last_transactions.layoutManager = layoutManager
         last_transactions.isNestedScrollingEnabled = true
 
         last_transactions.adapter = TransactionAdapter(transactions)
     }
-
-    override lateinit var account: Account
 
     override fun hideBottomContainer()
     {
@@ -40,42 +47,6 @@ class MainActivity : AppCompatActivity(), IMainActivity
     override fun showBottomContainer()
     {
         container.visibility = View.VISIBLE
-    }
-
-    lateinit var presenter: MainActivityPresenter
-
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        presenter = MainActivityPresenter(this)
-
-        init()
-    }
-
-    private fun init()
-    {
-        presenter.initAccountViewPager()
-        show_currencies.setOnClickListener {
-            currencyRecyclerView.switchSize()
-        }
-
-        settingsButton.setOnClickListener {
-            showSettingsActivity()
-        }
-    }
-
-    override fun initCurrencyRV(balance: List<Money>)
-    {
-        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        currencyRecyclerView.setHasFixedSize(true)
-        currencyRecyclerView.layoutManager = layoutManager
-        currencyRecyclerView.isNestedScrollingEnabled = true
-
-
-        val adapter = CurrencyAdapter(balance)
-        currencyRecyclerView.adapter = adapter
     }
 
     override fun showSettingsActivity()
@@ -90,8 +61,7 @@ class MainActivity : AppCompatActivity(), IMainActivity
         accountViewPager.currentItem = 0
         if (accounts.isNotEmpty())
         {
-            account = accounts[0]
-            presenter.initCurrencyRV()
+            presenter.switchToAccount(accounts[0])
         }
         accountViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
         {
@@ -109,13 +79,69 @@ class MainActivity : AppCompatActivity(), IMainActivity
             {
                 if (position < accounts.size)
                 {
-                    account = accounts[position]
-                    presenter.initCurrencyRV()
-                    presenter.showBottomContainer()
+                    presenter.switchToAccount(accounts[position])
                 }
                 else
-                    presenter.hideBottomContainer()
+                    presenter.switchToAccount(null)
             }
         })
     }
+
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        presenter = MainActivityPresenter(this)
+
+        initUI()
+    }
+
+    /**
+     * Start UI initialization
+     */
+    private fun initUI()
+    {
+        presenter.initAccountViewPager()
+
+
+        settingsButton.setOnClickListener {
+            presenter.showSettingsActivity()
+        }
+
+        payment_button.setOnClickListener {
+            presenter.showPaymentDialog(this@MainActivity.supportFragmentManager)
+        }
+
+        establishLayoutHeight()
+    }
+
+    /**
+     * It's complementary to the screen size. Uses for 'hide' nestedScrollview backgroundImage
+     */
+    private fun establishLayoutHeight()
+    {
+        appBar.viewTreeObserver.addOnGlobalLayoutListener {
+            fun getStatusBarHeight(): Int
+            {
+                var result = 0
+                val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+                if (resourceId > 0)
+                {
+                    result = resources.getDimensionPixelSize(resourceId)
+                }
+                return result
+            }
+
+            val h = appBar.height
+            val metrics = DisplayMetrics()
+            windowManager.defaultDisplay.getMetrics(metrics)
+            val p = metrics.heightPixels - h
+
+            if (container.layoutParams.height < p - getStatusBarHeight())
+                container.minimumHeight = p - getStatusBarHeight()
+        }
+    }
+
 }

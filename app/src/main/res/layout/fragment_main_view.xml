@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
         </FrameLayout>
 
         <com.moneytracker.akscorp.moneytracker.views.CurrencyRecyclerView

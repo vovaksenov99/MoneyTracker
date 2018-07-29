@@ -2,42 +2,81 @@ package com.moneytracker.akscorp.moneytracker.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.moneytracker.akscorp.moneytracker.R
-import com.moneytracker.akscorp.moneytracker.models.Account
-import com.moneytracker.akscorp.moneytracker.models.Money
-import com.moneytracker.akscorp.moneytracker.models.getAllAccountTransactions
-import com.moneytracker.akscorp.moneytracker.models.getAccountBalance
+import com.moneytracker.akscorp.moneytracker.adapters.CurrencyAdapter
+import com.moneytracker.akscorp.moneytracker.models.*
 import kotlinx.android.synthetic.main.account_card.view.*
 import kotlinx.android.synthetic.main.item_money_balance.view.*
 
 
-interface AccountCard
+interface IAccountCard
 {
-    var account: Account
-    fun initCard(balance: Money)
+    fun initCard(balance: Money, account: Account)
+    fun initCurrencyRV(balance: List<Money>)
+    fun switchCurrenciesRVStatus()
 }
 
-class AccountCardPresenter(val view: AccountCard)
+class AccountCardPresenter(val view: IAccountCard, val account: Account)
 {
-    fun initCard()
+    val transaction = getAllAccountTransactions(account)
+    val balance = getAccountBalance(transaction)
+
+    /**
+     * Show main account information. Account name, balance
+     */
+    fun initCardData()
     {
-        val transaction = getAllAccountTransactions(view.account)
-        val balance = getAccountBalance(transaction)
-        view.initCard(balance)
+        view.initCard(balance, account)
+    }
+
+    /**
+     * Init RV with different currencies [ICurrencyRecyclerView]
+     */
+    fun initCurrencyRV()
+    {
+        val currencies = CurrencyConverter().currentBalanceToAnotherCurrencies(balance)
+        view.initCurrencyRV(currencies)
+    }
+
+    /**
+     * Show/hide currency RV [CurrencyRecyclerView]
+     */
+    fun switchCurrencyRVStatus()
+    {
+        view.switchCurrenciesRVStatus()
     }
 }
 
-class AccountCardFragment : Fragment(), AccountCard
+class AccountCardFragment : Fragment(), IAccountCard
 {
-    override lateinit var account: Account
+
+
     lateinit var fragmentView: View
 
-    val presenter = AccountCardPresenter(this)
+    lateinit var presenter: AccountCardPresenter
 
-    override fun initCard(balance: Money)
+    override fun switchCurrenciesRVStatus()
+    {
+        fragmentView.currencyRecyclerView.switchSize()
+    }
+
+    override fun initCurrencyRV(balance: List<Money>)
+    {
+        val layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        fragmentView.currencyRecyclerView.setHasFixedSize(true)
+        fragmentView.currencyRecyclerView.layoutManager = layoutManager
+        fragmentView.currencyRecyclerView.isNestedScrollingEnabled = true
+
+        val adapter = CurrencyAdapter(balance)
+        fragmentView.currencyRecyclerView.adapter = adapter
+    }
+
+    override fun initCard(balance: Money, account: Account)
     {
         fragmentView.account_name.text = account.name
         fragmentView.currencyTextView.text = balance.currency.toString()
@@ -51,15 +90,31 @@ class AccountCardFragment : Fragment(), AccountCard
         if (arguments != null)
         {
             if (arguments!!.containsKey("account"))
-                account = arguments!!.getParcelable("account") as Account
+            {
+                val account = arguments!!.getParcelable("account") as Account
+                presenter = AccountCardPresenter(this, account)
+            }
         }
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
     {
-        fragmentView = inflater.inflate(R.layout.account_card, null)
-        presenter.initCard()
+        fragmentView = inflater.inflate(R.layout.account_card, container, false)
+
+        initCardUI()
+
         return fragmentView
     }
+
+    private fun initCardUI()
+    {
+        presenter.initCardData()
+        presenter.initCurrencyRV()
+        fragmentView.show_currencies.setOnClickListener {
+            presenter.switchCurrencyRVStatus()
+        }
+    }
+
 }

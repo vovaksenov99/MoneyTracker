@@ -4,38 +4,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/black_back_"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:fillViewport="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/transparent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-                android:paddingEnd="12dp"
-                android:theme="?attr/actionBarTheme">
-
-                <ImageButton
-                    android:id="@+id/settingsButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="end"
-                    android:background="@drawable/circle_ripple_selector_common"
-                    app:srcCompat="@drawable/ic_settings_black_24dp" />
-            </android.support.v7.widget.Toolbar>
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_margin="12dp"
+                android:background="@drawable/circle_ripple_selector_common"
+                app:srcCompat="@drawable/ic_settings_black_24dp" />
 
             <com.moneytracker.akscorp.moneytracker.views.AccountsCardViewPager
                 android:id="@+id/accountViewPager"
@@ -43,13 +38,15 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/payment_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:background="@drawable/selector_confirm_button"
                 android:text="@string/add_payment" />
+
 
         </android.support.design.widget.AppBarLayout>
 
@@ -57,18 +54,19 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include
-                layout="@layout/fragment_main_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+            android:background="@color/white"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBar"
+            tools:layout_editor_absoluteX="0dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/last_transactions"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -39,12 +39,25 @@ dependencies {
     implementation 'com.android.support:preference-v14:27.1.1'
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
 
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.22.2'
+
+    implementation 'com.github.codex-team:hawk.kotlin:v1.0.4'
+
 }
 repositories {
     mavenCentral()
 }
 
 kotlin {
+    androidExtensions {
+        experimental = true
+    }
+    experimental {
+        coroutines "enable"
+    }
     androidExtensions {
         experimental = true
     }

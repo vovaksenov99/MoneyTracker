@@ -38,7 +38,8 @@ class AccountsCardViewPager : ViewPager
         var heightMeasureSpec = heightMeasureSpec
         try
         {
-            val child = getChildAt(0)
+
+            val child = getChildAt(currentItem)
             if (child != null)
             {
                 child.measure(widthMeasureSpec,

@@ -5,6 +5,10 @@ import android.animation.ValueAnimator
 import android.opengl.ETC1.getHeight
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
 
 
 fun expand(v: View, targetHeight: Int, duration: Int = 500)
@@ -20,4 +24,39 @@ fun expand(v: View, targetHeight: Int, duration: Int = 500)
     valueAnimator.interpolator = DecelerateInterpolator()
     valueAnimator.duration = duration.toLong()
     valueAnimator.start()
+}
+
+fun scaleView(v: View, startScale: Float, endScale: Float, duration: Long = 500)
+{
+    val anim = ScaleAnimation(
+        1f, 1f, // Start and end values for the X axis scaling
+        startScale, endScale, // Start and end values for the Y axis scaling
+        Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+        Animation.RELATIVE_TO_SELF, 0.5f) // Pivot point of Y scaling
+    anim.fillAfter = true
+    anim.duration = duration
+    v.startAnimation(anim)
+}
+
+
+fun fadeDown(view: View, duration: Long = 500, endAction: () -> Unit = {}, startDelay: Long = 0)
+{
+    val fadeOut = AlphaAnimation(1f, 0f)
+    fadeOut.interpolator = AccelerateInterpolator() //and this
+    fadeOut.duration = duration
+    fadeOut.fillBefore = true
+    //view.startAnimation(fadeOut)
+    view.animate().alpha(0f).setDuration(duration).setStartDelay(startDelay)
+        .withEndAction { endAction() }.start()
+
+}
+
+fun fadeIn(view: View, duration: Long = 500, endAction: () -> Unit = {}, startDelay: Long = 0)
+{
+    val fadeIn = AlphaAnimation(0f, 1f)
+    fadeIn.interpolator = AccelerateInterpolator() //and this
+    fadeIn.duration = duration
+    fadeIn.fillBefore = true
+    view.animate().alpha(1f).setDuration(duration).setStartDelay(startDelay)
+        .withEndAction { endAction() }.start()
 }

@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.models.Transaction
-import kotlinx.android.synthetic.main.item_money_balance.view.*
 import kotlinx.android.synthetic.main.transaction_rv_item.view.*
 
 /**
@@ -16,7 +15,7 @@ import kotlinx.android.synthetic.main.transaction_rv_item.view.*
  * akscorp2014@gmail.com
  * web site aksenov-vladimir.herokuapp.com
  */
-class TransactionAdapter(val transaction: List<Transaction>) :
+class TransactionAdapter(private val transaction: List<Transaction>) :
     RecyclerView.Adapter<TransactionAdapter.TransactionHolder>()
 {
 
@@ -30,7 +29,7 @@ class TransactionAdapter(val transaction: List<Transaction>) :
     {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.transaction_rv_item, null)
+        val view = inflater.inflate(R.layout.transaction_rv_item, parent, false)
         return TransactionHolder(view)
     }
 
@@ -41,7 +40,7 @@ class TransactionAdapter(val transaction: List<Transaction>) :
         holder.sum.text = transaction.normalizeTransactionSum()
         holder.currency.text = transaction.moneyQuantity.currency.toString()
         holder.icon.setImageResource(transaction.paymentPurpose.getIconResource())
-
+        holder.description.text = transaction.paymentDescription
     }
 
     inner class TransactionHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

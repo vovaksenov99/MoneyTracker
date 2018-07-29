@@ -36,7 +36,7 @@ class AccountViewPagerAdapter(fragmentManager: FragmentManager, val accounts: Li
 
     override fun getCount(): Int
     {
-        return accounts.size + 1
+        return accounts.size
     }
 
 }
