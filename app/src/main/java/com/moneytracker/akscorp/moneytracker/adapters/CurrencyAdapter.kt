@@ -1,19 +1,14 @@
 package com.moneytracker.akscorp.moneytracker.adapters
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import com.moneytracker.akscorp.moneytracker.models.Money
 import com.moneytracker.akscorp.moneytracker.R
-import com.moneytracker.akscorp.moneytracker.roundToDigit
 import kotlinx.android.synthetic.main.item_money_balance.view.*
 import org.jetbrains.anko.dimen
-import java.text.NumberFormat
 
 /**
  * Created by AksCorp on 03.04.2018.

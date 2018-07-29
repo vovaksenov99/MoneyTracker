@@ -20,7 +20,6 @@ import android.util.DisplayMetrics
 
 class MainActivity : AppCompatActivity(), IMainActivity
 {
-
     lateinit var presenter: MainActivityPresenter
 
     override fun hideCurrencies()
@@ -32,10 +31,8 @@ class MainActivity : AppCompatActivity(), IMainActivity
     override fun initAccountTransactionRV(transactions: List<Transaction>)
     {
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        last_transactions.setHasFixedSize(false)
         last_transactions.layoutManager = layoutManager
-        last_transactions.isNestedScrollingEnabled = true
-
+        last_transactions.isNestedScrollingEnabled = false
         last_transactions.adapter = TransactionAdapter(transactions)
     }
 
@@ -93,10 +90,12 @@ class MainActivity : AppCompatActivity(), IMainActivity
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = MainActivityPresenter(this)
+        presenter = MainActivityPresenter(this,this)
 
         initUI()
+
     }
+
 
     /**
      * Start UI initialization

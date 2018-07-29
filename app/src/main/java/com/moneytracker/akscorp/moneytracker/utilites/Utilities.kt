@@ -1,4 +1,4 @@
-package com.moneytracker.akscorp.moneytracker
+package com.moneytracker.akscorp.moneytracker.utilites
 
 import android.content.Context
 

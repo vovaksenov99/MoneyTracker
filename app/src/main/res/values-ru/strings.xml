@@ -15,4 +15,10 @@
     <string name="sum">Сумма</string>
     <string name="transaction_desc">Описание транзакции</string>
     <string name="confirm">Подтвердить</string>
+    <string name="other">Другое</string>
+    <string name="food">Еда</string>
+    <string name="transport">Транспорт</string>
+    <string name="not_update_yet">Не обновлено</string>
+    <string name="last_currency_update">Последнее обновление курса:</string>
+    <string name="done">Готово</string>
 </resources>

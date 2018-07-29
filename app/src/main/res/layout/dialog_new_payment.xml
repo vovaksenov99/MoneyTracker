@@ -42,9 +42,10 @@
                 android:layout_marginEnd="48dp"
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="16dp"
+                android:focusable="auto"
                 android:gravity="center"
                 android:hint="@string/sum"
-                android:inputType="numberSigned"
+                android:inputType="numberSigned|numberDecimal"
                 android:minWidth="220dp"
                 android:textSize="50sp"
                 app:met_floatingLabel="highlight"
@@ -52,7 +53,8 @@
                 app:met_floatingLabelTextSize="20sp"
                 app:met_primaryColor="@color/add_payment_dialog_icon_color"
                 app:met_textColor="@color/add_payment_dialog_icon_color"
-                app:met_textColorHint="@android:color/darker_gray" />
+                app:met_textColorHint="@android:color/darker_gray"
+                app:met_validateOnFocusLost="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -119,7 +121,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/transaction_description"
+            android:id="@+id/transaction_description_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="48dp"
@@ -140,8 +142,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:alpha="0"
-            android:text="Done"
+            android:alpha="0.0"
+            android:text="@string/done"
             android:textColor="@color/black"
             android:textSize="45sp"
             app:layout_constraintBottom_toBottomOf="parent"

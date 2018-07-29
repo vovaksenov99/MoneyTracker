@@ -1,6 +1,5 @@
 package com.moneytracker.akscorp.moneytracker.models
 
-import android.graphics.drawable.Drawable
 import com.moneytracker.akscorp.moneytracker.R
 import java.util.*
 
@@ -8,28 +7,18 @@ import java.util.*
  * @param transactionType - transaction type
  * @param moneyQuantity - transaction money quantity. Ex: 10$
  */
-data class Transaction(val transactionType: TransactionType, val paymentPurpose: PaymentPurpose,
-                       val paymentDescription: String,
-                       val moneyQuantity: Money,
-                       val date: Calendar)
+data class Transaction(var paymentPurpose: PaymentPurpose = PaymentPurpose.OTHER,
+                       var paymentDescription: String = "",
+                       var moneyQuantity: Money = Money(0.0, defaultCurrency),
+                       var date: Calendar = Calendar.getInstance())
 {
-    /**
-     * Transaction types
-     */
-
-    enum class TransactionType
-    {
-        INCREASE_TRANSACTION,
-        SUBTRACTION_TRANSACTION;
-    }
-
     enum class PaymentPurpose
     {
         AUTO
         {
             override fun getStringResource(): Int
             {
-                return R.string.auto
+                return R.string.transport
             }
 
             override fun getIconResource(): Int
@@ -49,6 +38,18 @@ data class Transaction(val transactionType: TransactionType, val paymentPurpose:
             {
                 return R.drawable.ic_food
             }
+        },
+        OTHER
+        {
+            override fun getStringResource(): Int
+            {
+                return R.string.other
+            }
+
+            override fun getIconResource(): Int
+            {
+                return R.drawable.ic_category
+            }
         };
 
         abstract fun getIconResource(): Int
@@ -57,7 +58,7 @@ data class Transaction(val transactionType: TransactionType, val paymentPurpose:
 
     fun normalizeTransactionSum(): String
     {
-        return (if (transactionType == Transaction.TransactionType.INCREASE_TRANSACTION) "" else "-") + moneyQuantity.normalizeCountString()
+        return moneyQuantity?.normalizeCountString()!!
     }
 
 }
@@ -84,23 +85,11 @@ fun getAccountBalance(transactions: List<Transaction>,
 {
     val currencyConverter = CurrencyConverter()
 
-    val balance = Money(0.0, currencyConverter.defaultCurrency)
+    val balance = Money(0.0, defaultCurrency)
 
     for (transaction in transactions)
     {
-        when (transaction.transactionType)
-        {
-            Transaction.TransactionType.INCREASE_TRANSACTION ->
-            {
-                balance.count += currencyConverter.toDefaultCurrency(transaction.moneyQuantity)
-                    .count
-            }
-            Transaction.TransactionType.SUBTRACTION_TRANSACTION ->
-            {
-                balance.count -= currencyConverter.toDefaultCurrency(transaction.moneyQuantity)
-                    .count
-            }
-        }
+        balance.count += currencyConverter.toDefaultCurrency(transaction.moneyQuantity!!).count
     }
 
     return currencyConverter.convertCurrency(balance, resultCurrency)

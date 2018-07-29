@@ -12,7 +12,11 @@
     <string name="sum">Sum</string>
     <string name="transaction_desc">Transaction description</string>
 
-    <string name="auto">Auto</string>
+    <string name="transport">Transport</string>
     <string name="food">Food</string>
     <string name="confirm">Confirm</string>
+    <string name="other">Other</string>
+    <string name="not_update_yet">Not update yet</string>
+    <string name="last_currency_update">Last currency update:</string>
+    <string name="done">Done</string>
 </resources>

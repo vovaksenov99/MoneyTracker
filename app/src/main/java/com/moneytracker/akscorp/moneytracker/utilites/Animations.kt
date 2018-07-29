@@ -1,8 +1,10 @@
-package com.moneytracker.akscorp.moneytracker
+package com.moneytracker.akscorp.moneytracker.utilites
 
 import android.view.animation.DecelerateInterpolator
 import android.animation.ValueAnimator
 import android.opengl.ETC1.getHeight
+import android.os.Build
+import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.Animation
@@ -46,8 +48,16 @@ fun fadeDown(view: View, duration: Long = 500, endAction: () -> Unit = {}, start
     fadeOut.duration = duration
     fadeOut.fillBefore = true
     //view.startAnimation(fadeOut)
-    view.animate().alpha(0f).setDuration(duration).setStartDelay(startDelay)
-        .withEndAction { endAction() }.start()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+    {
+        view.animate().alpha(0f).setDuration(duration).setStartDelay(startDelay)
+            .withEndAction { endAction() }.start()
+    }
+    else
+    {
+        view.animate().alpha(0f).setDuration(duration).setStartDelay(startDelay).start()
+        Handler().postDelayed({ endAction() }, duration)
+    }
 
 }
 
@@ -57,6 +67,14 @@ fun fadeIn(view: View, duration: Long = 500, endAction: () -> Unit = {}, startDe
     fadeIn.interpolator = AccelerateInterpolator() //and this
     fadeIn.duration = duration
     fadeIn.fillBefore = true
-    view.animate().alpha(1f).setDuration(duration).setStartDelay(startDelay)
-        .withEndAction { endAction() }.start()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+    {
+        view.animate().alpha(1f).setDuration(duration).setStartDelay(startDelay)
+            .withEndAction { endAction() }.start()
+    }
+    else
+    {
+        view.animate().alpha(1f).setDuration(duration).setStartDelay(startDelay).start()
+        Handler().postDelayed({ endAction() }, duration)
+    }
 }

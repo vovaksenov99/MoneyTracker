@@ -5,12 +5,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
+
+
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.moneytracker.akscorp.moneytracker"
-        minSdkVersion 19
-        targetSdkVersion 27
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,6 +27,10 @@ android {
 }
 
 dependencies {
+    def lifecycle_version = "1.1.1"
+    def work_version = "1.0.0-alpha05"
+
+    implementation "android.arch.work:work-runtime:$work_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
@@ -45,6 +51,12 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.22.2'
 
     implementation 'com.github.codex-team:hawk.kotlin:v1.0.4'
+
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+
 
 }
 repositories {

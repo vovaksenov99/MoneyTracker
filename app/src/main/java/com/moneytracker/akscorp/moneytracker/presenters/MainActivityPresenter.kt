@@ -1,11 +1,17 @@
 package com.moneytracker.akscorp.moneytracker.presenters
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
+import android.util.Log
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
+import com.moneytracker.akscorp.moneytracker.background.CurrenciesRateWorker
 import com.moneytracker.akscorp.moneytracker.dialogs.PAYMENT_DIALOG_TAG
 import com.moneytracker.akscorp.moneytracker.dialogs.PaymentDialog
 import com.moneytracker.akscorp.moneytracker.models.*
 import com.moneytracker.akscorp.moneytracker.views.IAccountCard
+import java.util.concurrent.TimeUnit
 
 interface IMainActivity : IAccountCard
 {
@@ -16,9 +22,34 @@ interface IMainActivity : IAccountCard
     fun showSettingsActivity()
 }
 
-class MainActivityPresenter(val view: IMainActivity)
+class MainActivityPresenter(context: Context, val view: IMainActivity)
 {
     var account: Account? = null
+
+    init
+    {
+        initCurrenciesWorkManager()
+        initCurrencies(context) {
+            initAccountViewPager()
+        }
+    }
+
+    private fun initCurrenciesWorkManager()
+    {
+
+        val workers = WorkManager.getInstance().getStatusesByTag(CurrenciesRateWorker.TAG).value
+
+        if (workers == null || workers.isEmpty())
+        {
+            val currencyUpdater = PeriodicWorkRequest
+                .Builder(CurrenciesRateWorker::class.java, 8, TimeUnit.HOURS)
+                .addTag(CurrenciesRateWorker.TAG)
+                .build()
+
+            Log.i(::MainActivityPresenter.name, "Currency update work manager start")
+            WorkManager.getInstance().enqueue(currencyUpdater)
+        }
+    }
 
     /**
      * @return Balance on [account]

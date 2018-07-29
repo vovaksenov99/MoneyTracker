@@ -1,20 +1,23 @@
 package com.moneytracker.akscorp.moneytracker.models
 
+import android.content.Context
 import android.os.Parcelable
-import android.provider.Settings.System.getConfiguration
+import com.moneytracker.akscorp.moneytracker.background.CurrenciesRateWorker
+import com.moneytracker.akscorp.moneytracker.R
 import kotlinx.android.parcel.Parcelize
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-import java.text.NumberFormat
-import java.util.*
+import android.content.SharedPreferences
 
+
+val defaultCurrency = Currency.EUR
+var lastCurrencyUpdateTime = ""
 
 /**
- * Main currency is defaultCurrency [USD]
+ * Main currency is defaultCurrency [EUR]
  */
 class CurrencyConverter()
 {
-    val defaultCurrency = Currency.USD
 
     /**
      * Convert [money] to another [currency]
@@ -63,7 +66,7 @@ class CurrencyConverter()
 }
 
 @Parcelize
-data class Money(var count: Double, val currency: Currency) : Parcelable
+data class Money(var count: Double, var currency: Currency) : Parcelable
 {
     fun normalizeCountString(): String?
     {
@@ -72,6 +75,8 @@ data class Money(var count: Double, val currency: Currency) : Parcelable
         custom.decimalSeparator = custom.decimalSeparator
         format.decimalFormatSymbols = custom
         val f = String.format("%.2f", count)
+        if (count.isNaN())
+            return "0.0"
         return format.format(format.parse(f))
     }
 }
@@ -81,7 +86,7 @@ enum class Currency
     USD
     {
         override val currencySymbol = "$"
-        override val rate: Double = 1.0
+        override var rate: Double = 1.0
         override fun toString(): String
         {
             return "USD"
@@ -90,17 +95,17 @@ enum class Currency
     RUR
     {
         override val currencySymbol = "\u20BD"
-        override val rate: Double = 63.0
+        override var rate: Double = 63.0
         override fun toString(): String
         {
-            return "RUR"
+            return "RUB"
         }
     },
 
     EUR
     {
         override val currencySymbol = "€"
-        override val rate: Double = 0.8611
+        override var rate: Double = 0.8611
         override fun toString(): String
         {
             return "EUR"
@@ -110,14 +115,56 @@ enum class Currency
     GBP
     {
         override val currencySymbol = "£"
-        override val rate: Double = 0.76
+        override var rate: Double = 0.76
         override fun toString(): String
         {
             return "GBP"
         }
     };
 
-    abstract val rate: Double
+    abstract var rate: Double
     abstract override fun toString(): String
     abstract val currencySymbol: String
+}
+
+/**
+ *
+ */
+fun initCurrencies(context: Context, callback: () -> Unit)
+{
+    val pref =
+        context.getSharedPreferences(CurrenciesRateWorker.CurrenciesStorage, Context.MODE_PRIVATE)
+
+    synchronized(pref) {
+
+
+        val spChanged =
+            SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+
+                lastCurrencyUpdateTime = sharedPreferences.getString("lastUpdateDate",
+                    context.getString(R.string.not_update_yet))
+                for (currency in Currency.values())
+                {
+                    if (currency.toString() == key)
+                    {
+                        currency.rate =
+                                sharedPreferences.getFloat(currency.toString(), 0.0f).toDouble()
+                        callback()
+                        break
+                    }
+                }
+            }
+
+        pref.registerOnSharedPreferenceChangeListener(spChanged)
+
+        lastCurrencyUpdateTime =
+                pref.getString("lastUpdateDate", context.getString(R.string.not_update_yet))
+
+        for (currency in Currency.values())
+        {
+            currency.rate = pref.getFloat(currency.toString(), 0.0f).toDouble()
+        }
+
+    }
+
 }

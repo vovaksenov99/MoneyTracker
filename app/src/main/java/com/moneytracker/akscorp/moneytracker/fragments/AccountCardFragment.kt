@@ -1,5 +1,8 @@
 package com.moneytracker.akscorp.moneytracker.fragments
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -7,11 +10,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.adapters.CurrencyAdapter
 import com.moneytracker.akscorp.moneytracker.models.*
+import kotlinx.android.synthetic.main.account_card.*
 import kotlinx.android.synthetic.main.account_card.view.*
 import kotlinx.android.synthetic.main.item_money_balance.view.*
+import java.time.Year
+import java.util.*
 
 
 interface IAccountCard
@@ -19,12 +26,13 @@ interface IAccountCard
     fun initCard(balance: Money, account: Account)
     fun initCurrencyRV(balance: List<Money>)
     fun switchCurrenciesRVStatus()
+    fun establishLastCurrencyUpdate()
 }
 
-class AccountCardPresenter(val view: IAccountCard, val account: Account)
+class AccountCardPresenter(context: Context, val view: IAccountCard, val account: Account)
 {
-    val transaction = getAllAccountTransactions(account)
-    val balance = getAccountBalance(transaction)
+    var transaction = getAllAccountTransactions(account)
+    var balance = getAccountBalance(transaction)
 
     /**
      * Show main account information. Account name, balance
@@ -39,7 +47,12 @@ class AccountCardPresenter(val view: IAccountCard, val account: Account)
      */
     fun initCurrencyRV()
     {
+        transaction = getAllAccountTransactions(account)
+        balance = getAccountBalance(transaction)
         val currencies = CurrencyConverter().currentBalanceToAnotherCurrencies(balance)
+
+        initCardData()
+        view.establishLastCurrencyUpdate()
         view.initCurrencyRV(currencies)
     }
 
@@ -50,12 +63,11 @@ class AccountCardPresenter(val view: IAccountCard, val account: Account)
     {
         view.switchCurrenciesRVStatus()
     }
+
 }
 
 class AccountCardFragment : Fragment(), IAccountCard
 {
-
-
     lateinit var fragmentView: View
 
     lateinit var presenter: AccountCardPresenter
@@ -63,6 +75,16 @@ class AccountCardFragment : Fragment(), IAccountCard
     override fun switchCurrenciesRVStatus()
     {
         fragmentView.currencyRecyclerView.switchSize()
+    }
+
+    override fun establishLastCurrencyUpdate()
+    {
+        if (lastCurrencyUpdateTime == "")
+            fragmentView.last_currency_upd.text = context!!.getString(R.string.not_update_yet)
+        else
+            fragmentView.last_currency_upd.text =
+                    "${context!!.getString(R.string.last_currency_update)} $lastCurrencyUpdateTime"
+
     }
 
     override fun initCurrencyRV(balance: List<Money>)
@@ -92,7 +114,7 @@ class AccountCardFragment : Fragment(), IAccountCard
             if (arguments!!.containsKey("account"))
             {
                 val account = arguments!!.getParcelable("account") as Account
-                presenter = AccountCardPresenter(this, account)
+                presenter = AccountCardPresenter(context!!, this, account)
             }
         }
     }

@@ -38,7 +38,7 @@
             android:layout_marginTop="8dp"
             android:background="?attr/selectableItemBackground"
             android:clipToPadding="false"
-            android:paddingBottom="12dp"
+            android:paddingBottom="22dp"
             android:paddingEnd="12dp"
             android:paddingTop="12dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/last_currency_upd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="Last update: 24.03.199"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/currencyRecyclerView"
+            app:layout_constraintStart_toStartOf="@+id/currencyRecyclerView" />
 
         <com.moneytracker.akscorp.moneytracker.views.CurrencyRecyclerView
             android:id="@+id/currencyRecyclerView"

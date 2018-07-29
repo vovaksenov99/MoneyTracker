@@ -2,16 +2,10 @@ package com.moneytracker.akscorp.moneytracker.views
 
 import android.content.Context
 import android.os.Parcelable
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import com.moneytracker.akscorp.moneytracker.adapters.CurrencyAdapter
-import com.moneytracker.akscorp.moneytracker.expand
-import com.moneytracker.akscorp.moneytracker.models.CurrencyConverter
-import com.moneytracker.akscorp.moneytracker.models.Money
-import kotlinx.android.parcel.Parcelize
+import com.moneytracker.akscorp.moneytracker.utilites.expand
 import android.os.Bundle
 
 /**
