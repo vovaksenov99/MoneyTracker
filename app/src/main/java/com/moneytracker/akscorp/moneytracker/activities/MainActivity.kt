@@ -18,64 +18,51 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.util.DisplayMetrics
 
 
-class MainActivity : AppCompatActivity(), IMainActivity
-{
+class MainActivity : AppCompatActivity(), IMainActivity {
     lateinit var presenter: MainActivityPresenter
 
-    override fun hideCurrencies()
-    {
+    override fun hideCurrencies() {
         if (currencyRecyclerView != null)
             currencyRecyclerView.close()
     }
 
-    override fun initAccountTransactionRV(transactions: List<Transaction>)
-    {
+    override fun initAccountTransactionRV(transactions: List<Transaction>) {
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         last_transactions.layoutManager = layoutManager
         last_transactions.isNestedScrollingEnabled = false
         last_transactions.adapter = TransactionAdapter(transactions)
     }
 
-    override fun hideBottomContainer()
-    {
+    override fun hideBottomContainer() {
         container.visibility = View.INVISIBLE
     }
 
-    override fun showBottomContainer()
-    {
+    override fun showBottomContainer() {
         container.visibility = View.VISIBLE
     }
 
-    override fun showSettingsActivity()
-    {
+    override fun showSettingsActivity() {
         startActivity(Intent(this, SettingsActivity::class.java))
     }
 
-    override fun initCards(accounts: List<Account>)
-    {
+    override fun initCards(accounts: List<Account>) {
         accountViewPager.adapter = AccountViewPagerAdapter(supportFragmentManager,
             accounts)
         accountViewPager.currentItem = 0
-        if (accounts.isNotEmpty())
-        {
+        if (accounts.isNotEmpty()) {
             presenter.switchToAccount(accounts[0])
         }
-        accountViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
-        {
-            override fun onPageScrollStateChanged(state: Int)
-            {
+        accountViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
 
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float,
-                                        positionOffsetPixels: Int)
-            {
+                                        positionOffsetPixels: Int) {
             }
 
-            override fun onPageSelected(position: Int)
-            {
-                if (position < accounts.size)
-                {
+            override fun onPageSelected(position: Int) {
+                if (position < accounts.size) {
                     presenter.switchToAccount(accounts[position])
                 }
                 else
@@ -85,23 +72,20 @@ class MainActivity : AppCompatActivity(), IMainActivity
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = MainActivityPresenter(this,this)
+        presenter = MainActivityPresenter(this, this)
 
         initUI()
 
     }
 
-
     /**
      * Start UI initialization
      */
-    private fun initUI()
-    {
+    private fun initUI() {
         presenter.initAccountViewPager()
 
 
@@ -112,35 +96,5 @@ class MainActivity : AppCompatActivity(), IMainActivity
         payment_button.setOnClickListener {
             presenter.showPaymentDialog(this@MainActivity.supportFragmentManager)
         }
-
-        establishLayoutHeight()
     }
-
-    /**
-     * It's complementary to the screen size. Uses for 'hide' nestedScrollview backgroundImage
-     */
-    private fun establishLayoutHeight()
-    {
-        appBar.viewTreeObserver.addOnGlobalLayoutListener {
-            fun getStatusBarHeight(): Int
-            {
-                var result = 0
-                val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-                if (resourceId > 0)
-                {
-                    result = resources.getDimensionPixelSize(resourceId)
-                }
-                return result
-            }
-
-            val h = appBar.height
-            val metrics = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(metrics)
-            val p = metrics.heightPixels - h
-
-            if (container.layoutParams.height < p - getStatusBarHeight())
-                container.minimumHeight = p - getStatusBarHeight()
-        }
-    }
-
 }

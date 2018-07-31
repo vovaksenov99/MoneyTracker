@@ -3,6 +3,8 @@
 buildscript {
     ext.kotlin_version = '1.2.51'
     ext.anko_version = '0.10.4'
+    ext.lifecycle_version = "1.1.1"
+    ext.work_version = "1.0.0-alpha05"
 
     repositories {
         google()

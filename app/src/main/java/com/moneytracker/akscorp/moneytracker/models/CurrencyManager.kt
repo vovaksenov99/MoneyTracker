@@ -1,13 +1,13 @@
 package com.moneytracker.akscorp.moneytracker.models
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Parcelable
-import com.moneytracker.akscorp.moneytracker.background.CurrenciesRateWorker
 import com.moneytracker.akscorp.moneytracker.R
+import com.moneytracker.akscorp.moneytracker.background.CurrenciesRateWorker
 import kotlinx.android.parcel.Parcelize
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-import android.content.SharedPreferences
 
 
 val defaultCurrency = Currency.EUR
@@ -16,8 +16,7 @@ var lastCurrencyUpdateTime = ""
 /**
  * Main currency is defaultCurrency [EUR]
  */
-class CurrencyConverter()
-{
+class CurrencyConverter() {
 
     /**
      * Convert [money] to another [currency]
@@ -29,8 +28,7 @@ class CurrencyConverter()
      * @param money - money to convert
      * @param toCurrency - Currency to convert [money]
      */
-    fun convertCurrency(money: Money, toCurrency: Currency): Money
-    {
+    fun convertCurrency(money: Money, toCurrency: Currency): Money {
         val defCur = toDefaultCurrency(money)
         return fromDefaultCurrencyToCurrency(defCur, toCurrency)
     }
@@ -45,12 +43,10 @@ class CurrencyConverter()
         Currency.USD,
         Currency.EUR,
         Currency.RUR,
-        Currency.GBP)): List<Money>
-    {
+        Currency.GBP)): List<Money> {
         val rez = mutableListOf<Money>()
 
-        for (currency in currencies)
-        {
+        for (currency in currencies) {
             if (balance.currency == currency)
                 continue
             rez.add(convertCurrency(balance, currency))
@@ -66,10 +62,8 @@ class CurrencyConverter()
 }
 
 @Parcelize
-data class Money(var count: Double, var currency: Currency) : Parcelable
-{
-    fun normalizeCountString(): String?
-    {
+data class Money(var count: Double, var currency: Currency) : Parcelable {
+    fun normalizeCountString(): String? {
         val format = DecimalFormat.getInstance() as DecimalFormat
         val custom = DecimalFormatSymbols()
         custom.decimalSeparator = custom.decimalSeparator
@@ -81,43 +75,34 @@ data class Money(var count: Double, var currency: Currency) : Parcelable
     }
 }
 
-enum class Currency
-{
-    USD
-    {
+enum class Currency {
+    USD {
         override val currencySymbol = "$"
         override var rate: Double = 1.0
-        override fun toString(): String
-        {
+        override fun toString(): String {
             return "USD"
         }
     },
-    RUR
-    {
+    RUR {
         override val currencySymbol = "\u20BD"
         override var rate: Double = 63.0
-        override fun toString(): String
-        {
+        override fun toString(): String {
             return "RUB"
         }
     },
 
-    EUR
-    {
+    EUR {
         override val currencySymbol = "€"
         override var rate: Double = 0.8611
-        override fun toString(): String
-        {
+        override fun toString(): String {
             return "EUR"
         }
     },
 
-    GBP
-    {
+    GBP {
         override val currencySymbol = "£"
         override var rate: Double = 0.76
-        override fun toString(): String
-        {
+        override fun toString(): String {
             return "GBP"
         }
     };
@@ -130,8 +115,7 @@ enum class Currency
 /**
  *
  */
-fun initCurrencies(context: Context, callback: () -> Unit)
-{
+fun initCurrencies(context: Context, callback: () -> Unit) {
     val pref =
         context.getSharedPreferences(CurrenciesRateWorker.CurrenciesStorage, Context.MODE_PRIVATE)
 
@@ -143,10 +127,8 @@ fun initCurrencies(context: Context, callback: () -> Unit)
 
                 lastCurrencyUpdateTime = sharedPreferences.getString("lastUpdateDate",
                     context.getString(R.string.not_update_yet))
-                for (currency in Currency.values())
-                {
-                    if (currency.toString() == key)
-                    {
+                for (currency in Currency.values()) {
+                    if (currency.toString() == key) {
                         currency.rate =
                                 sharedPreferences.getFloat(currency.toString(), 0.0f).toDouble()
                         callback()
@@ -160,8 +142,7 @@ fun initCurrencies(context: Context, callback: () -> Unit)
         lastCurrencyUpdateTime =
                 pref.getString("lastUpdateDate", context.getString(R.string.not_update_yet))
 
-        for (currency in Currency.values())
-        {
+        for (currency in Currency.values()) {
             currency.rate = pref.getFloat(currency.toString(), 0.0f).toDouble()
         }
 

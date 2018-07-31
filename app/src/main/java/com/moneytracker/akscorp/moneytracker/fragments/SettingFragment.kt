@@ -7,15 +7,12 @@ import com.moneytracker.akscorp.moneytracker.R
 import org.jetbrains.anko.alert
 
 
-class SettingFragment : PreferenceFragmentCompat()
-{
-    override fun onCreatePreferences(bundle: Bundle?, s: String?)
-    {
+class SettingFragment : PreferenceFragmentCompat() {
+    override fun onCreatePreferences(bundle: Bundle?, s: String?) {
         addPreferencesFromResource(R.xml.fragment_settings)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initAboutPref()
@@ -24,8 +21,7 @@ class SettingFragment : PreferenceFragmentCompat()
     /**
      * Show about alert dialog
      */
-    private fun initAboutPref()
-    {
+    private fun initAboutPref() {
         val aboutPref = findPreference(getString(R.string.about_pref)) as Preference
 
         aboutPref.onPreferenceClickListener = Preference.OnPreferenceClickListener {

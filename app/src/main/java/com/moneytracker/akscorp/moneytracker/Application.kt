@@ -11,26 +11,22 @@ import com.hawkcatcherkotlin.akscorp.hawkcatcherkotlin.HawkExceptionCatcher
  */
 
 
-class Application : Application()
-{
+class Application : Application() {
     /**
      * Hawk catcher
      */
 
     lateinit var exceptionCatcher: HawkExceptionCatcher
 
-    override fun onCreate()
-    {
+    override fun onCreate() {
         super.onCreate()
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         exceptionCatcher = HawkExceptionCatcher(this, HAWK_TOKEN)
-        try
-        {
+        try {
             exceptionCatcher.start()
-        } catch (e: Exception)
-        {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }

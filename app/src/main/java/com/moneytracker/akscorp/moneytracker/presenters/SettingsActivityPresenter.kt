@@ -1,14 +1,11 @@
 package com.moneytracker.akscorp.moneytracker.presenters
 
-interface ISettingsActivity
-{
+interface ISettingsActivity {
     fun establishSettingFragment()
 }
 
-class SettingsActivityPresenter(val view: ISettingsActivity)
-{
-    fun establishSettingFragment()
-    {
+class SettingsActivityPresenter(val view: ISettingsActivity) {
+    fun establishSettingFragment() {
         view.establishSettingFragment()
     }
 }

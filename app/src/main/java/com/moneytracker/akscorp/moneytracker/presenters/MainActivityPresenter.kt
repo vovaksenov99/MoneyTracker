@@ -13,8 +13,7 @@ import com.moneytracker.akscorp.moneytracker.models.*
 import com.moneytracker.akscorp.moneytracker.views.IAccountCard
 import java.util.concurrent.TimeUnit
 
-interface IMainActivity : IAccountCard
-{
+interface IMainActivity : IAccountCard {
     fun hideBottomContainer()
     fun showBottomContainer()
     fun hideCurrencies()
@@ -22,25 +21,21 @@ interface IMainActivity : IAccountCard
     fun showSettingsActivity()
 }
 
-class MainActivityPresenter(context: Context, val view: IMainActivity)
-{
+class MainActivityPresenter(context: Context, val view: IMainActivity) {
     var account: Account? = null
 
-    init
-    {
+    init {
         initCurrenciesWorkManager()
         initCurrencies(context) {
             initAccountViewPager()
         }
     }
 
-    private fun initCurrenciesWorkManager()
-    {
+    private fun initCurrenciesWorkManager() {
 
         val workers = WorkManager.getInstance().getStatusesByTag(CurrenciesRateWorker.TAG).value
 
-        if (workers == null || workers.isEmpty())
-        {
+        if (workers == null || workers.isEmpty()) {
             val currencyUpdater = PeriodicWorkRequest
                 .Builder(CurrenciesRateWorker::class.java, 8, TimeUnit.HOURS)
                 .addTag(CurrenciesRateWorker.TAG)
@@ -54,8 +49,7 @@ class MainActivityPresenter(context: Context, val view: IMainActivity)
     /**
      * @return Balance on [account]
      */
-    private fun getBalance(account: Account): Money
-    {
+    private fun getBalance(account: Account): Money {
         val transactions = getAllAccountTransactions(account)
         return getAccountBalance(transactions)
     }
@@ -63,8 +57,7 @@ class MainActivityPresenter(context: Context, val view: IMainActivity)
     /**
      * Init RV with different currencies [ICurrencyRecyclerView]
      */
-    fun initAccountViewPager()
-    {
+    fun initAccountViewPager() {
         val accounts = getAllAccounts()
         view.initCards(accounts)
     }
@@ -72,39 +65,32 @@ class MainActivityPresenter(context: Context, val view: IMainActivity)
     /**
      * Run setting activity [ISettingsButton]
      */
-    fun showSettingsActivity()
-    {
+    fun showSettingsActivity() {
         view.showSettingsActivity()
     }
 
-    fun hideBottomContainer()
-    {
+    fun hideBottomContainer() {
         view.hideBottomContainer()
     }
 
-    fun showBottomContainer()
-    {
+    fun showBottomContainer() {
         view.showBottomContainer()
     }
 
-    private fun initTransactionRV(account: Account)
-    {
+    private fun initTransactionRV(account: Account) {
         val transactions = getAllAccountTransactions(account)
         view.initAccountTransactionRV(transactions)
     }
 
-    fun switchToAccount(account: Account?)
-    {
+    fun switchToAccount(account: Account?) {
         this.account = account
 
-        if (account != null)
-        {
+        if (account != null) {
             view.hideCurrencies()
             initTransactionRV(account)
             showBottomContainer()
         }
-        else
-        {
+        else {
             view.hideCurrencies()
             hideBottomContainer()
         }
@@ -113,8 +99,7 @@ class MainActivityPresenter(context: Context, val view: IMainActivity)
     /**
      * Show Fullscreen [PaymentDialog]
      */
-    fun showPaymentDialog(supportFragmentManager: FragmentManager)
-    {
+    fun showPaymentDialog(supportFragmentManager: FragmentManager) {
         val dialog = PaymentDialog()
 
         val bundle = Bundle()

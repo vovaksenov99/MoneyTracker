@@ -3,19 +3,18 @@ package com.moneytracker.akscorp.moneytracker.background
 import android.content.Context
 import android.util.Log
 import androidx.work.Worker
-import com.moneytracker.akscorp.moneytracker.models.Currency
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.hawkcatcherkotlin.akscorp.hawkcatcherkotlin.HawkExceptionCatcher
 import com.moneytracker.akscorp.moneytracker.FIXEL_ENDPOINT
 import com.moneytracker.akscorp.moneytracker.FIXEL_TOKEN
 import com.moneytracker.akscorp.moneytracker.HAWK_TOKEN
+import com.moneytracker.akscorp.moneytracker.models.Currency
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 
-class CurrenciesRateWorker : Worker()
-{
+class CurrenciesRateWorker : Worker() {
 
     /**
      * Put [currencies] in [CurrenciesStorage] sharedPref.
@@ -29,11 +28,9 @@ class CurrenciesRateWorker : Worker()
      *
      * @param date string format "2018-07-29"
      */
-    private fun saveCurrencies(currencies: JsonObject, date: String)
-    {
+    private fun saveCurrencies(currencies: JsonObject, date: String) {
         val pref = applicationContext.getSharedPreferences(CurrenciesStorage, Context.MODE_PRIVATE)
-        for (currency in Currency.values())
-        {
+        for (currency in Currency.values()) {
             pref.edit()
                 .putFloat(currency.toString(), currencies[currency.toString()].asFloat)
                 .apply()
@@ -42,12 +39,10 @@ class CurrenciesRateWorker : Worker()
         pref.edit().putString("lastUpdateDate", date).apply()
     }
 
-    override fun doWork(): Result
-    {
+    override fun doWork(): Result {
         Log.i(::CurrenciesRateWorker.name, "Worker run " + System.currentTimeMillis())
 
-        try
-        {
+        try {
             val client = OkHttpClient()
             val url =
                 "$FIXEL_ENDPOINT?access_key=$FIXEL_TOKEN&symbols=${Currency.values().joinToString(",")}"
@@ -72,8 +67,7 @@ class CurrenciesRateWorker : Worker()
             val rates = responseObject["rates"].asJsonObject
 
             saveCurrencies(rates, date)
-        } catch (e: Exception)
-        {
+        } catch (e: Exception) {
             val exceptionCatcher = HawkExceptionCatcher(applicationContext,
                 HAWK_TOKEN)
             exceptionCatcher.logException(e)
@@ -84,8 +78,7 @@ class CurrenciesRateWorker : Worker()
         return Result.SUCCESS
     }
 
-    companion object
-    {
+    companion object {
         internal val TAG = "FIXER_GET_CURRENCY_SERVICE"
         internal val CurrenciesStorage = "CURRENCIES_STORAGE"
     }

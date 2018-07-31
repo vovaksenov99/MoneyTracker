@@ -1,20 +1,13 @@
 package com.moneytracker.akscorp.moneytracker.utilites
 
-import android.view.animation.DecelerateInterpolator
 import android.animation.ValueAnimator
-import android.opengl.ETC1.getHeight
 import android.os.Build
 import android.os.Handler
-import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.AlphaAnimation
+import android.view.animation.*
 
 
-fun expand(v: View, targetHeight: Int, duration: Int = 500)
-{
+fun expand(v: View, targetHeight: Int, duration: Int = 500) {
 
     val prevHeight = v.height
 
@@ -28,8 +21,7 @@ fun expand(v: View, targetHeight: Int, duration: Int = 500)
     valueAnimator.start()
 }
 
-fun scaleView(v: View, startScale: Float, endScale: Float, duration: Long = 500)
-{
+fun scaleView(v: View, startScale: Float, endScale: Float, duration: Long = 500) {
     val anim = ScaleAnimation(
         1f, 1f, // Start and end values for the X axis scaling
         startScale, endScale, // Start and end values for the Y axis scaling
@@ -41,39 +33,33 @@ fun scaleView(v: View, startScale: Float, endScale: Float, duration: Long = 500)
 }
 
 
-fun fadeDown(view: View, duration: Long = 500, endAction: () -> Unit = {}, startDelay: Long = 0)
-{
+fun fadeDown(view: View, duration: Long = 500, endAction: () -> Unit = {}, startDelay: Long = 0) {
     val fadeOut = AlphaAnimation(1f, 0f)
     fadeOut.interpolator = AccelerateInterpolator() //and this
     fadeOut.duration = duration
     fadeOut.fillBefore = true
     //view.startAnimation(fadeOut)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-    {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
         view.animate().alpha(0f).setDuration(duration).setStartDelay(startDelay)
             .withEndAction { endAction() }.start()
     }
-    else
-    {
+    else {
         view.animate().alpha(0f).setDuration(duration).setStartDelay(startDelay).start()
         Handler().postDelayed({ endAction() }, duration)
     }
 
 }
 
-fun fadeIn(view: View, duration: Long = 500, endAction: () -> Unit = {}, startDelay: Long = 0)
-{
+fun fadeIn(view: View, duration: Long = 500, endAction: () -> Unit = {}, startDelay: Long = 0) {
     val fadeIn = AlphaAnimation(0f, 1f)
     fadeIn.interpolator = AccelerateInterpolator() //and this
     fadeIn.duration = duration
     fadeIn.fillBefore = true
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-    {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
         view.animate().alpha(1f).setDuration(duration).setStartDelay(startDelay)
             .withEndAction { endAction() }.start()
     }
-    else
-    {
+    else {
         view.animate().alpha(1f).setDuration(duration).setStartDelay(startDelay).start()
         Handler().postDelayed({ endAction() }, duration)
     }

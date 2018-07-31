@@ -1,29 +1,24 @@
 package com.moneytracker.akscorp.moneytracker.views
 
 import android.content.Context
-import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
-import com.moneytracker.akscorp.moneytracker.adapters.AccountViewPagerAdapter
-import com.moneytracker.akscorp.moneytracker.models.Account
 import com.moneytracker.akscorp.moneytracker.R
+import com.moneytracker.akscorp.moneytracker.models.Account
 import org.jetbrains.anko.dimen
 
 
-interface IAccountCard
-{
+interface IAccountCard {
     fun initCards(accounts: List<Account>)
 }
 
-class AccountsCardViewPager : ViewPager
-{
+class AccountsCardViewPager : ViewPager {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context) : super(context)
 
-    init
-    {
+    init {
         clipToPadding = false
         setPadding(dimen(R.dimen.currencies_padding),
             dimen(R.dimen.currencies_padding),
@@ -33,15 +28,12 @@ class AccountsCardViewPager : ViewPager
 
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int)
-    {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var heightMeasureSpec = heightMeasureSpec
-        try
-        {
+        try {
 
             val child = getChildAt(currentItem)
-            if (child != null)
-            {
+            if (child != null) {
                 child.measure(widthMeasureSpec,
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
                 val h = child.measuredHeight + paddingTop + paddingBottom
@@ -49,8 +41,7 @@ class AccountsCardViewPager : ViewPager
                 heightMeasureSpec =
                         View.MeasureSpec.makeMeasureSpec(h, View.MeasureSpec.EXACTLY)
             }
-        } catch (e: Exception)
-        {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 

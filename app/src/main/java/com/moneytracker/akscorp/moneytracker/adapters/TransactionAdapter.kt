@@ -16,25 +16,21 @@ import kotlinx.android.synthetic.main.transaction_rv_item.view.*
  * web site aksenov-vladimir.herokuapp.com
  */
 class TransactionAdapter(private val transaction: List<Transaction>) :
-    RecyclerView.Adapter<TransactionAdapter.TransactionHolder>()
-{
+    RecyclerView.Adapter<TransactionAdapter.TransactionHolder>() {
 
-    override fun getItemCount(): Int
-    {
+    override fun getItemCount(): Int {
         return transaction.size
     }
 
     override fun onCreateViewHolder(
-        parent: ViewGroup, viewType: Int): TransactionAdapter.TransactionHolder
-    {
+        parent: ViewGroup, viewType: Int): TransactionAdapter.TransactionHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.transaction_rv_item, parent, false)
         return TransactionHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TransactionAdapter.TransactionHolder, position: Int)
-    {
+    override fun onBindViewHolder(holder: TransactionAdapter.TransactionHolder, position: Int) {
         val transaction = transaction[position]
 
         holder.sum.text = transaction.normalizeTransactionSum()
@@ -43,8 +39,7 @@ class TransactionAdapter(private val transaction: List<Transaction>) :
         holder.description.text = transaction.paymentDescription
     }
 
-    inner class TransactionHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-    {
+    inner class TransactionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.icon as ImageView
         val description: TextView = itemView.description as TextView
         val sum: TextView = itemView.sum as TextView

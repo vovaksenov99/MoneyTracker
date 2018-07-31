@@ -1,56 +1,49 @@
 package com.moneytracker.akscorp.moneytracker.views
 
 import android.content.Context
+import android.os.Bundle
 import android.os.Parcelable
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import com.moneytracker.akscorp.moneytracker.utilites.expand
-import android.os.Bundle
 
 /**
  * Vertical RV with a balance converted to all possible currencies
  */
-class CurrencyRecyclerView : RecyclerView
-{
+class CurrencyRecyclerView : RecyclerView {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context?) : super(context)
 
     private var isExpand = false
 
-    fun switchSize()
-    {
+    fun switchSize() {
         if (isExpand)
             close()
         else
             open()
     }
 
-    fun close()
-    {
+    fun close() {
         expand(this, getStartSize())
         isExpand = false
     }
 
-    fun open()
-    {
+    fun open() {
         expand(this, getExpandSize())
         isExpand = true
     }
 
     private fun getStartSize() = 0
 
-    private fun getExpandSize(): Int
-    {
+    private fun getExpandSize(): Int {
         measure(measuredWidth, 0)
 
         var h = 0
-        for (i in 0 until childCount)
-        {
+        for (i in 0 until childCount) {
             val child = getChildAt(i)
-            if (child != null)
-            {
+            if (child != null) {
                 child.measure(measuredWidth,
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
                 h += child.measuredHeight + paddingTop + paddingBottom
@@ -59,19 +52,16 @@ class CurrencyRecyclerView : RecyclerView
         return h
     }
 
-    public override fun onSaveInstanceState(): Parcelable?
-    {
+    public override fun onSaveInstanceState(): Parcelable? {
         val bundle = Bundle()
         bundle.putParcelable("superState", super.onSaveInstanceState())
         bundle.putBoolean("isExpand", isExpand)
         return bundle
     }
 
-    public override fun onRestoreInstanceState(state: Parcelable?)
-    {
+    public override fun onRestoreInstanceState(state: Parcelable?) {
         var state = state
-        if (state is Bundle)
-        {
+        if (state is Bundle) {
             val bundle = state as Bundle?
             isExpand = bundle!!.getBoolean("isExpand")
 

@@ -6,7 +6,6 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/black_back_"
     android:fadeScrollbars="true"
     android:fillViewport="true"
     android:isScrollContainer="true"
@@ -19,11 +18,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.design.widget.AppBarLayout
+        <com.moneytracker.akscorp.moneytracker.views.AppBar
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
+            android:background="@drawable/black_back_"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
@@ -51,13 +50,12 @@
                 android:text="@string/add_payment" />
 
 
-        </android.support.design.widget.AppBarLayout>
+        </com.moneytracker.akscorp.moneytracker.views.AppBar>
 
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBar"
