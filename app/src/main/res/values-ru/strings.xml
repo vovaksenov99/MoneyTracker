@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MoneyTracker</string>
+    <string name="app_name">Scash</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -9,4 +9,16 @@
     <string name="choose_default_currency">Выберите валюту по умолчанию</string>
     <string name="general_settings">Общие настройки</string>
     <string name="about">О приложении</string>
+    <string name="add_payment">Добавить платеж</string>
+    <string name="note">Назначение платежа</string>
+    <string name="transaction_sum">Сумма транзакции</string>
+    <string name="sum">Сумма</string>
+    <string name="transaction_desc">Описание транзакции</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="other">Другое</string>
+    <string name="food">Еда</string>
+    <string name="transport">Транспорт</string>
+    <string name="not_update_yet">Не обновлено</string>
+    <string name="last_currency_update">Последнее обновление курса:</string>
+    <string name="done">Готово</string>
 </resources>

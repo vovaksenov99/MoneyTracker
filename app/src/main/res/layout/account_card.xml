@@ -1,34 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/balance"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/account_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+    android:animateLayoutChanges="true"
+    app:cardCornerRadius="@dimen/corner">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:padding="24dp">
 
+        <TextView
+            android:id="@+id/account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/item_money_balance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/account_name" />
 
         <FrameLayout
             android:id="@+id/show_currencies"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="?attr/selectableItemBackground"
             android:clipToPadding="false"
-            android:padding="12dp"
+            android:paddingBottom="22dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/include">
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:text="@string/another_currencies"
                 android:textSize="19sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +60,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/last_currency_upd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="Last update: 24.03.199"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/currencyRecyclerView"
+            app:layout_constraintStart_toStartOf="@+id/currencyRecyclerView" />
 
         <com.moneytracker.akscorp.moneytracker.views.CurrencyRecyclerView
             android:id="@+id/currencyRecyclerView"
@@ -51,8 +82,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/show_currencies" />
+
     </android.support.constraint.ConstraintLayout>
-
 </android.support.v7.widget.CardView>
-
-

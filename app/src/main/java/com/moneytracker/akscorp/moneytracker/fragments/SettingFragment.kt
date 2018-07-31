@@ -1,4 +1,4 @@
-package com.moneytracker.akscorp.moneytracker.Fragments
+package com.moneytracker.akscorp.moneytracker.fragments
 
 import android.os.Bundle
 import android.support.v7.preference.Preference
@@ -21,7 +21,10 @@ class SettingFragment : PreferenceFragmentCompat()
         initAboutPref()
     }
 
-    fun initAboutPref()
+    /**
+     * Show about alert dialog
+     */
+    private fun initAboutPref()
     {
         val aboutPref = findPreference(getString(R.string.about_pref)) as Preference
 
