@@ -73,7 +73,7 @@
             app:layout_constraintBottom_toTopOf="@+id/currencyRecyclerView"
             app:layout_constraintStart_toStartOf="@+id/currencyRecyclerView" />
 
-        <com.moneytracker.akscorp.moneytracker.views.CurrencyRecyclerView
+        <com.moneytracker.akscorp.moneytracker.ui.account_card.CurrencyRecyclerView
             android:id="@+id/currencyRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"

@@ -16,7 +16,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_weight="0.1"
-        app:srcCompat="@drawable/ic_settings_black_24dp" />
+        app:srcCompat="@drawable/ic_settings_black_24dp"
+        android:contentDescription="@string/content_desc_transaction_icon" />
 
     <TextView
         android:id="@+id/description"
@@ -27,8 +28,9 @@
         android:ellipsize="end"
         android:gravity="fill_vertical"
         android:lines="2"
-        android:text="gjvsk"
-        android:textSize="18sp" />
+        tools:text="gjvsk"
+        android:textSize="18sp"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/sum"
@@ -37,8 +39,9 @@
         android:layout_marginStart="8dp"
         android:layout_weight="0.35"
         android:gravity="center"
-        android:text="TextView"
-        android:textSize="18sp" />
+        tools:text="TextView"
+        android:textSize="18sp"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/currency"
@@ -46,7 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_weight="0.15"
-        android:text="RUR"
-        android:textSize="18sp" />
+        tools:text="RUR"
+        android:textSize="18sp"
+        android:layout_marginLeft="8dp" />
 
 </LinearLayout>
