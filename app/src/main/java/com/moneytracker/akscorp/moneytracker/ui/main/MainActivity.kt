@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), IMainActivity {
-    lateinit var presenter: MainActivityPresenter
+    lateinit var presenter: MainPresenter
 
     override fun hideCurrencies() {
         if (currencyRecyclerView != null)
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = MainActivityPresenter(this, this)
+        presenter = MainPresenter(this, this)
 
         initUI()
 

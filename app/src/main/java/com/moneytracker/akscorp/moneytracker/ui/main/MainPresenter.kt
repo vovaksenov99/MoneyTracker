@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.util.Log
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import com.moneytracker.akscorp.moneytracker.ScashApp
 import com.moneytracker.akscorp.moneytracker.model.CurrenciesRateWorker
 import com.moneytracker.akscorp.moneytracker.ui.payment.PAYMENT_DIALOG_TAG
 import com.moneytracker.akscorp.moneytracker.ui.payment.PaymentDialog
@@ -13,7 +14,13 @@ import com.moneytracker.akscorp.moneytracker.model.*
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
 import com.moneytracker.akscorp.moneytracker.model.entities.Money
 import com.moneytracker.akscorp.moneytracker.model.entities.getAllAccountTransactions
+import com.moneytracker.akscorp.moneytracker.model.repository.ITransactionsRepository
+import com.moneytracker.akscorp.moneytracker.models.Transaction
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 interface IMainActivity : IAccountCard {
     fun hideBottomContainer()
@@ -23,13 +30,16 @@ interface IMainActivity : IAccountCard {
     fun showSettingsActivity()
 }
 
-class MainActivityPresenter(context: Context, val view: IMainActivity) {
+class MainPresenter(context: Context, val view: IMainActivity) {
     var account: Account? = null
 
     private val TAG = "debug"
 
+    @Inject
+    lateinit var transactionsRepsitory: ITransactionsRepository
+
     init {
-        Log.d(TAG, "presenter init")
+        ScashApp.instance.component.inject(this)
         initCurrenciesWorkManager()
         initCurrencies(context) {
             initAccountViewPager()
@@ -46,7 +56,7 @@ class MainActivityPresenter(context: Context, val view: IMainActivity) {
                 .addTag(CurrenciesRateWorker.TAG)
                 .build()
 
-            Log.i(::MainActivityPresenter.name, "Currency update work manager start")
+            Log.i(::MainPresenter.name, "Currency update work manager start")
             WorkManager.getInstance().enqueue(currencyUpdater)
         }
     }

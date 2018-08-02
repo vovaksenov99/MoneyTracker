@@ -3,7 +3,7 @@
     package="com.moneytracker.akscorp.moneytracker">
 
     <application
-        android:name=".Application"
+        android:name=".ScashApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

@@ -8,9 +8,9 @@ import com.moneytracker.akscorp.moneytracker.model.DeprecetadTransaction.Payment
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
-@Entity
 @Parcelize
-data class Account(@PrimaryKey(autoGenerate = true) val id: Long,
+@Entity(tableName = "accounts")
+data class Account(@PrimaryKey(autoGenerate = true) val id: Long?,
                    val name: String) : Parcelable
 
 
