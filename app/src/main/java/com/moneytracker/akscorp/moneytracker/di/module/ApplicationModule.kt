@@ -1,4 +1,4 @@
-package com.moneytracker.akscorp.moneytracker.di
+package com.moneytracker.akscorp.moneytracker.di.module
 
 import android.arch.persistence.room.Room
 import android.content.Context

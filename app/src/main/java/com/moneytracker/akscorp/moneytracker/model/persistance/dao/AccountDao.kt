@@ -14,7 +14,7 @@ import com.moneytracker.akscorp.moneytracker.model.entities.Account
 interface AccountDao {
 
     @Insert(onConflict = REPLACE)
-    fun insert(account: Account)
+    fun insert(account: Account): Long
 
     @Update
     fun update(vararg account: Account)
@@ -25,8 +25,11 @@ interface AccountDao {
     @Query("DELETE FROM accounts")
     fun deleteAll()
 
+    @Query("SELECT * FROM accounts")
+    fun getAll(): List<Account>
+
     @Query("SELECT * FROM accounts WHERE id=:id")
-    fun findById(id: Int): Account
+    fun findById(id: Long): Account
 
     @Query("SELECT * FROM accounts WHERE name=:name")
     fun findByName(name: String): Account

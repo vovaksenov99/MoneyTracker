@@ -80,6 +80,9 @@ dependencies {
     // Android Debug Database
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
 
+    // Material Dialog
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
 
 }
 repositories {

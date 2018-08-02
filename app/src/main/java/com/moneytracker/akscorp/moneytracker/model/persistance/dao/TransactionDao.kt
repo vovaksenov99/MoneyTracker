@@ -5,8 +5,7 @@ import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import android.arch.persistence.room.Query
-import com.moneytracker.akscorp.moneytracker.model.entities.Account
-import com.moneytracker.akscorp.moneytracker.models.Transaction
+import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 
 /**
  *  Created by Alexander Melnikov on 02.08.18.
@@ -20,8 +19,11 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions")
     fun getAll(): List<Transaction>
 
+    @Query("SELECT * FROM transactions WHERE id=:id")
+    fun findById(id: Long): Transaction
+
     @Insert(onConflict = REPLACE)
-    fun insert(transaction: Transaction)
+    fun insert(transaction: Transaction): Long
 
     @Delete
     fun delete(vararg transaction: Transaction)
@@ -30,6 +32,6 @@ interface TransactionDao {
     fun deleteAll()
 
     @Query("SELECT * FROM transactions WHERE accountId=:accountId")
-    fun getTransactionsForAccount(accountId: Int): List<Transaction>
+    fun getTransactionsForAccount(accountId: Long?): List<Transaction>
 
 }

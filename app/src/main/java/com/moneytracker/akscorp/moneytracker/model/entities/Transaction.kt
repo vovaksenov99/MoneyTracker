@@ -1,4 +1,4 @@
-package com.moneytracker.akscorp.moneytracker.models
+package com.moneytracker.akscorp.moneytracker.model.entities
 
 import android.arch.persistence.room.*
 import android.arch.persistence.room.ForeignKey.CASCADE
@@ -6,10 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.model.defaultCurrency
-import com.moneytracker.akscorp.moneytracker.model.entities.Account
-import com.moneytracker.akscorp.moneytracker.model.entities.Money
-import com.moneytracker.akscorp.moneytracker.model.entities.MoneyTypeConverters
-import com.moneytracker.akscorp.moneytracker.models.Transaction.PaymentPurpose.*
+import com.moneytracker.akscorp.moneytracker.model.entities.Transaction.PaymentPurpose.*
 import java.util.*
 
 
@@ -29,7 +26,7 @@ import java.util.*
 data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
                        val accountId: Long?,
                        @TypeConverters(MoneyTypeConverters::class) val moneyQuantity: Money = Money(0.0, defaultCurrency),
-                       @TypeConverters(PaymentPurposeTypeConverters::class)val paymentPurpose: PaymentPurpose = OTHER,
+                       @TypeConverters(PaymentPurposeTypeConverters::class) val paymentPurpose: PaymentPurpose = OTHER,
                        val paymentDescription: String = "",
                        @TypeConverters(CalendarTypeConverters::class) val date: Calendar = Calendar.getInstance()) {
 

@@ -8,14 +8,19 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.moneytracker.akscorp.moneytracker.R
-import com.moneytracker.akscorp.moneytracker.model.*
+import com.moneytracker.akscorp.moneytracker.model.DeprecetadTransaction
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
+import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsActivity
+import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsFragment.Companion.FROM_WELCOME_SCREEN_KEY
 import com.moneytracker.akscorp.moneytracker.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.account_card.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), IMainActivity {
+
+    private val TAG = "debug"
+
     lateinit var presenter: MainPresenter
 
     override fun hideCurrencies() {
@@ -43,8 +48,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     }
 
     override fun initCards(accounts: List<Account>) {
-        accountViewPager.adapter = AccountViewPagerAdapter(supportFragmentManager,
-                accounts)
+        accountViewPager.adapter = AccountViewPagerAdapter(supportFragmentManager, accounts)
         accountViewPager.currentItem = 0
         if (accounts.isNotEmpty()) {
             presenter.switchToAccount(accounts[0])
@@ -79,6 +83,13 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        welcome_card.visibility = View.GONE
+        payment_button.visibility = View.VISIBLE
+        presenter.start()
+    }
+
     /**
      * Start UI initialization
      */
@@ -93,5 +104,20 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         payment_button.setOnClickListener {
             presenter.showPaymentDialog(this@MainActivity.supportFragmentManager)
         }
+    }
+
+    override fun showWelcomeMessage() {
+        welcome_card.visibility = View.VISIBLE
+        payment_button.visibility = View.GONE
+
+        welcome_next_btn.setOnClickListener {
+            openAccountsActivity(true)
+        }
+    }
+
+    override fun openAccountsActivity(fromWelcomeScreen: Boolean) {
+        val intent = Intent(this, AccountsActivity::class.java)
+        intent.putExtra(FROM_WELCOME_SCREEN_KEY, fromWelcomeScreen)
+        startActivity(intent)
     }
 }

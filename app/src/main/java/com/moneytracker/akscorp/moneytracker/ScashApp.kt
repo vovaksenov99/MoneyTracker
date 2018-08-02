@@ -3,9 +3,9 @@ package com.moneytracker.akscorp.moneytracker
 import android.app.Application
 import android.support.v7.app.AppCompatDelegate
 import com.hawkcatcherkotlin.akscorp.hawkcatcherkotlin.HawkExceptionCatcher
-import com.moneytracker.akscorp.moneytracker.di.ApplicationComponent
-import com.moneytracker.akscorp.moneytracker.di.ApplicationModule
-import com.moneytracker.akscorp.moneytracker.di.DaggerApplicationComponent
+import com.moneytracker.akscorp.moneytracker.di.component.ApplicationComponent
+import com.moneytracker.akscorp.moneytracker.di.component.DaggerApplicationComponent
+import com.moneytracker.akscorp.moneytracker.di.module.ApplicationModule
 
 /**
  * Created by AksCorp on 30.03.2018.
@@ -34,7 +34,6 @@ class ScashApp : Application() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
 
     }
 

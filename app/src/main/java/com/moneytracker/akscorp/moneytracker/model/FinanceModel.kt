@@ -1,8 +1,6 @@
 package com.moneytracker.akscorp.moneytracker.model
 
 import com.moneytracker.akscorp.moneytracker.R
-import com.moneytracker.akscorp.moneytracker.model.entities.Account
-import com.moneytracker.akscorp.moneytracker.model.entities.Currency
 import com.moneytracker.akscorp.moneytracker.model.entities.Money
 import java.util.*
 
@@ -53,6 +51,7 @@ data class DeprecetadTransaction(var paymentPurpose: PaymentPurpose = PaymentPur
 
 }
 
+/*
 @Deprecated("This method is not going to be implemented after ROOM impl adding")
 fun getAllAccounts(): MutableList<Account> {
     return mutableListOf(
@@ -61,6 +60,7 @@ fun getAllAccounts(): MutableList<Account> {
             Account(2, "Acc 3"))
 }
 
+*/
 /**
  * Sum of all deprecetadTransactions
  *
@@ -68,7 +68,8 @@ fun getAllAccounts(): MutableList<Account> {
  * @param resultCurrency - result balance currency
  *
  * @return balance money quantity
- */
+ *//*
+
 @Deprecated("This method is not going to be implemented after ROOM impl adding")
 fun getAccountBalance(deprecetadTransactions: List<DeprecetadTransaction>,
                       resultCurrency: Currency = Currency.USD): Money {
@@ -82,3 +83,4 @@ fun getAccountBalance(deprecetadTransactions: List<DeprecetadTransaction>,
 
     return currencyConverter.convertCurrency(balance, resultCurrency)
 }
+*/

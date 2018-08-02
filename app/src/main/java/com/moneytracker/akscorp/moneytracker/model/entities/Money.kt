@@ -4,6 +4,7 @@ import android.arch.persistence.room.TypeConverter
 import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.moneytracker.akscorp.moneytracker.model.convertCurrency
 import kotlinx.android.parcel.Parcelize
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -26,6 +27,15 @@ data class Money(var count: Double, var currency: Currency) : Parcelable {
             return "0.0"
         return format.format(format.parse(f))
     }
+
+    /*operator fun plus(increment: Money) =
+            Money(this.count + convertCurrency(increment, this.currency).count, this.currency)*/
+
+    operator fun plusAssign(increment: Money) {
+        this.count += convertCurrency(increment, this.currency).count
+
+    }
+
 
 }
 
