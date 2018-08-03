@@ -1,12 +1,9 @@
 package com.moneytracker.akscorp.moneytracker.ui.payment
 
 import android.app.DatePickerDialog
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProviders
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -22,11 +19,12 @@ import android.widget.TextView
 import com.moneytracker.akscorp.moneytracker.DEFAULT_ANIMATION_DURATION
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
-import com.moneytracker.akscorp.moneytracker.model.DeprecetadTransaction
 import com.moneytracker.akscorp.moneytracker.model.entities.Currency
+import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 import com.moneytracker.akscorp.moneytracker.utilites.expand
 import com.moneytracker.akscorp.moneytracker.utilites.fadeDown
 import com.moneytracker.akscorp.moneytracker.utilites.fadeIn
+import kotlinx.android.synthetic.main.dialog_new_payment.*
 import kotlinx.android.synthetic.main.dialog_new_payment.view.*
 import org.jetbrains.anko.dimen
 import java.util.*
@@ -36,24 +34,117 @@ val PAYMENT_DIALOG_TAG = "PAYMENT_DIALOG_TAG"
 
 class PaymentDialog : DialogFragment(), IPaymentDialog {
 
+    private val TAG = "debug"
+
     lateinit var presenter: PaymentDialogPresenter
 
     lateinit var fragmentView: View
 
+    var lastPressedChooser = ChooseButton.NONE
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.FullscreenDialog)
+
+        if (arguments != null) {
+            if (arguments!!.containsKey("account")) {
+                val account = arguments!!.getParcelable("account") as Account
+                presenter = PaymentDialogPresenter(this, account)
+            }
+        }
+        presenter.setModel(this)
+
+        Log.d(TAG, "onCreate: ")
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        fragmentView = inflater.inflate(R.layout.dialog_new_payment, container, false)
+        Log.d(TAG, "onCreateView: ")
+        return fragmentView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupEventListeners()
+        initUI()
+
+        // Setup toolbar
+        fragmentView.toolbar.title = presenter.account.name
+        fragmentView.toolbar.setNavigationIcon(R.drawable.ic_arrow_white)
+        fragmentView.toolbar.setNavigationOnClickListener {
+            this@PaymentDialog.dismiss()
+        }
+
+        val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        fragmentView.choose_rv.setHasFixedSize(true)
+        fragmentView.choose_rv.layoutManager = layoutManager
+        fragmentView.choose_rv.isNestedScrollingEnabled = true
+    }
+
+    private fun setupEventListeners() {
+        categoty_btn.setOnClickListener {
+            if (lastPressedChooser == ChooseButton.CATEGORY) {
+                expand(rv_container, 0)
+                lastPressedChooser = ChooseButton.NONE
+                return@setOnClickListener
+            }
+
+            lastPressedChooser = ChooseButton.CATEGORY
+
+            initCategories()
+            choose_rv.measure(0, 0)
+            expand(rv_container,
+                    choose_rv.measuredHeight)
+        }
+        currency_btn.setOnClickListener {
+            if (lastPressedChooser == ChooseButton.CURRENCY) {
+                expand(rv_container, 0)
+                lastPressedChooser = ChooseButton.NONE
+                return@setOnClickListener
+            }
+
+            lastPressedChooser = ChooseButton.CURRENCY
+
+            initCurrencies()
+            choose_rv.measure(0, 0)
+            expand(rv_container,
+                    choose_rv.measuredHeight)
+        }
+
+        date_btn.setOnClickListener {
+            if (lastPressedChooser == ChooseButton.DATE) {
+                lastPressedChooser = ChooseButton.NONE
+                return@setOnClickListener
+            }
+            datePicker()
+            lastPressedChooser = ChooseButton.DATE
+        }
+
+        confirm_btn.setOnClickListener {
+            sum_et.isEnabled = false
+            transaction_description_et.isEnabled = false
+
+            presenter.addTransaction()
+        }
+
+        sum_et.addTextChangedListener(SumTextWatcher())
+
+        transaction_description_et.addTextChangedListener(DescriptionTextWatcher())
+    }
+
     override fun showConfirmButton() {
         expand(fragmentView.confirm_btn, fragmentView.context.dimen(R.dimen.confirm_button_height))
+        confirm_btn.isClickable = true
     }
 
     override fun hideConfirmButton() {
+        confirm_btn.isClickable = false
         expand(fragmentView.confirm_btn, 0)
     }
 
-    override fun addTransaction() {
-        presenter.addTransaction()
-        finishLayoutAnim()
-    }
-
-    private fun finishLayoutAnim() {
+    override fun finishLayoutAnim() {
         hideKeyboard()
 
         fadeDown(fragmentView.appBar)
@@ -88,37 +179,6 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.FullscreenDialog)
-
-        if (arguments != null) {
-            if (arguments!!.containsKey("account")) {
-                val account = arguments!!.getParcelable("account") as Account
-                presenter = PaymentDialogPresenter(this, account)
-            }
-        }
-        presenter.setModel(this)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        fragmentView = inflater.inflate(R.layout.dialog_new_payment, container, false)
-
-        initUI()
-
-        return fragmentView
-    }
-
-    private fun toolbarInit() {
-        fragmentView.toolbar.title = presenter.account.name
-        fragmentView.toolbar.setNavigationIcon(R.drawable.ic_arrow_white)
-        fragmentView.toolbar.setNavigationOnClickListener {
-            this@PaymentDialog.dismiss()
-        }
-    }
-
     enum class ChooseButton {
         CATEGORY,
         CURRENCY,
@@ -126,83 +186,27 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
         NONE;
     }
 
-    var lastPressedChooser = ChooseButton.NONE
 
     private fun initUI() {
-        toolbarInit()
-
         fragmentView.apply {
-            if (presenter.model.deprecetadTransaction.moneyQuantity.count != 0.0)
-                sum_et.setText(presenter.model.deprecetadTransaction.moneyQuantity.count.toString())
-            transaction_description_et.setText(presenter.model.deprecetadTransaction.paymentDescription)
-            categoty_btn.setImageResource(presenter.model.deprecetadTransaction.paymentPurpose.getIconResource())
+            if (presenter.model.sum.count != 0.0)
+                sum_et.setText(presenter.model.sum.count.toString())
+
+            transaction_description_et.setText(presenter.model.description)
+            categoty_btn.setImageResource(presenter.model.purpose.getIconResource())
             categoty_btn.setColorFilter(ContextCompat.getColor(context, android.R.color.white),
                 PorterDuff.Mode.SRC_IN)
-            currency_btn.setText(presenter.model.deprecetadTransaction.moneyQuantity.currency.currencySymbol)
-
-            sum_et.addTextChangedListener(SumTextWatcher())
-
-            val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-            fragmentView.choose_rv.setHasFixedSize(true)
-            fragmentView.choose_rv.layoutManager = layoutManager
-            fragmentView.choose_rv.isNestedScrollingEnabled = true
-
-            transaction_description_et.addTextChangedListener(DescriptionTextWatcher())
-
-            categoty_btn.setOnClickListener {
-                if (lastPressedChooser == ChooseButton.CATEGORY) {
-                    expand(rv_container, 0)
-                    lastPressedChooser = ChooseButton.NONE
-                    return@setOnClickListener
-                }
-
-                lastPressedChooser = ChooseButton.CATEGORY
-
-                initCategories()
-                choose_rv.measure(0, 0)
-                expand(rv_container,
-                    choose_rv.measuredHeight)
-            }
-            currency_btn.setOnClickListener {
-                if (lastPressedChooser == ChooseButton.CURRENCY) {
-                    expand(rv_container, 0)
-                    lastPressedChooser = ChooseButton.NONE
-                    return@setOnClickListener
-                }
-
-                lastPressedChooser = ChooseButton.CURRENCY
-
-                initCurrencies()
-                choose_rv.measure(0, 0)
-                expand(rv_container,
-                    choose_rv.measuredHeight)
-            }
-
-            date_btn.setOnClickListener {
-                if (lastPressedChooser == ChooseButton.DATE) {
-                    lastPressedChooser = ChooseButton.NONE
-                    return@setOnClickListener
-                }
-                datePicker()
-                lastPressedChooser = ChooseButton.DATE
-            }
-
-            confirm_btn.setOnClickListener {
-                sum_et.isEnabled = false
-                transaction_description_et.isEnabled = false
-
-                addTransaction()
-            }
+            currency_btn.text = presenter.model.currency.currencySymbol
         }
     }
 
-    fun initCurrencies() {
+    private fun initCurrencies() {
         fragmentView.choose_rv.adapter = ChooseCurrencyAdapter(Currency.values().toMutableList())
     }
 
-    fun initCategories() {
+    private fun initCategories() {
         fragmentView.choose_rv.adapter =
-                ChooseCategoryAdapter(DeprecetadTransaction.PaymentPurpose.values().toMutableList())
+                ChooseCategoryAdapter(Transaction.PaymentPurpose.values().toMutableList())
     }
 
     inner class SumTextWatcher : TextWatcher {
@@ -274,7 +278,7 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
 
     }
 
-    inner class ChooseCategoryAdapter(val categories: List<DeprecetadTransaction.PaymentPurpose>) :
+    inner class ChooseCategoryAdapter(val categories: List<Transaction.PaymentPurpose>) :
         RecyclerView.Adapter<ChooseCategoryAdapter.CurrencyHolder>() {
 
         override fun getItemId(position: Int): Long {
@@ -320,7 +324,9 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
 
     private fun datePicker() {
         val myCallBack = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            presenter.model.deprecetadTransaction.date.set(year, month, dayOfMonth)
+            val cal: Calendar = Calendar.getInstance()
+            cal.set(year, month, dayOfMonth)
+            presenter.model.date = cal.time
         }
 
         val cal = Calendar.getInstance()

@@ -2,8 +2,6 @@ package com.moneytracker.akscorp.moneytracker.model.entities
 
 import android.arch.persistence.room.*
 import android.arch.persistence.room.ForeignKey.CASCADE
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.model.defaultCurrency
 import com.moneytracker.akscorp.moneytracker.model.entities.Transaction.PaymentPurpose.*
@@ -28,7 +26,7 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
                        @TypeConverters(MoneyTypeConverters::class) val moneyQuantity: Money = Money(0.0, defaultCurrency),
                        @TypeConverters(PaymentPurposeTypeConverters::class) val paymentPurpose: PaymentPurpose = OTHER,
                        val paymentDescription: String = "",
-                       @TypeConverters(CalendarTypeConverters::class) val date: Calendar = Calendar.getInstance()) {
+                       @TypeConverters(DateTypeConverters::class) val date: Date = Date()) {
 
 
     enum class PaymentPurpose {
@@ -92,7 +90,7 @@ class PaymentPurposeTypeConverters {
 
 }
 
-class CalendarTypeConverters {
+/*class CalendarTypeConverters {
     private val gson: Gson = Gson()
 
     @TypeConverter
@@ -104,5 +102,18 @@ class CalendarTypeConverters {
 
     @TypeConverter
     fun calendarToString(calendar: Calendar) = gson.toJson(calendar)!!
+}*/
+
+class DateTypeConverters {
+
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return if (value == null) null else Date(value)
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
 }
 

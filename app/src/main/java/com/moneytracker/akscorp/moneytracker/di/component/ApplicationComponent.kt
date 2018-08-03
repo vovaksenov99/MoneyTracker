@@ -4,6 +4,7 @@ import com.moneytracker.akscorp.moneytracker.ScashApp
 import com.moneytracker.akscorp.moneytracker.di.module.ApplicationModule
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsPresenter
 import com.moneytracker.akscorp.moneytracker.ui.main.MainPresenter
+import com.moneytracker.akscorp.moneytracker.ui.payment.PaymentDialogPresenter
 import dagger.Component
 import javax.inject.Singleton
 
@@ -22,5 +23,7 @@ interface ApplicationComponent {
     fun inject(mainPresenter: MainPresenter)
 
     fun inject(accountsPresenter: AccountsPresenter)
+
+    fun inject(paymentDialogPresenter: PaymentDialogPresenter)
 
 }

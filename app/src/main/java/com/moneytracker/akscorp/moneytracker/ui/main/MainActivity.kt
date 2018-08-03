@@ -6,10 +6,11 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import com.moneytracker.akscorp.moneytracker.R
-import com.moneytracker.akscorp.moneytracker.model.DeprecetadTransaction
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
+import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsActivity
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsFragment.Companion.FROM_WELCOME_SCREEN_KEY
 import com.moneytracker.akscorp.moneytracker.ui.settings.SettingsActivity
@@ -23,16 +24,48 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     lateinit var presenter: MainPresenter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        presenter = MainPresenter(this, this)
+        setupEventListeners()
+    }
+
+    override fun onStart() {
+        Log.d(TAG, "onStart: ")
+        super.onStart()
+        welcome_card.visibility = View.GONE
+        payment_button.visibility = View.VISIBLE
+        presenter.start()
+    }
+
+    /**
+     * Start UI initialization
+     */
+    private fun setupEventListeners() {
+        settingsButton.setOnClickListener {
+            presenter.showSettingsActivity()
+        }
+
+        payment_button.setOnClickListener {
+            presenter.showPaymentDialog(this@MainActivity.supportFragmentManager)
+        }
+
+        accountsButton.setOnClickListener {
+            presenter.showAccountsActivity()
+        }
+    }
+
     override fun hideCurrencies() {
         if (currencyRecyclerView != null)
             currencyRecyclerView.close()
     }
 
-    override fun initAccountTransactionRV(deprecetadTransactions: List<DeprecetadTransaction>) {
+    override fun initAccountTransactionRV(transactions: List<Transaction>) {
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         last_transactions.layoutManager = layoutManager
         last_transactions.isNestedScrollingEnabled = false
-        last_transactions.adapter = TransactionAdapter(deprecetadTransactions)
+        last_transactions.adapter = TransactionAdapter(transactions)
     }
 
     override fun hideBottomContainer() {
@@ -72,38 +105,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         })
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        presenter = MainPresenter(this, this)
-
-        initUI()
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        welcome_card.visibility = View.GONE
-        payment_button.visibility = View.VISIBLE
-        presenter.start()
-    }
-
-    /**
-     * Start UI initialization
-     */
-    private fun initUI() {
-        presenter.initAccountViewPager()
-
-
-        settingsButton.setOnClickListener {
-            presenter.showSettingsActivity()
-        }
-
-        payment_button.setOnClickListener {
-            presenter.showPaymentDialog(this@MainActivity.supportFragmentManager)
-        }
+    override fun updateAccountInViewPager(accounts: List<Account>) {
     }
 
     override fun showWelcomeMessage() {
@@ -119,5 +121,13 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         val intent = Intent(this, AccountsActivity::class.java)
         intent.putExtra(FROM_WELCOME_SCREEN_KEY, fromWelcomeScreen)
         startActivity(intent)
+    }
+
+    override fun showEmptyTransactionHistoryLabel() {
+        lbl_empty_operation_history.visibility = View.VISIBLE
+    }
+
+    override fun hideEmptyTransactionHistoryLabel() {
+        lbl_empty_operation_history.visibility = View.GONE
     }
 }

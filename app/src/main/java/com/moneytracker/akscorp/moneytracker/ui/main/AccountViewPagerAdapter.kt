@@ -5,15 +5,15 @@ import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.moneytracker.akscorp.moneytracker.ui.account_card.AccountCardFragment
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
+import com.moneytracker.akscorp.moneytracker.ui.account_card.AccountCardFragment
 
 
-class AccountViewPagerAdapter(fragmentManager: FragmentManager, private val accounts: List<Account>) :
-    FragmentPagerAdapter(fragmentManager) {
+class AccountViewPagerAdapter(fragmentManager: FragmentManager,
+                              private var accounts: List<Account>) : FragmentPagerAdapter(fragmentManager) {
 
-    private val accountsCount = accounts.size
-
+    private val TAG = "debug"
+    
     override fun getItem(position: Int): Fragment {
                 val bundle = Bundle()
                 bundle.putParcelable("account", accounts[position] as Parcelable)
@@ -24,6 +24,9 @@ class AccountViewPagerAdapter(fragmentManager: FragmentManager, private val acco
 
     override fun getCount(): Int {
         return accounts.size
+    }
+
+    fun replaceData(accounts: List<Account>) {
     }
 
 }

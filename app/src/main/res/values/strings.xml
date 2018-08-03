@@ -42,5 +42,6 @@
         your current balance on the main screen
     </string>
     <string name="dialog_continue">Continue</string>
+    <string name="lbl_empty_operation_history">Transaction history is empty</string>
 
 </resources>

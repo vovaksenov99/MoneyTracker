@@ -62,7 +62,7 @@ interface ITransactionsRepository {
                       initialBalance: Money = Money(0.0, defaultCurrency))
 
     fun insertTransaction(account: Account, sum: Money, purpose: Transaction.PaymentPurpose,
-                          description: String = "", date: Calendar = Calendar.getInstance(),
+                          description: String = "", date: Date = Date(),
                           callback: TransactionsRepoCallback)
 
 }

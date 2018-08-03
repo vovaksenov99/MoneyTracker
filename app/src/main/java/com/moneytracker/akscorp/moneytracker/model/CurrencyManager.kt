@@ -10,16 +10,7 @@ import com.moneytracker.akscorp.moneytracker.model.entities.Money
 val defaultCurrency = Currency.EUR
 var lastCurrencyUpdateTime = ""
 
-/**
- * Main currency is defaultCurrency [Currency.EUR]
- */
-/*class CurrencyConverter {
-
-    *//**
-     * Convert [money] to another [currency]
-     *//*
-
-}*/
+class CurrencyConverter {}
 
 fun fromDefaultCurrencyToCurrency(money: Money, currency: Currency) =
         Money(money.count * currency.rate, currency)
@@ -66,22 +57,16 @@ fun toDefaultCurrency(money: Money): Money =
  *
  */
 fun initCurrencies(context: Context) {
-    val pref =
-        context.getSharedPreferences(CurrenciesRateWorker.CurrenciesStorage, Context.MODE_PRIVATE)
+    val pref = context.getSharedPreferences(CurrenciesRateWorker.CurrenciesStorage, Context.MODE_PRIVATE)
 
     synchronized(pref) {
 
-
-        val spChanged =
-            SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-
+        val spChanged = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
                 lastCurrencyUpdateTime = sharedPreferences.getString("lastUpdateDate",
-                    context.getString(R.string.not_update_yet))
+                        context.getString(R.string.not_update_yet))
                 for (currency in Currency.values()) {
                     if (currency.toString() == key) {
-                        currency.rate =
-                                sharedPreferences.getFloat(currency.toString(), 0.0f).toDouble()
-                        //callback()
+                        currency.rate = sharedPreferences.getFloat(currency.toString(), 0.0f).toDouble()
                         break
                     }
                 }

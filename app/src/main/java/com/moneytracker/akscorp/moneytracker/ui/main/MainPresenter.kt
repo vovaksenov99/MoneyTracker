@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.util.Log
 import androidx.work.PeriodicWorkRequest
+import androidx.work.State
 import androidx.work.WorkManager
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.ScashApp
 import com.moneytracker.akscorp.moneytracker.model.CurrenciesRateWorker
-import com.moneytracker.akscorp.moneytracker.model.DeprecetadTransaction
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
+import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 import com.moneytracker.akscorp.moneytracker.model.initCurrencies
 import com.moneytracker.akscorp.moneytracker.model.repository.ITransactionsRepository
 import com.moneytracker.akscorp.moneytracker.ui.payment.PAYMENT_DIALOG_TAG
@@ -27,13 +28,19 @@ interface IMainActivity : IAccountCard {
 
     fun hideCurrencies()
 
-    fun initAccountTransactionRV(deprecetadTransactions: List<DeprecetadTransaction>)
+    fun initAccountTransactionRV(transactions: List<Transaction>)
 
     fun showSettingsActivity()
+
+    fun updateAccountInViewPager(accounts: List<Account>)
 
     fun showWelcomeMessage()
 
     fun openAccountsActivity(fromWelcomeScreen: Boolean)
+
+    fun showEmptyTransactionHistoryLabel()
+
+    fun hideEmptyTransactionHistoryLabel()
 
 }
 
@@ -47,14 +54,12 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
 
     init {
         ScashApp.instance.component.inject(this)
-    }
-
-    //TODO: change initAccountViewPager dependency on initCurrencies
-    fun start() {
         initCurrenciesWorkManager()
         initCurrencies(context)
-            initAccountViewPager()
+    }
 
+    fun start() {
+        initAccountViewPager()
         // Check if app launched first time
         if (context.defaultSharedPreferences.getBoolean(context.resources
                         .getString(R.string.sp_key_first_launch), true)) {
@@ -64,19 +69,24 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
 
     private fun initCurrenciesWorkManager() {
 
-        val workers = WorkManager.getInstance().getStatusesByTag(CurrenciesRateWorker.TAG).value
+        WorkManager.getInstance().getStatusesByTag(CurrenciesRateWorker.TAG).observeForever {
 
-        if (workers == null || workers.isEmpty()) {
+            for (work in it!!) {
+                if (work.state == State.ENQUEUED) {
+                    return@observeForever
+                }
+            }
+
             val currencyUpdater = PeriodicWorkRequest
-                .Builder(CurrenciesRateWorker::class.java, 8, TimeUnit.HOURS)
-                .addTag(CurrenciesRateWorker.TAG)
-                .build()
+                    .Builder(CurrenciesRateWorker::class.java, 8, TimeUnit.HOURS)
+                    .addTag(CurrenciesRateWorker.TAG)
+                    .build()
 
-            Log.i(::MainPresenter.name, "Currency update work manager start")
             WorkManager.getInstance().enqueue(currencyUpdater)
         }
     }
 
+    //TODO: delete this method if not used
     /*private fun getBalance(account: Account): Money {
         val transactions = getAllAccountTransactions(account)
         return getAccountBalance(transactions)
@@ -91,6 +101,7 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
             override fun onAllAccountsLoaded(accounts: List<Account>) {
                 super.onAllAccountsLoaded(accounts)
                 view.initCards(accounts)
+                Log.d(TAG, "onAllAccountsLoaded: ")
             }
         })
 
@@ -103,30 +114,34 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
         view.showSettingsActivity()
     }
 
-    fun hideBottomContainer() {
-        view.hideBottomContainer()
-    }
-
-    fun showBottomContainer() {
-        view.showBottomContainer()
+    fun showAccountsActivity() {
+        view.openAccountsActivity(
+                context.defaultSharedPreferences.getBoolean(context.resources
+                        .getString(R.string.sp_key_first_launch), true)
+        )
     }
 
     private fun initTransactionRV(account: Account) {
-       /* val transactions = getAllAccountTransactions(account)
-        view.initAccountTransactionRV(transactions)*/
+        transactionsRepository.getTransactionsByAccount(account, object : ITransactionsRepository.TransactionsRepoCallback() {
+            override fun onTransactionsByAccountLoaded(transactions: List<Transaction>) {
+                super.onTransactionsByAccountLoaded(transactions)
+                view.initAccountTransactionRV(transactions)
+                if (transactions.isEmpty()) view.showEmptyTransactionHistoryLabel()
+                else view.hideEmptyTransactionHistoryLabel()
+            }
+        })
     }
 
     fun switchToAccount(account: Account?) {
         this.account = account
-
         if (account != null) {
             view.hideCurrencies()
             initTransactionRV(account)
-            showBottomContainer()
+            view.showBottomContainer()
         }
         else {
             view.hideCurrencies()
-            hideBottomContainer()
+            view.hideBottomContainer()
         }
     }
 
@@ -139,8 +154,20 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
         val bundle = Bundle()
         bundle.putParcelable("account", account)
         dialog.arguments = bundle
-
         dialog.show(supportFragmentManager, PAYMENT_DIALOG_TAG)
+        supportFragmentManager.executePendingTransactions()
+        dialog.dialog.setOnDismissListener {
+           start()
+        }
     }
 
+
+    private fun updateAccounts() {
+        transactionsRepository.getAllAccounts(object: ITransactionsRepository.TransactionsRepoCallback() {
+            override fun onAllAccountsLoaded(accounts: List<Account>) {
+                super.onAllAccountsLoaded(accounts)
+                view.updateAccountInViewPager(accounts)
+            }
+        })
+    }
 }

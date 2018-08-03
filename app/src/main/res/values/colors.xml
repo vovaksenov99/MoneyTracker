@@ -13,4 +13,6 @@
     <color name="transparent">#00ffffff</color>
     <color name="add_payment_dialog_icon_color">@color/white</color>
     <color name="prim">#d85c5d</color>
+
+    <color name="gray_message">#999999</color>
 </resources>

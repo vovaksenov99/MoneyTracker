@@ -44,23 +44,9 @@ data class DeprecetadTransaction(var paymentPurpose: PaymentPurpose = PaymentPur
         abstract fun getIconResource(): Int
         abstract fun getStringResource(): Int
     }
-
-    fun normalizeTransactionSum(): String {
-        return moneyQuantity.normalizeCountString()!!
-    }
-
 }
 
-/*
-@Deprecated("This method is not going to be implemented after ROOM impl adding")
-fun getAllAccounts(): MutableList<Account> {
-    return mutableListOf(
-            Account(0, "Acc 1"),
-            Account(1, "Acc 2"),
-            Account(2, "Acc 3"))
-}
 
-*/
 /**
  * Sum of all deprecetadTransactions
  *

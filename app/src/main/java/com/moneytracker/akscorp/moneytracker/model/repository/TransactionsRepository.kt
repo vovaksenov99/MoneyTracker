@@ -75,7 +75,7 @@ class TransactionsRepository(private val transactionDao: TransactionDao,
                                    sum: Money,
                                    purpose: Transaction.PaymentPurpose,
                                    description: String,
-                                   date: Calendar,
+                                   date: Date,
                                    callback: TransactionsRepoCallback) {
         lateinit var insertedTransaction: Transaction
         Completable.fromAction {
