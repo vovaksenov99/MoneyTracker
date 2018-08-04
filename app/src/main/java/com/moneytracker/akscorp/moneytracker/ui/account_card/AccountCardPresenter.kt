@@ -1,6 +1,7 @@
 package com.moneytracker.akscorp.moneytracker.ui.account_card
 
 import android.content.Context
+import com.moneytracker.akscorp.moneytracker.model.currentBalanceToAnotherCurrencies
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
 import com.moneytracker.akscorp.moneytracker.model.entities.Money
 
@@ -12,14 +13,11 @@ import com.moneytracker.akscorp.moneytracker.model.entities.Money
 
 interface IAccountCard {
     fun initCard(balance: Money, account: Account)
-    fun initCurrencyRV(balance: List<Money>)
-    fun switchCurrenciesRVStatus()
+    fun initOtherCurrenciesTextView(balance: List<Money>)
     fun establishLastCurrencyUpdate()
 }
 
 class AccountCardPresenter(context: Context, val view: IAccountCard, val account: Account) {
-    /*var transaction = getAllAccountTransactions(account)
-    var balance = getAccountBalance(transaction)*/
 
     /**
      * Show main account information. Account name, balance
@@ -29,18 +27,10 @@ class AccountCardPresenter(context: Context, val view: IAccountCard, val account
     }
 
 
-    fun initCurrencyRV() {
-//        transaction = getAllAccountTransactions(account)
-//        balance = getAccountBalance(transaction)
-//        val currencies = CurrencyConverter().currentBalanceToAnotherCurrencies(balance)
-
+    fun initCurrency() {
         initCardData()
-//        view.establishLastCurrencyUpdate()
-//        view.initCurrencyRV(currencies)
-    }
-
-    fun switchCurrencyRVStatus() {
-        view.switchCurrenciesRVStatus()
+        view.establishLastCurrencyUpdate()
+        view.initOtherCurrenciesTextView(currentBalanceToAnotherCurrencies(account.balance))
     }
 
 }

@@ -1,4 +1,4 @@
-package com.moneytracker.akscorp.moneytracker.ui.account_card
+package com.moneytracker.akscorp.moneytracker.ui.accounts
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager

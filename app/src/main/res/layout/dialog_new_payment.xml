@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -68,6 +67,7 @@
                     android:id="@+id/currency_btn"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/circle_ripple_selector_common"
                     android:text="$"
@@ -88,6 +88,7 @@
                     android:id="@+id/categoty_btn"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
                     android:background="@drawable/circle_ripple_selector_common"
                     app:srcCompat="@drawable/ic_category" />

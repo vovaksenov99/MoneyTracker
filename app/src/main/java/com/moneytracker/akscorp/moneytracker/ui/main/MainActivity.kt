@@ -14,7 +14,6 @@ import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsActivity
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsFragment.Companion.FROM_WELCOME_SCREEN_KEY
 import com.moneytracker.akscorp.moneytracker.ui.settings.SettingsActivity
-import kotlinx.android.synthetic.main.account_card.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -35,7 +34,9 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         Log.d(TAG, "onStart: ")
         super.onStart()
         welcome_card.visibility = View.GONE
+        appBar.visibility = View.VISIBLE
         payment_button.visibility = View.VISIBLE
+        layout.setBackgroundColor(resources.getColor(R.color.color_default_bg))
         presenter.start()
     }
 
@@ -56,12 +57,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         }
     }
 
-    override fun hideCurrencies() {
-        if (currencyRecyclerView != null)
-            currencyRecyclerView.close()
-    }
-
     override fun initAccountTransactionRV(transactions: List<Transaction>) {
+        Log.d(TAG, "initAccountTransactionRV: ")
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         last_transactions.layoutManager = layoutManager
         last_transactions.isNestedScrollingEnabled = false
@@ -81,11 +78,14 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     }
 
     override fun initCards(accounts: List<Account>) {
-        accountViewPager.adapter = AccountViewPagerAdapter(supportFragmentManager, accounts)
-        accountViewPager.currentItem = 0
+        val ad = AccountsPagerAdapter(this, ArrayList(accounts))
+        accountViewPager.adapter = ad
+        accountViewPager.clearOnPageChangeListeners()
+        accounts_tabDots.setupWithViewPager(accountViewPager, true)
         if (accounts.isNotEmpty()) {
             presenter.switchToAccount(accounts[0])
         }
+
         accountViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
@@ -96,14 +96,11 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             }
 
             override fun onPageSelected(position: Int) {
-                if (position < accounts.size) {
-                    presenter.switchToAccount(accounts[position])
-                }
-                else
-                    presenter.switchToAccount(null)
+                presenter.switchToAccount(accounts[position])
             }
         })
     }
+
 
     override fun updateAccountInViewPager(accounts: List<Account>) {
     }
@@ -111,7 +108,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     override fun showWelcomeMessage() {
         welcome_card.visibility = View.VISIBLE
         payment_button.visibility = View.GONE
-
+        appBar.visibility = View.GONE
+        layout.background = resources.getDrawable(R.drawable.black_back_)
         welcome_next_btn.setOnClickListener {
             openAccountsActivity(true)
         }

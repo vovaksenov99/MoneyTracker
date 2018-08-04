@@ -7,10 +7,9 @@ import com.moneytracker.akscorp.moneytracker.model.entities.Currency
 import com.moneytracker.akscorp.moneytracker.model.entities.Money
 
 
-val defaultCurrency = Currency.EUR
+val defaultCurrency = Currency.RUB
 var lastCurrencyUpdateTime = ""
 
-class CurrencyConverter {}
 
 fun fromDefaultCurrencyToCurrency(money: Money, currency: Currency) =
         Money(money.count * currency.rate, currency)

@@ -9,6 +9,8 @@ import android.widget.TextView
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 import kotlinx.android.synthetic.main.transaction_rv_item.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by AksCorp on 03.04.2018.
@@ -37,7 +39,9 @@ class TransactionAdapter(private val transactions: List<Transaction>) :
         holder.currency.text = transaction.moneyQuantity.currency.toString()
         holder.icon.setImageResource(transaction.paymentPurpose.getIconResource())
         holder.description.text = transaction.paymentDescription
-        holder.date.text = transaction.date.toString()
+
+        holder.date.text = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                .format(transaction.date)
     }
 
     inner class TransactionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

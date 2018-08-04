@@ -20,13 +20,11 @@ import org.jetbrains.anko.defaultSharedPreferences
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-interface IMainActivity : IAccountCard {
+interface IMainActivity {
 
     fun hideBottomContainer()
 
     fun showBottomContainer()
-
-    fun hideCurrencies()
 
     fun initAccountTransactionRV(transactions: List<Transaction>)
 
@@ -41,6 +39,8 @@ interface IMainActivity : IAccountCard {
     fun showEmptyTransactionHistoryLabel()
 
     fun hideEmptyTransactionHistoryLabel()
+
+    fun initCards(accounts: List<Account>)
 
 }
 
@@ -86,12 +86,6 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
         }
     }
 
-    //TODO: delete this method if not used
-    /*private fun getBalance(account: Account): Money {
-        val transactions = getAllAccountTransactions(account)
-        return getAccountBalance(transactions)
-    }*/
-
     /**
      * Init RV with different currencies [ICurrencyRecyclerView]
      */
@@ -101,7 +95,6 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
             override fun onAllAccountsLoaded(accounts: List<Account>) {
                 super.onAllAccountsLoaded(accounts)
                 view.initCards(accounts)
-                Log.d(TAG, "onAllAccountsLoaded: ")
             }
         })
 
@@ -135,13 +128,12 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
     fun switchToAccount(account: Account?) {
         this.account = account
         if (account != null) {
-            view.hideCurrencies()
             initTransactionRV(account)
-            view.showBottomContainer()
+         //   view.showBottomContainer()
         }
         else {
-            view.hideCurrencies()
-            view.hideBottomContainer()
+         //   view.hideCurrencies()
+         //   view.hideBottomContainer()
         }
     }
 

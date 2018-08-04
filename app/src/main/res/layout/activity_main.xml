@@ -1,193 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadeScrollbars="true"
-    android:fillViewport="true"
-    android:isScrollContainer="true"
-    android:overScrollMode="always">
+    android:animateLayoutChanges="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:background="@drawable/black_back_"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/container"
+        app:layout_constraintDimensionRatio="1.1:1"
+        android:elevation="6dp">
 
-        <com.moneytracker.akscorp.moneytracker.ui.AppBar
-            android:id="@+id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/black_back_"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/accountsButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/circle_ripple_selector_common"
-                    app:srcCompat="@drawable/ic_account_balance_wallet_white_24dp"
-                    android:layout_toLeftOf="@id/settingsButton"
-                    android:layout_toStartOf="@id/settingsButton" />
-
-                <ImageButton
-                    android:id="@+id/settingsButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/circle_ripple_selector_common"
-                    app:srcCompat="@drawable/ic_settings_black_24dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
-
-                <com.moneytracker.akscorp.moneytracker.ui.main.AccountsCardViewPager
-                    android:id="@+id/accountViewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/settingsButton"/>
-
-                <LinearLayout
-                    android:id="@+id/welcome_card"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/activity_vertical_margin"
-                    android:padding="24dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/bg_card_white"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:src="@mipmap/ic_launcher"
-                            tools:ignore="contentDescription"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="12dp"
-                            android:textSize="18sp"
-                            android:textColor="@android:color/black"
-                            android:text="@string/app_name" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/welcome_message_h1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textStyle="bold"
-                        android:textSize="24sp"
-                        android:text="@string/welcome_message_h1"/>
-
-                    <TextView
-                        android:id="@+id/welcome_message_h2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="16sp"
-                        android:text="@string/welcome_message_h2"/>
-
-                    <TextView
-                        android:id="@+id/welcome_message_h3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="16sp"
-                        android:text="@string/welcome_message_h3"/>
-
-                    <Button
-                        android:id="@+id/welcome_next_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_gravity="end"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:textColor="@color/colorAccent"
-                        android:minHeight="0dp"
-                        android:minWidth="0dp"
-                        android:textSize="16sp"
-                        android:text="@string/welcome_confirm_button"/>
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/payment_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_below="@+id/accountViewPager"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/selector_confirm_button"
-                    android:text="@string/add_payment" />
-
-            </RelativeLayout>
-
-
-        </com.moneytracker.akscorp.moneytracker.ui.AppBar>
-
-        <LinearLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/appBar"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/last_transactions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lbl_empty_operation_history"
+        <RelativeLayout
+            android:id="@+id/bar_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginTop="60dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_call_to_action_gray_40dp"
-                tools:ignore="contentDescription" />
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:gravity="center_horizontal"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
-                android:text="@string/lbl_empty_operation_history"
-                android:textColor="@color/gray_message"
-                android:textSize="22sp" />
+                android:layout_marginLeft="30dp"
+                android:layout_centerVertical="true"
+                android:text="@string/app_name"
+                android:textSize="24sp"
+                android:textColor="@color/white"/>
+
+            <ImageButton
+                android:id="@+id/accountsButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="6dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circle_ripple_selector_common"
+                app:srcCompat="@drawable/ic_account_balance_wallet_white_24dp"
+                android:layout_toLeftOf="@id/settingsButton"
+                android:layout_toStartOf="@id/settingsButton" />
+
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="16dp"
+                android:layout_gravity="end"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circle_ripple_selector_common"
+                app:srcCompat="@drawable/ic_settings_black_24dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                />
+
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/accountViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/bar_container"
+            tools:item="@layout/account_card_v2"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/accounts_tabDots"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_below="@id/accountViewPager"
+            app:tabBackground="@drawable/tab_selector"
+            android:layout_centerHorizontal="true"
+            app:tabIndicatorHeight="0dp"/>
+
+        <Button
+            android:id="@+id/payment_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/accounts_tabDots"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/selector_confirm_button"
+            android:text="@string/add_payment" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/appBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/last_transactions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/transaction_rv_item" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lbl_empty_operation_history"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/appBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_call_to_action_gray_40dp"
+            tools:ignore="contentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_horizontal"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:text="@string/lbl_empty_operation_history"
+            android:textColor="@color/gray_message"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/welcome_card"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/bg_card_white"
+        android:elevation="10dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:src="@mipmap/ic_launcher"
+                tools:ignore="contentDescription"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:text="@string/app_name" />
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/welcome_message_h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:text="@string/welcome_message_h1"/>
+
+        <TextView
+            android:id="@+id/welcome_message_h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:text="@string/welcome_message_h2"/>
+
+        <TextView
+            android:id="@+id/welcome_message_h3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:text="@string/welcome_message_h3"/>
+
+        <Button
+            android:id="@+id/welcome_next_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="?android:attr/selectableItemBackground"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:text="@string/welcome_confirm_button"/>
+
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+
+</android.support.constraint.ConstraintLayout>

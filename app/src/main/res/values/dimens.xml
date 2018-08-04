@@ -5,7 +5,9 @@
     <dimen name="amount_text_size">14sp</dimen>
     <dimen name="currency_text_size">9sp</dimen>
     <dimen name="currencies_padding">16dp</dimen>
+    <dimen name="currencies_padding_bottom">6dp</dimen>
     <dimen name="corner">8dp</dimen>
     <dimen name="card_height">190dp</dimen>
     <dimen name="confirm_button_height">55dp</dimen>
+    <dimen name="zero">0dp</dimen>
 </resources>

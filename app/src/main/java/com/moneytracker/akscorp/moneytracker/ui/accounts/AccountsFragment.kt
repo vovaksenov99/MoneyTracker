@@ -17,7 +17,6 @@ import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.di.component.DaggerFragmentComponent
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
 import com.moneytracker.akscorp.moneytracker.model.entities.getCurrencyStringArray
-import com.moneytracker.akscorp.moneytracker.ui.account_card.AccountsLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_accounts.*
 import org.jetbrains.anko.defaultSharedPreferences
 import javax.inject.Inject

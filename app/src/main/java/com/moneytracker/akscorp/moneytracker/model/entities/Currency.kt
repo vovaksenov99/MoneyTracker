@@ -44,6 +44,6 @@ enum class Currency {
 }
 
 fun getCurrencyStringArray(): Array<String> {
-    return arrayOf(USD.toString(), RUB.toString(), EUR.toString(),
+    return arrayOf(RUB.toString(), USD.toString(), EUR.toString(),
             GBP.toString())
 }

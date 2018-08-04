@@ -25,11 +25,12 @@ class AccountsAdapter(private val mContext: Context,
     class AccountsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.tv_acc_name
         val balance: TextView = itemView.tv_balance
+        val currency: TextView = itemView.tv_currency
 
         fun onBind(item: Account) {
             name.text = item.name
-            balance.text = StringBuilder(item.balance.normalizeCountString()).append(" ")
-                    .append(item.balance.currency.toString())
+            balance.text = item.balance.normalizeCountString()
+            currency.text = item.balance.currency.toString()
         }
     }
 
