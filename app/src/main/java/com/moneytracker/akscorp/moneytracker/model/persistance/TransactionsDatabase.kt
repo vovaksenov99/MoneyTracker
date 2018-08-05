@@ -14,7 +14,8 @@ import com.moneytracker.akscorp.moneytracker.model.persistance.dao.TransactionDa
  */
 
 @Database(entities = arrayOf(Transaction::class, Account::class), version = 1, exportSchema = false)
-@TypeConverters(MoneyTypeConverters::class, PaymentPurposeTypeConverters::class, DateTypeConverters::class)
+@TypeConverters(MoneyTypeConverters::class, PaymentPurposeTypeConverters::class, DateTypeConverters::class,
+        RepeatModeTypeConverters::class)
 abstract class TransactionsDatabase : RoomDatabase() {
 
     abstract fun transactionDao(): TransactionDao

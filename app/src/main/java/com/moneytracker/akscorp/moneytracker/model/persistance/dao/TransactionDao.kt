@@ -19,6 +19,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions")
     fun getAll(): List<Transaction>
 
+    @Query("SELECT * FROM transactions WHERE repeat=1")
+    fun getTransactionWithRepeatTrue(): List<Transaction>
+
     @Query("SELECT * FROM transactions WHERE id=:id")
     fun findById(id: Long): Transaction
 

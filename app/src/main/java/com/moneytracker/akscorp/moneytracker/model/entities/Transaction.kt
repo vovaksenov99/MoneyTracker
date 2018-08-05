@@ -5,6 +5,7 @@ import android.arch.persistence.room.ForeignKey.CASCADE
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.model.defaultCurrency
 import com.moneytracker.akscorp.moneytracker.model.entities.Transaction.PaymentPurpose.*
+import com.moneytracker.akscorp.moneytracker.model.entities.Transaction.RepeatMode.*
 import java.util.*
 
 
@@ -26,8 +27,12 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
                        @TypeConverters(MoneyTypeConverters::class) val moneyQuantity: Money = Money(0.0, defaultCurrency),
                        @TypeConverters(PaymentPurposeTypeConverters::class) val paymentPurpose: PaymentPurpose = OTHER,
                        val paymentDescription: String = "",
-                       @TypeConverters(DateTypeConverters::class) val date: Date = Date()) {
+                       @TypeConverters(DateTypeConverters::class) val date: Date = Date(),
+                       val repeat: Boolean = false,
+                       @TypeConverters(RepeatModeTypeConverters::class) val repeatMode: RepeatMode = NONE) {
 
+    @Ignore
+    constructor() : this(-1L, -1L)
 
     enum class PaymentPurpose {
         TRANSPORT {
@@ -71,6 +76,23 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
         abstract override fun toString(): String
     }
 
+    enum class RepeatMode {
+        NONE {
+            override fun toString(): String = "none"
+        },
+        DAY {
+            override fun toString(): String = "day"
+        },
+
+        WEEK {
+            override fun toString(): String = "week"
+        },
+
+        MONTH {
+            override fun toString(): String = "month"
+        }
+    }
+
 }
 
 class PaymentPurposeTypeConverters {
@@ -90,19 +112,24 @@ class PaymentPurposeTypeConverters {
 
 }
 
-/*class CalendarTypeConverters {
-    private val gson: Gson = Gson()
+
+class RepeatModeTypeConverters {
 
     @TypeConverter
-    fun stringToCalendar(data: String): Calendar {
-        val calendarType = object : TypeToken<Calendar>() {}.type
-        return gson.fromJson(data, calendarType)
-    }
+    fun toRepeatMode(name: String): Transaction.RepeatMode =
+            when (name) {
+                DAY.toString() ->  DAY
+                WEEK.toString() ->  WEEK
+                MONTH.toString() ->  MONTH
+                NONE.toString() -> NONE
+                else -> throw IllegalArgumentException("Can't recognize repeat mode $name")
+            }
 
 
     @TypeConverter
-    fun calendarToString(calendar: Calendar) = gson.toJson(calendar)!!
-}*/
+    fun toString(repeatMode: Transaction.RepeatMode): String = repeatMode.toString()
+
+}
 
 class DateTypeConverters {
 

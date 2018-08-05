@@ -36,4 +36,12 @@
     <string name="dialog_continue">Продолжить</string>
     <string name="lbl_empty_operation_history">История транзакций пуста</string>
     <string name="dialog_welcome_h2">Теперь вы можете добавлять все свои доходы и расходы к балансу вашего счета и вести учет вашего бюджета на главном экране</string>
+    <string name="dialog_repeat_title">Повторять транзакцию</string>
+
+    <string-array name="dialog_repeat_options">
+        <item>Не повторять</item>
+        <item>Каждый день</item>
+        <item>Каждую неделю</item>
+        <item>Каждый месяц</item>
+    </string-array>
 </resources>

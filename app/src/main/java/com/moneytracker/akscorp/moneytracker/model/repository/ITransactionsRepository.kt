@@ -15,38 +15,6 @@ import java.util.*
 
 interface ITransactionsRepository {
 
-    abstract class TransactionsRepoCallback {
-
-        private val TAG = "debug"
-
-        open fun onAllTransactionsLoaded(transactions: List<Transaction>) {}
-
-        open fun onTransactionsByAccountLoaded(transactions: List<Transaction>) {}
-
-        open fun onAllAccountsLoaded(accounts: List<Account>) {}
-
-        open fun onAccountByNameLoaded(account: Account) {
-            Log.d(TAG, "onAccountByNameLoaded: ${account.name}")
-        }
-
-        open fun onTransactionInsertSuccess(transaction: Transaction) {}
-
-        open fun onAccountInsertSuccess(account: Account) {
-            Log.d(TAG, "onAccountInsertSuccess: ${account.name}")
-        }
-
-        open fun onTransactionsNotAvailable() {}
-
-        open fun onAccountsNotAvailable() {
-            Log.d(TAG, "onAccountsNotAvailible")
-        }
-
-        open fun onDatabaseTransactionError() {
-            Log.d(TAG, "TransactionsDatabase transaction failed")
-        }
-    }
-
-
     fun getAllTransactions(callback: TransactionsRepoCallback)
 
     fun getAllAccounts(callback: TransactionsRepoCallback)
@@ -62,7 +30,64 @@ interface ITransactionsRepository {
                       initialBalance: Money = Money(0.0, defaultCurrency))
 
     fun insertTransaction(account: Account, sum: Money, purpose: Transaction.PaymentPurpose,
-                          description: String = "", date: Date = Date(),
+                          description: String = "", date: Date = Date(), repeat: Boolean = false,
+                          repeatMode: Transaction.RepeatMode = Transaction.RepeatMode.NONE,
                           callback: TransactionsRepoCallback)
+
+    fun updateTransactionsOnRepeat()
+
+
+    interface TransactionsRepoCallback {
+
+        fun onAllTransactionsLoaded(transactions: List<Transaction>)
+
+        fun onTransactionsByAccountLoaded(transactions: List<Transaction>)
+
+        fun onAllAccountsLoaded(accounts: List<Account>)
+
+        fun onAccountByNameLoaded(account: Account)
+
+        fun onTransactionInsertSuccess(transaction: Transaction)
+
+        fun onAccountInsertSuccess(account: Account)
+
+        fun onTransactionsNotAvailable()
+
+        fun onAccountsNotAvailable()
+
+        fun onDatabaseTransactionError()
+
+    }
+
+    abstract class DefaultTransactionsRepoCallback : TransactionsRepoCallback {
+
+        private val TAG = "debug"
+
+        override fun onAllTransactionsLoaded(transactions: List<Transaction>) {}
+
+        override fun onTransactionsByAccountLoaded(transactions: List<Transaction>) {}
+
+        override fun onAllAccountsLoaded(accounts: List<Account>) {}
+
+        override fun onAccountByNameLoaded(account: Account) {
+            Log.d(TAG, "onAccountByNameLoaded: ${account.name}")
+        }
+
+        override fun onTransactionInsertSuccess(transaction: Transaction) {}
+
+        override fun onAccountInsertSuccess(account: Account) {
+            Log.d(TAG, "onAccountInsertSuccess: ${account.name}")
+        }
+
+        override fun onTransactionsNotAvailable() {}
+
+        override fun onAccountsNotAvailable() {
+            Log.d(TAG, "onAccountsNotAvailible")
+        }
+
+        override fun onDatabaseTransactionError() {
+            Log.d(TAG, "TransactionsDatabase transaction failed")
+        }
+    }
 
 }

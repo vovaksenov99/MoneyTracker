@@ -44,4 +44,12 @@
     <string name="dialog_continue">Continue</string>
     <string name="lbl_empty_operation_history">Transaction history is empty</string>
 
+    <string name="dialog_repeat_title">Repeat transaction</string>
+    <string-array name="dialog_repeat_options">
+        <item>Don't repeat</item>
+        <item>Every day</item>
+        <item>Every week</item>
+        <item>Every month</item>
+    </string-array>
+
 </resources>

@@ -23,6 +23,7 @@ interface IPaymentDialog {
     fun showConfirmButton()
     fun hideConfirmButton()
     fun finishLayoutAnim()
+    fun showRepeatTransactionDialog()
 }
 
 class PaymentDialogPresenter(val view: IPaymentDialog,
@@ -48,7 +49,7 @@ class PaymentDialogPresenter(val view: IPaymentDialog,
     }
 
     fun setCurrency(currency: Currency) {
-        model.currency = currency
+        model.sum.currency = currency
     }
 
     fun setPurpose(purpose: Transaction.PaymentPurpose) {
@@ -64,20 +65,35 @@ class PaymentDialogPresenter(val view: IPaymentDialog,
     }
 
     fun addTransaction() {
-        transactionsRepository.insertTransaction(account, model.sum, model.purpose, model.description,
-                model.date, object : ITransactionsRepository.TransactionsRepoCallback() {
+        transactionsRepository.insertTransaction(account, model.sum, model.purpose,
+                model.description, model.date, model.repeat, model.repeatMode,
+                object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
             override fun onTransactionInsertSuccess(transaction: Transaction) {
                 super.onTransactionInsertSuccess(transaction)
                 view.finishLayoutAnim()
             }
         })
     }
+
+    fun setRepeat(repeatMode: Int) {
+        model.repeat = true
+        when (repeatMode) {
+            0 -> {
+                model.repeat = false
+                model.repeatMode = Transaction.RepeatMode.NONE
+            }
+            1 -> model.repeatMode = Transaction.RepeatMode.DAY
+            2 -> model.repeatMode = Transaction.RepeatMode.WEEK
+            3 -> model.repeatMode = Transaction.RepeatMode.MONTH
+        }
+    }
 }
 
 class MyViewModel : ViewModel() {
     var sum = Money(0.0, defaultCurrency)
-    var currency = defaultCurrency
     var purpose = Transaction.PaymentPurpose.OTHER
     var description = ""
     var date = Date()
+    var repeat = false
+    var repeatMode = Transaction.RepeatMode.NONE
 }

@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.moneytracker.akscorp.moneytracker.DEFAULT_ANIMATION_DURATION
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
@@ -129,6 +130,10 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
             presenter.addTransaction()
         }
 
+        repeat_btn.setOnClickListener {
+            showRepeatTransactionDialog()
+        }
+
         sum_et.addTextChangedListener(SumTextWatcher())
 
         transaction_description_et.addTextChangedListener(DescriptionTextWatcher())
@@ -196,7 +201,7 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
             categoty_btn.setImageResource(presenter.model.purpose.getIconResource())
             categoty_btn.setColorFilter(ContextCompat.getColor(context, android.R.color.white),
                 PorterDuff.Mode.SRC_IN)
-            currency_btn.text = presenter.model.currency.currencySymbol
+            currency_btn.text = presenter.model.sum.currency.currencySymbol
         }
     }
 
@@ -321,6 +326,13 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
         }
     }
 
+    override fun showRepeatTransactionDialog() {
+        MaterialDialog.Builder(activity!!)
+                .title(R.string.dialog_repeat_title)
+                .items(R.array.dialog_repeat_options)
+                .itemsCallback{d,v,w,t -> presenter.setRepeat(w)}
+                .show()
+    }
 
     private fun datePicker() {
         val myCallBack = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->

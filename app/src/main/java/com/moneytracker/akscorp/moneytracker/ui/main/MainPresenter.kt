@@ -91,7 +91,7 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
      */
     fun initAccountViewPager() {
         Log.d(TAG, "initAccountViewPager: ")
-        transactionsRepository.getAllAccounts(object: ITransactionsRepository.TransactionsRepoCallback() {
+        transactionsRepository.getAllAccounts(object: ITransactionsRepository.DefaultTransactionsRepoCallback() {
             override fun onAllAccountsLoaded(accounts: List<Account>) {
                 super.onAllAccountsLoaded(accounts)
                 view.initCards(accounts)
@@ -115,7 +115,7 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
     }
 
     private fun initTransactionRV(account: Account) {
-        transactionsRepository.getTransactionsByAccount(account, object : ITransactionsRepository.TransactionsRepoCallback() {
+        transactionsRepository.getTransactionsByAccount(account, object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
             override fun onTransactionsByAccountLoaded(transactions: List<Transaction>) {
                 super.onTransactionsByAccountLoaded(transactions)
                 view.initAccountTransactionRV(transactions)
@@ -127,14 +127,8 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
 
     fun switchToAccount(account: Account?) {
         this.account = account
-        if (account != null) {
-            initTransactionRV(account)
-         //   view.showBottomContainer()
-        }
-        else {
-         //   view.hideCurrencies()
-         //   view.hideBottomContainer()
-        }
+        if (account != null) initTransactionRV(account)
+
     }
 
     /**
@@ -155,7 +149,7 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
 
 
     private fun updateAccounts() {
-        transactionsRepository.getAllAccounts(object: ITransactionsRepository.TransactionsRepoCallback() {
+        transactionsRepository.getAllAccounts(object: ITransactionsRepository.DefaultTransactionsRepoCallback() {
             override fun onAllAccountsLoaded(accounts: List<Account>) {
                 super.onAllAccountsLoaded(accounts)
                 view.updateAccountInViewPager(accounts)

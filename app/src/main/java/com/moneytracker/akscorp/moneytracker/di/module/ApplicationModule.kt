@@ -8,6 +8,8 @@ import com.moneytracker.akscorp.moneytracker.model.repository.ITransactionsRepos
 import com.moneytracker.akscorp.moneytracker.model.repository.TransactionsRepository
 import dagger.Module
 import dagger.Provides
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Singleton
 
 /**
@@ -39,6 +41,7 @@ class ApplicationModule(private val scashApp: ScashApp) {
     @Provides
     @Singleton
     fun provideTransactionsRepository(transactionsDatabase: TransactionsDatabase): ITransactionsRepository =
-            TransactionsRepository(transactionsDatabase.transactionDao(), transactionsDatabase.accountDao())
+            TransactionsRepository(transactionsDatabase.transactionDao(), transactionsDatabase.accountDao(),
+                    Schedulers.io(), AndroidSchedulers.mainThread())
 
 }

@@ -6,6 +6,8 @@ import com.hawkcatcherkotlin.akscorp.hawkcatcherkotlin.HawkExceptionCatcher
 import com.moneytracker.akscorp.moneytracker.di.component.ApplicationComponent
 import com.moneytracker.akscorp.moneytracker.di.component.DaggerApplicationComponent
 import com.moneytracker.akscorp.moneytracker.di.module.ApplicationModule
+import com.moneytracker.akscorp.moneytracker.model.repository.ITransactionsRepository
+import javax.inject.Inject
 
 /**
  * Created by AksCorp on 30.03.2018.
@@ -20,11 +22,18 @@ class ScashApp : Application() {
 
     lateinit var component: ApplicationComponent
 
+    @Inject
+    lateinit var transactionRepository: ITransactionsRepository
+
     override fun onCreate() {
         super.onCreate()
 
         instance = this
         setup()
+        component.inject(this)
+
+        //Update transactions with repeat = true
+        transactionRepository.updateTransactionsOnRepeat()
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 

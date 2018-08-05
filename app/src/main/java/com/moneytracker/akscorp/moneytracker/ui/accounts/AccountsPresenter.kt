@@ -32,15 +32,10 @@ class AccountsPresenter : AccountsContract.Presenter {
     }
 
     override fun requestAccounts() {
-        transactionsRepository.getAllAccounts(object: ITransactionsRepository.TransactionsRepoCallback() {
+        transactionsRepository.getAllAccounts(object: ITransactionsRepository.DefaultTransactionsRepoCallback() {
             override fun onAllAccountsLoaded(accounts: List<Account>) {
                 super.onAllAccountsLoaded(accounts)
                 accountsList = accounts
-                updateAccountsRecycler()
-            }
-            //Accounts table is empty
-            override fun onAccountsNotAvailable() {
-                super.onAccountsNotAvailable()
                 updateAccountsRecycler()
             }
         })
@@ -56,14 +51,14 @@ class AccountsPresenter : AccountsContract.Presenter {
 
     override fun addAccount(name: String, currency: String) {
         //Check if there is no accounts in the database with such name
-        transactionsRepository.getAccountByName(name, object : ITransactionsRepository.TransactionsRepoCallback() {
+        transactionsRepository.getAccountByName(name, object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
             override fun onAccountByNameLoaded(account: Account) {
                 super.onAccountByNameLoaded(account)
                 view.showAccountAlreadyExistsErrorToast()
             }
             override fun onAccountsNotAvailable() {
                 super.onAccountsNotAvailable()
-                transactionsRepository.insertAccount(name, object : ITransactionsRepository.TransactionsRepoCallback() {
+                transactionsRepository.insertAccount(name, object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
                     override fun onAccountInsertSuccess(account: Account) {
                         super.onAccountInsertSuccess(account)
                         Log.d(TAG, "onAccountInsertSuccess: ")
