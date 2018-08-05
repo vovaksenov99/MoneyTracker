@@ -3,11 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.preference.PreferenceCategory android:title="@string/general_settings">
         <Preference
             android:key="@string/about_pref"
             android:title="@string/about" />
 
-    </android.support.v7.preference.PreferenceCategory>
 
 </android.support.v7.preference.PreferenceScreen>

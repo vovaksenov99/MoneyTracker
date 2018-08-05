@@ -19,4 +19,37 @@
     <string name="not_update_yet">Not update yet</string>
     <string name="last_currency_update">Last currency update:</string>
     <string name="done">Done</string>
+    <string name="content_desc_transaction_icon">transaction icon</string>
+
+    <string name="welcome_message_h1">Welcome to the Scash!</string>
+    <string name="welcome_message_h2">Scash will help you to take care of tracking your finances</string>
+    <string name="welcome_message_h3">Let\'s create your first account!</string>
+    <string name="welcome_confirm_button">Next</string>
+
+    <string name="accounts_activity_title">Accounts</string>
+    <string name="label_currency">Currency</string>
+
+    <string name="add_account_dialog_label">Add account</string>
+    <string name="add_account_dialog_et_hint">Name</string>
+    <string name="dialog_emtpty_acc_name_error">Enter name of the new account</string>
+    <string name="account_already_exists_error">Account with this name already exists</string>
+
+    <string name="sp_key_first_launch">FIRST_LAUNCH</string>
+
+    <string name="dialog_welcome_h1">Great!</string>
+    <string name="dialog_welcome_h2">
+        Now you can add new incomes and expenses to your new account and track
+        your current balance on the main screen
+    </string>
+    <string name="dialog_continue">Continue</string>
+    <string name="lbl_empty_operation_history">Transaction history is empty</string>
+
+    <string name="dialog_repeat_title">Repeat transaction</string>
+    <string-array name="dialog_repeat_options">
+        <item>Don't repeat</item>
+        <item>Every day</item>
+        <item>Every week</item>
+        <item>Every month</item>
+    </string-array>
+
 </resources>

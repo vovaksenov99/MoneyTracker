@@ -21,4 +21,27 @@
     <string name="not_update_yet">Не обновлено</string>
     <string name="last_currency_update">Последнее обновление курса:</string>
     <string name="done">Готово</string>
+    <string name="currency">Валюта</string>
+    <string name="welcome_message_h1">Добро пожаловать в Scash!</string>
+    <string name="welcome_message_h2">Scash поможет вам вести учет ваших финансов</string>
+    <string name="welcome_message_h3">Давайте создадим ваш первый счет!</string>
+    <string name="welcome_confirm_button">Продолжить</string>
+    <string name="accounts_activity_title">Счета</string>
+    <string name="label_currency">Валюта</string>
+    <string name="add_account_dialog_label">Добавить счет</string>
+    <string name="add_account_dialog_et_hint">Название</string>
+    <string name="dialog_emtpty_acc_name_error">Введите название нового счета</string>
+    <string name="account_already_exists_error">Счет с таким названием уже существует</string>
+    <string name="dialog_welcome_h1">Отлично!</string>
+    <string name="dialog_continue">Продолжить</string>
+    <string name="lbl_empty_operation_history">История транзакций пуста</string>
+    <string name="dialog_welcome_h2">Теперь вы можете добавлять все свои доходы и расходы к балансу вашего счета и вести учет вашего бюджета на главном экране</string>
+    <string name="dialog_repeat_title">Повторять транзакцию</string>
+
+    <string-array name="dialog_repeat_options">
+        <item>Не повторять</item>
+        <item>Каждый день</item>
+        <item>Каждую неделю</item>
+        <item>Каждый месяц</item>
+    </string-array>
 </resources>

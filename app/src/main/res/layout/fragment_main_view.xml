@@ -42,7 +42,7 @@
                 app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
         </FrameLayout>
 
-        <com.moneytracker.akscorp.moneytracker.views.CurrencyRecyclerView
+        <com.moneytracker.akscorp.moneytracker.ui.account_card.CurrencyRecyclerView
             android:id="@+id/currencyRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
