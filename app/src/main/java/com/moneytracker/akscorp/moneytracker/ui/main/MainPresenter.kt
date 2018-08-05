@@ -5,66 +5,99 @@ import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.util.Log
 import androidx.work.PeriodicWorkRequest
+import androidx.work.State
 import androidx.work.WorkManager
+import com.moneytracker.akscorp.moneytracker.R
+import com.moneytracker.akscorp.moneytracker.ScashApp
 import com.moneytracker.akscorp.moneytracker.model.CurrenciesRateWorker
+import com.moneytracker.akscorp.moneytracker.model.entities.Account
+import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
+import com.moneytracker.akscorp.moneytracker.model.initCurrencies
+import com.moneytracker.akscorp.moneytracker.model.repository.ITransactionsRepository
 import com.moneytracker.akscorp.moneytracker.ui.payment.PAYMENT_DIALOG_TAG
 import com.moneytracker.akscorp.moneytracker.ui.payment.PaymentDialog
-import com.moneytracker.akscorp.moneytracker.model.*
-import com.moneytracker.akscorp.moneytracker.model.entities.Account
-import com.moneytracker.akscorp.moneytracker.model.entities.Money
-import com.moneytracker.akscorp.moneytracker.model.entities.getAllAccountTransactions
+import org.jetbrains.anko.defaultSharedPreferences
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-interface IMainActivity : IAccountCard {
+interface IMainActivity {
+
     fun hideBottomContainer()
+
     fun showBottomContainer()
-    fun hideCurrencies()
-    fun initAccountTransactionRV(deprecetadTransactions: List<DeprecetadTransaction>)
+
+    fun initAccountTransactionRV(transactions: List<Transaction>)
+
     fun showSettingsActivity()
+
+    fun updateAccountInViewPager(accounts: List<Account>)
+
+    fun showWelcomeMessage()
+
+    fun openAccountsActivity(fromWelcomeScreen: Boolean)
+
+    fun showEmptyTransactionHistoryLabel()
+
+    fun hideEmptyTransactionHistoryLabel()
+
+    fun initCards(accounts: List<Account>)
+
 }
 
-class MainActivityPresenter(context: Context, val view: IMainActivity) {
+class MainPresenter(val context: Context, val view: IMainActivity) {
     var account: Account? = null
 
     private val TAG = "debug"
 
+    @Inject
+    lateinit var transactionsRepository: ITransactionsRepository
+
     init {
-        Log.d(TAG, "presenter init")
+        ScashApp.instance.component.inject(this)
         initCurrenciesWorkManager()
-        initCurrencies(context) {
-            initAccountViewPager()
+        initCurrencies(context)
+    }
+
+    fun start() {
+        initAccountViewPager()
+        // Check if app launched first time
+        if (context.defaultSharedPreferences.getBoolean(context.resources
+                        .getString(R.string.sp_key_first_launch), true)) {
+            view.showWelcomeMessage()
         }
     }
 
     private fun initCurrenciesWorkManager() {
 
-        val workers = WorkManager.getInstance().getStatusesByTag(CurrenciesRateWorker.TAG).value
+        WorkManager.getInstance().getStatusesByTag(CurrenciesRateWorker.TAG).observeForever {
 
-        if (workers == null || workers.isEmpty()) {
+            for (work in it!!) {
+                if (work.state == State.ENQUEUED) {
+                    return@observeForever
+                }
+            }
+
             val currencyUpdater = PeriodicWorkRequest
-                .Builder(CurrenciesRateWorker::class.java, 8, TimeUnit.HOURS)
-                .addTag(CurrenciesRateWorker.TAG)
-                .build()
+                    .Builder(CurrenciesRateWorker::class.java, 8, TimeUnit.HOURS)
+                    .addTag(CurrenciesRateWorker.TAG)
+                    .build()
 
-            Log.i(::MainActivityPresenter.name, "Currency update work manager start")
             WorkManager.getInstance().enqueue(currencyUpdater)
         }
-    }
-
-    /**
-     * @return Balance on [account]
-     */
-    private fun getBalance(account: Account): Money {
-        val transactions = getAllAccountTransactions(account)
-        return getAccountBalance(transactions)
     }
 
     /**
      * Init RV with different currencies [ICurrencyRecyclerView]
      */
     fun initAccountViewPager() {
-        val accounts = getAllAccounts()
-        view.initCards(accounts)
+        Log.d(TAG, "initAccountViewPager: ")
+        transactionsRepository.getAllAccounts(object: ITransactionsRepository.DefaultTransactionsRepoCallback() {
+            override fun onAllAccountsLoaded(accounts: List<Account>) {
+                super.onAllAccountsLoaded(accounts)
+                view.initCards(accounts)
+            }
+        })
+
     }
 
     /**
@@ -74,31 +107,28 @@ class MainActivityPresenter(context: Context, val view: IMainActivity) {
         view.showSettingsActivity()
     }
 
-    fun hideBottomContainer() {
-        view.hideBottomContainer()
-    }
-
-    fun showBottomContainer() {
-        view.showBottomContainer()
+    fun showAccountsActivity() {
+        view.openAccountsActivity(
+                context.defaultSharedPreferences.getBoolean(context.resources
+                        .getString(R.string.sp_key_first_launch), true)
+        )
     }
 
     private fun initTransactionRV(account: Account) {
-        val transactions = getAllAccountTransactions(account)
-        view.initAccountTransactionRV(transactions)
+        transactionsRepository.getTransactionsByAccount(account, object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
+            override fun onTransactionsByAccountLoaded(transactions: List<Transaction>) {
+                super.onTransactionsByAccountLoaded(transactions)
+                view.initAccountTransactionRV(transactions)
+                if (transactions.isEmpty()) view.showEmptyTransactionHistoryLabel()
+                else view.hideEmptyTransactionHistoryLabel()
+            }
+        })
     }
 
     fun switchToAccount(account: Account?) {
         this.account = account
+        if (account != null) initTransactionRV(account)
 
-        if (account != null) {
-            view.hideCurrencies()
-            initTransactionRV(account)
-            showBottomContainer()
-        }
-        else {
-            view.hideCurrencies()
-            hideBottomContainer()
-        }
     }
 
     /**
@@ -110,8 +140,20 @@ class MainActivityPresenter(context: Context, val view: IMainActivity) {
         val bundle = Bundle()
         bundle.putParcelable("account", account)
         dialog.arguments = bundle
-
         dialog.show(supportFragmentManager, PAYMENT_DIALOG_TAG)
+        supportFragmentManager.executePendingTransactions()
+        dialog.dialog.setOnDismissListener {
+           start()
+        }
     }
 
+
+    private fun updateAccounts() {
+        transactionsRepository.getAllAccounts(object: ITransactionsRepository.DefaultTransactionsRepoCallback() {
+            override fun onAllAccountsLoaded(accounts: List<Account>) {
+                super.onAllAccountsLoaded(accounts)
+                view.updateAccountInViewPager(accounts)
+            }
+        })
+    }
 }
