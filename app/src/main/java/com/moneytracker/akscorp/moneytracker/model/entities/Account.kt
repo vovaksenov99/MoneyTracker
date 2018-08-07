@@ -8,6 +8,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = "accounts")
-data class Account(@PrimaryKey(autoGenerate = true) val id: Long?,
-                   val name: String,
+data class
+Account(@PrimaryKey(autoGenerate = true) val id: Long?,
+                   var name: String,
                    var balance: Money = Money(0.0, defaultCurrency)) : Parcelable

@@ -16,6 +16,8 @@ import okhttp3.Request
 
 class CurrenciesRateWorker : Worker() {
 
+    private val TAG = "debug"
+
     /**
      * Put [currencies] in [CurrenciesStorage] sharedPref.
      *

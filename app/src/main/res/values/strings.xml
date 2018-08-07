@@ -14,6 +14,9 @@
 
     <string name="transport">Transport</string>
     <string name="food">Food</string>
+    <string name="education">Education</string>
+    <string name="health">Health</string>
+    <string name="entertainment">Entertainment</string>
     <string name="confirm">Confirm</string>
     <string name="other">Other</string>
     <string name="not_update_yet">Not update yet</string>
@@ -30,6 +33,7 @@
     <string name="label_currency">Currency</string>
 
     <string name="add_account_dialog_label">Add account</string>
+    <string name="add_account_dialog_label_alter">Change account</string>
     <string name="add_account_dialog_et_hint">Name</string>
     <string name="dialog_emtpty_acc_name_error">Enter name of the new account</string>
     <string name="account_already_exists_error">Account with this name already exists</string>
@@ -45,6 +49,7 @@
     <string name="lbl_empty_operation_history">Transaction history is empty</string>
 
     <string name="dialog_repeat_title">Repeat transaction</string>
+    <string name="repeat_transaction_label">Transaction auto-schedule</string>
     <string-array name="dialog_repeat_options">
         <item>Don't repeat</item>
         <item>Every day</item>
@@ -52,4 +57,23 @@
         <item>Every month</item>
     </string-array>
 
+    <string-array name="account_alter_dialog_options">
+        <item>Change account</item>
+        <item>Clear transactions history</item>
+        <item>Delete account</item>
+    </string-array>
+
+    <string name="confirm_transaction_dialog_title">Clean transactions history</string>
+    <string name="confirm_transaction_dialog_description">
+        Are you sure that you want to delete all transactions for %1$s?
+        \nThis action will be irreversible once you click OK
+    </string>
+    <string name="account_transactions_deleted_message">Transactions history has been deleted for %1$s</string>
+
+    <string name="confirm_delete_account_dialog_title">Delete account</string>
+    <string name="confirm_delete_account_dialog_description">
+        Are you sure that you want to delete account %1$s?
+        \nThis action will be irreversible once you click OK
+    </string>
+    <string name="account_deleted_message">Account %1$s has been deleted</string>
 </resources>

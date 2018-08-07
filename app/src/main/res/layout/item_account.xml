@@ -18,7 +18,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/layout_balance"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="18sp"
             tools:text="Наличные"
             android:maxLines="1"
             android:ellipsize="end" />
@@ -34,7 +34,8 @@
                 android:id="@+id/tv_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
+                android:textSize="18sp"
+                android:textColor="@color/black"
                 tools:text="200.00" />
 
             <TextView

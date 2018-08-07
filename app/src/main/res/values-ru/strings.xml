@@ -18,6 +18,9 @@
     <string name="other">Другое</string>
     <string name="food">Еда</string>
     <string name="transport">Транспорт</string>
+    <string name="education">Образование</string>
+    <string name="health">Здоровье</string>
+    <string name="entertainment">Развлечения</string>
     <string name="not_update_yet">Не обновлено</string>
     <string name="last_currency_update">Последнее обновление курса:</string>
     <string name="done">Готово</string>
@@ -37,6 +40,7 @@
     <string name="lbl_empty_operation_history">История транзакций пуста</string>
     <string name="dialog_welcome_h2">Теперь вы можете добавлять все свои доходы и расходы к балансу вашего счета и вести учет вашего бюджета на главном экране</string>
     <string name="dialog_repeat_title">Повторять транзакцию</string>
+    <string name="repeat_transaction_label">Автоповтор операции</string>
 
     <string-array name="dialog_repeat_options">
         <item>Не повторять</item>
@@ -44,4 +48,26 @@
         <item>Каждую неделю</item>
         <item>Каждый месяц</item>
     </string-array>
+
+    <string-array name="account_alter_dialog_options">
+        <item>Изменить</item>
+        <item>Отчистить историю транзакций</item>
+        <item>Удалить счет</item>
+    </string-array>
+
+    <string name="content_desc_transaction_icon">transaction icon</string>
+    <string name="add_account_dialog_label_alter">Изменить счет</string>
+    <string name="confirm_transaction_dialog_title">Отчистить историю транзакций</string>
+    <string name="confirm_transaction_dialog_description">
+        Вы уверены, что хотите удалить все тарнзакции счета %1$s?
+        \nЭто действие нельзя будет отменить после нажатия кнопки OK
+    </string>
+    <string name="account_transactions_deleted_message">История транзакций была отчищена для %1$s</string>
+
+    <string name="confirm_delete_account_dialog_title">Удалить счет</string>
+    <string name="confirm_delete_account_dialog_description">
+        Вы уверины что хотите удалить счет %1$s?
+        \nЭто действие нельзя будет отменить после нажатия кнопки OK
+    </string>
+    <string name="account_deleted_message">Счет %1$s успешно удален</string>
 </resources>

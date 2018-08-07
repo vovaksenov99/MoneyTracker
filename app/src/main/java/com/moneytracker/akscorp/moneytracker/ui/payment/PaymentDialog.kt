@@ -115,10 +115,6 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
         }
 
         date_btn.setOnClickListener {
-            if (lastPressedChooser == ChooseButton.DATE) {
-                lastPressedChooser = ChooseButton.NONE
-                return@setOnClickListener
-            }
             datePicker()
             lastPressedChooser = ChooseButton.DATE
         }
@@ -317,6 +313,8 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
                     PorterDuff.Mode.SRC_IN)
                 expand(fragmentView.rv_container, 0)
                 presenter.setPurpose(categories[position])
+
+                lastPressedChooser = ChooseButton.NONE
             }
         }
 

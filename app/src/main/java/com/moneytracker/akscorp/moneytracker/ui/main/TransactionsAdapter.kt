@@ -17,8 +17,10 @@ import java.util.*
  * akscorp2014@gmail.com
  * web site aksenov-vladimir.herokuapp.com
  */
-class TransactionAdapter(private val transactions: List<Transaction>) :
-    RecyclerView.Adapter<TransactionAdapter.TransactionHolder>() {
+class TransactionsAdapter(private val transactions: ArrayList<Transaction>,
+                          private val mEventListener: TransactionsRecyclerEventListener) :
+    RecyclerView.Adapter<TransactionsAdapter.TransactionHolder>() {
+
 
     override fun getItemCount(): Int {
         return transactions.size
@@ -35,21 +37,47 @@ class TransactionAdapter(private val transactions: List<Transaction>) :
     override fun onBindViewHolder(holder: TransactionHolder, position: Int) {
         val transaction = transactions[position]
 
-        holder.sum.text = transaction.moneyQuantity.normalizeCountString()
-        holder.currency.text = transaction.moneyQuantity.currency.toString()
+        holder.sum.text = StringBuilder(transaction.moneyQuantity.normalizeCountString())
+                .append(transaction.moneyQuantity.currency.currencySymbol)
         holder.icon.setImageResource(transaction.paymentPurpose.getIconResource())
-        holder.description.text = transaction.paymentDescription
+        if (transaction.paymentDescription != "") {
+            holder.description.visibility = View.VISIBLE
+            holder.description.text = transaction.paymentDescription
+        }
 
-        holder.date.text = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        holder.date.text = SimpleDateFormat("d MMM yyyy hh:mm", Locale.getDefault())
                 .format(transaction.date)
+
+        holder.itemView.setOnClickListener {
+            mEventListener.onClick(position, transaction)
+        }
+
+        if (transaction.shouldRepeat) holder.repeatIcon.visibility = View.VISIBLE
+
+    }
+
+    fun updateItem(transaction: Transaction) {
+        for ((index, item) in transactions.withIndex()) {
+            if (item.id == transaction.id) {
+                transactions[index] = transaction
+                notifyItemChanged(index)
+                break
+            }
+        }
     }
 
     inner class TransactionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.icon
         val description: TextView = itemView.description
         val sum: TextView = itemView.sum
-        val currency: TextView = itemView.currency
         val date: TextView = itemView.date
+        val repeatIcon: ImageView = itemView.on_repeat_icon
+    }
+
+    interface TransactionsRecyclerEventListener {
+
+        fun onClick(position: Int, transaction: Transaction)
+
     }
 
 }

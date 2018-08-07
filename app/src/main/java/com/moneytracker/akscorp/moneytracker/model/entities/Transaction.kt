@@ -28,8 +28,8 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
                        @TypeConverters(PaymentPurposeTypeConverters::class) val paymentPurpose: PaymentPurpose = OTHER,
                        val paymentDescription: String = "",
                        @TypeConverters(DateTypeConverters::class) val date: Date = Date(),
-                       val repeat: Boolean = false,
-                       @TypeConverters(RepeatModeTypeConverters::class) val repeatMode: RepeatMode = NONE) {
+                       var shouldRepeat: Boolean = false,
+                       @TypeConverters(RepeatModeTypeConverters::class) var repeatMode: RepeatMode = NONE) {
 
     @Ignore
     constructor() : this(-1L, -1L)
@@ -69,7 +69,41 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
             override fun getIconResource(): Int {
                 return R.drawable.ic_category
             }
+        },
+        EDUCATION {
+            override fun toString(): String = "education"
+
+            override fun getStringResource(): Int {
+                return R.string.education
+            }
+
+            override fun getIconResource(): Int {
+                return R.drawable.ic_school_black_24dp
+            }
+        },
+        HEALTH {
+            override fun toString(): String = "health"
+
+            override fun getStringResource(): Int {
+                return R.string.health
+            }
+
+            override fun getIconResource(): Int {
+                return R.drawable.ic_healing_black_24dp
+            }
+        },
+        ENTERTAINMENT {
+            override fun toString(): String = "entertainment"
+
+            override fun getStringResource(): Int {
+                return R.string.entertainment
+            }
+
+            override fun getIconResource(): Int {
+                return R.drawable.ic_mood_black_24dp
+            }
         };
+
 
         abstract fun getStringResource(): Int
         abstract fun getIconResource(): Int
@@ -103,6 +137,9 @@ class PaymentPurposeTypeConverters {
             TRANSPORT.toString() ->  TRANSPORT
             FOOD.toString() ->  FOOD
             OTHER.toString() ->  OTHER
+            EDUCATION.toString() -> EDUCATION
+            HEALTH.toString() -> HEALTH
+            ENTERTAINMENT.toString() -> ENTERTAINMENT
             else -> throw IllegalArgumentException("Can't recognize payment purpose $name")
         }
 
@@ -122,7 +159,7 @@ class RepeatModeTypeConverters {
                 WEEK.toString() ->  WEEK
                 MONTH.toString() ->  MONTH
                 NONE.toString() -> NONE
-                else -> throw IllegalArgumentException("Can't recognize repeat mode $name")
+                else -> throw IllegalArgumentException("Can't recognize shouldRepeat mode $name")
             }
 
 

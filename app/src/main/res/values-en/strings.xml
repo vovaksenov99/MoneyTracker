@@ -45,4 +45,9 @@
         <item>Every week</item>
         <item>Every month</item>
     </string-array>
+    <string name="content_desc_transaction_icon">transaction icon</string>
+    <string name="add_account_dialog_label_alter">Change account</string>
+    <string name="confirm_transaction_dialog_title">Clean transactions history</string>
+    <string name="confirm_transaction_dialog_description">Are you sure that you want to delete all transactions for %1$s?</string>
+    <string name="account_transactions_deleted_message">Transactions history has been deleted for %1$s</string>
 </resources>

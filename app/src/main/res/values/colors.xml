@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e0e0e0</color>
-    <color name="colorPrimaryDark">@color/black</color>
-    <color name="colorAccent">#febc25</color>
+    <color name="colorPrimary">#ffd446</color>
+    <color name="colorPrimaryDark">#c8a300</color>
+    <color name="colorAccent">#fe3433</color>
+
+    <color name="deep_purple_md200a">#7C4DFF</color>
+    <color name="deep_purple_md500">#673AB7</color>
 
     <color name="placeholder">#d9d9d9</color>
     <color name="white">#ffffff</color>

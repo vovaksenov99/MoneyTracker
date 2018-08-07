@@ -30,8 +30,6 @@ interface IMainActivity {
 
     fun showSettingsActivity()
 
-    fun updateAccountInViewPager(accounts: List<Account>)
-
     fun showWelcomeMessage()
 
     fun openAccountsActivity(fromWelcomeScreen: Boolean)
@@ -42,9 +40,13 @@ interface IMainActivity {
 
     fun initCards(accounts: List<Account>)
 
+    fun openTransactionSettingsDialog(transaction: Transaction)
+
+    fun updateTransactionInRecycler(transaction: Transaction)
+
 }
 
-class MainPresenter(val context: Context, val view: IMainActivity) {
+class MainPresenter(val context: Context, val view: IMainActivity) : TransactionsAdapter.TransactionsRecyclerEventListener {
     var account: Account? = null
 
     private val TAG = "debug"
@@ -67,24 +69,10 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
         }
     }
 
-    private fun initCurrenciesWorkManager() {
-
-        WorkManager.getInstance().getStatusesByTag(CurrenciesRateWorker.TAG).observeForever {
-
-            for (work in it!!) {
-                if (work.state == State.ENQUEUED) {
-                    return@observeForever
-                }
-            }
-
-            val currencyUpdater = PeriodicWorkRequest
-                    .Builder(CurrenciesRateWorker::class.java, 8, TimeUnit.HOURS)
-                    .addTag(CurrenciesRateWorker.TAG)
-                    .build()
-
-            WorkManager.getInstance().enqueue(currencyUpdater)
-        }
+    override fun onClick(position: Int, transaction: Transaction) {
+        view.openTransactionSettingsDialog(transaction)
     }
+
 
     /**
      * Init RV with different currencies [ICurrencyRecyclerView]
@@ -114,17 +102,6 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
         )
     }
 
-    private fun initTransactionRV(account: Account) {
-        transactionsRepository.getTransactionsByAccount(account, object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
-            override fun onTransactionsByAccountLoaded(transactions: List<Transaction>) {
-                super.onTransactionsByAccountLoaded(transactions)
-                view.initAccountTransactionRV(transactions)
-                if (transactions.isEmpty()) view.showEmptyTransactionHistoryLabel()
-                else view.hideEmptyTransactionHistoryLabel()
-            }
-        })
-    }
-
     fun switchToAccount(account: Account?) {
         this.account = account
         if (account != null) initTransactionRV(account)
@@ -147,13 +124,56 @@ class MainPresenter(val context: Context, val view: IMainActivity) {
         }
     }
 
+    fun transactionChangeDialogPositiveClick(transaction: Transaction, chosenRepeatModeIndex: Int) {
+        val chosenRepeatMode = when(chosenRepeatModeIndex) {
+            0 -> Transaction.RepeatMode.NONE
+            1 -> Transaction.RepeatMode.DAY
+            2 -> Transaction.RepeatMode.WEEK
+            3 -> Transaction.RepeatMode.MONTH
+            else -> Transaction.RepeatMode.NONE
+        }
+        if (transaction.repeatMode != chosenRepeatMode) {
+            transaction.repeatMode = chosenRepeatMode
+            transaction.shouldRepeat = chosenRepeatMode != Transaction.RepeatMode.NONE
+            transactionsRepository.updateTransaction(transaction,
+                    object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
+                        override fun onTransactionUpdateSuccess(transaction: Transaction) {
+                            super.onTransactionUpdateSuccess(transaction)
+                            view.updateTransactionInRecycler(transaction)
+                        }
+            })
+        }
+    }
 
-    private fun updateAccounts() {
-        transactionsRepository.getAllAccounts(object: ITransactionsRepository.DefaultTransactionsRepoCallback() {
-            override fun onAllAccountsLoaded(accounts: List<Account>) {
-                super.onAllAccountsLoaded(accounts)
-                view.updateAccountInViewPager(accounts)
+    private fun initCurrenciesWorkManager() {
+
+        WorkManager.getInstance().getStatusesByTag(CurrenciesRateWorker.TAG).observeForever {
+
+            for (work in it!!) {
+                if (work.state == State.ENQUEUED) {
+                    return@observeForever
+                }
+            }
+
+            val currencyUpdater = PeriodicWorkRequest
+                    .Builder(CurrenciesRateWorker::class.java, 8, TimeUnit.HOURS)
+                    .addTag(CurrenciesRateWorker.TAG)
+                    .build()
+
+            WorkManager.getInstance().enqueue(currencyUpdater)
+        }
+    }
+
+    private fun initTransactionRV(account: Account) {
+        transactionsRepository.getTransactionsByAccount(account, object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
+            override fun onTransactionsByAccountLoaded(transactions: List<Transaction>) {
+                super.onTransactionsByAccountLoaded(transactions)
+                view.initAccountTransactionRV(transactions)
+                if (transactions.isEmpty()) view.showEmptyTransactionHistoryLabel()
+                else view.hideEmptyTransactionHistoryLabel()
             }
         })
     }
+
+
 }

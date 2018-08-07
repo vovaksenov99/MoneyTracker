@@ -57,7 +57,7 @@ class TransactionDaoTest {
         assertEquals(transaction.paymentPurpose, transactions[0].paymentPurpose)
         assertEquals(transaction.paymentDescription, transactions[0].paymentDescription)
         assertEquals(transaction.date, transactions[0].date)
-        assertEquals(transaction.repeat, transactions[0].repeat)
+        assertEquals(transaction.shouldRepeat, transactions[0].shouldRepeat)
         assertEquals(transaction.repeatMode, transactions[0].repeatMode)
     }
 

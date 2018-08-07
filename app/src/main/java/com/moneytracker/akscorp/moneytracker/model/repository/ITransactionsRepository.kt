@@ -29,11 +29,24 @@ interface ITransactionsRepository {
     fun insertAccount(name: String, callback: TransactionsRepoCallback,
                       initialBalance: Money = Money(0.0, defaultCurrency))
 
+    fun updateAccount(account: Account, callback: TransactionsRepoCallback)
+
+    fun deleteAccount(account: Account, callback: TransactionsRepoCallback)
+
     fun insertTransaction(account: Account, sum: Money, purpose: Transaction.PaymentPurpose,
                           description: String = "", date: Date = Date(), repeat: Boolean = false,
                           repeatMode: Transaction.RepeatMode = Transaction.RepeatMode.NONE,
                           callback: TransactionsRepoCallback)
 
+    fun updateTransaction(transaction: Transaction, callback: TransactionsRepoCallback)
+
+    fun deleteTransactions(transactions: List<Transaction>, callback: TransactionsRepoCallback)
+    /**
+     * Add new transactions with [Transaction.shouldRepeat] == true
+     * Implementation gets all transactions from db matching this condition and
+     * adds new transactions to the db with the same parameters except for [Transaction.shouldRepeat]
+     * and [Transaction.repeatMode], which it sets to false and [Transaction.RepeatMode.NONE]
+     */
     fun updateTransactionsOnRepeat()
 
 
@@ -49,7 +62,15 @@ interface ITransactionsRepository {
 
         fun onTransactionInsertSuccess(transaction: Transaction)
 
+        fun onTransactionUpdateSuccess(transaction: Transaction)
+
+        fun onTransactionsDeleteSuccess(numberOfTransactionsDeleted: Int, alteredAccount: Account)
+
         fun onAccountInsertSuccess(account: Account)
+
+        fun onAccountUpdateSuccess(account: Account)
+
+        fun onAccountDeleteSuccess()
 
         fun onTransactionsNotAvailable()
 
@@ -75,8 +96,27 @@ interface ITransactionsRepository {
 
         override fun onTransactionInsertSuccess(transaction: Transaction) {}
 
+        override fun onTransactionUpdateSuccess(transaction: Transaction) {
+            Log.d(TAG, "onTransactionUpdateSuccess: transaction ${transaction.id} updated")
+        }
+
+        override fun onTransactionsDeleteSuccess(numberOfTransactionsDeleted: Int, alteredAccount: Account) {
+            Log.d(TAG, "onTransactionsDeleteSuccess: deleted $numberOfTransactionsDeleted" +
+                    "transactions in $alteredAccount.name")
+        }
+
         override fun onAccountInsertSuccess(account: Account) {
             Log.d(TAG, "onAccountInsertSuccess: ${account.name}")
+
+        }
+
+        override fun onAccountDeleteSuccess() {
+            Log.d(TAG, "onAccountDeleteSuccess: ")
+        }
+
+
+        override fun onAccountUpdateSuccess(account: Account) {
+            Log.d(TAG, "onAccountUpdateSuccess: ${account.name}")
         }
 
         override fun onTransactionsNotAvailable() {}

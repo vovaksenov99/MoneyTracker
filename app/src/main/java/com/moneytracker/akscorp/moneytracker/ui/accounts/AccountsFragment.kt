@@ -40,6 +40,7 @@ class AccountsFragment : Fragment(), AccountsContract.AccountsView {
 
     private lateinit var dialogCurrencySpinner: Spinner
     private lateinit var dialogEditTextName: EditText
+    private lateinit var accountCreateDialog: MaterialDialog
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -98,49 +99,101 @@ class AccountsFragment : Fragment(), AccountsContract.AccountsView {
         }
     }
 
-    override fun openAddAccountDialog(changeExistingAccount: Boolean, accountForChangeName: String) {
-        if (!changeExistingAccount) {
-            val dialog = MaterialDialog.Builder(activity!!)
-                    .title(R.string.add_account_dialog_label)
-                    .customView(R.layout.dialog_add_account, true)
-                    .positiveText(android.R.string.ok)
-                    .negativeText(android.R.string.cancel)
-                    .autoDismiss(false)
-                    .onNegative { d, w ->
-                        d.dismiss()
-                        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(view?.windowToken, 0)
-                    }
-                    .onPositive { d, w ->
-                        val name = dialogEditTextName.text.toString().trim()
-                        if (name.isEmpty()) {
-                            dialogEditTextName.error = getString(R.string.dialog_emtpty_acc_name_error)
-                        } else if (dialogCurrencySpinner.selectedItem is String) {
-                            presenter.addAccount(name, dialogCurrencySpinner.selectedItem as String)
-                            d.dismiss()
-                            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                            imm.hideSoftInputFromWindow(view?.windowToken, 0)
-                        }
-                    }
-                    .build()
-
-            //Setup currency spinner
-            dialogCurrencySpinner = dialog.view.findViewById(R.id.currency_spinner)
-            dialogEditTextName = dialog.view.findViewById(R.id.et_account_name)
-            val currencyAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item,
-                    getCurrencyStringArray())
-            currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            dialogCurrencySpinner.adapter = currencyAdapter
-
-            dialogEditTextName.requestFocus()
-
-            dialog.show()
-        }
+    override fun updateAccountItemInRecycler(account: Account) {
+        accountsAdapter.updateItem(account)
     }
 
-    override fun showAccountAlreadyExistsErrorToast() {
-        Toast.makeText(activity!!, resources.getString(R.string.account_already_exists_error),
-                Toast.LENGTH_LONG).show()
+    override fun deleteAccountItemFromRecycler(account: Account) {
+        accountsAdapter.deleteItem(account)
+    }
+
+    override fun openAddAccountDialog(alterAccount: Boolean, account: Account?) {
+        accountCreateDialog = MaterialDialog.Builder(activity!!)
+                .title(R.string.add_account_dialog_label)
+                .customView(R.layout.dialog_add_account, true)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .autoDismiss(false)
+                .onNegative { d, w ->
+                    d.dismiss()
+                    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                }
+                .onPositive { d, w ->
+                    val name = dialogEditTextName.text.toString().trim()
+                    if (name.isEmpty()) {
+                        dialogEditTextName.error = getString(R.string.dialog_emtpty_acc_name_error)
+                    } else if (dialogCurrencySpinner.selectedItem is String) {
+
+                        if (!alterAccount) {
+                            presenter.addAccount(name, dialogCurrencySpinner.selectedItem as String)
+                        } else if (account != null) {
+                            presenter.alterAccount(account, name, dialogCurrencySpinner.selectedItem as String)
+                        }
+
+                        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+
+                    }
+                }
+                .build()
+
+        //Setup currency spinner
+        dialogCurrencySpinner = accountCreateDialog.view.findViewById(R.id.currency_spinner)
+        dialogEditTextName = accountCreateDialog.view.findViewById(R.id.et_account_name)
+        val currencyAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item,
+                getCurrencyStringArray())
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        dialogCurrencySpinner.adapter = currencyAdapter
+
+        dialogEditTextName.requestFocus()
+
+        if (alterAccount && account != null) {
+            accountCreateDialog.setTitle(R.string.add_account_dialog_label_alter)
+            dialogEditTextName.setText(account.name)
+            dialogCurrencySpinner.setSelection(currencyAdapter.getPosition(account.balance.currency.toString()))
+        }
+
+        accountCreateDialog.show()
+    }
+
+    override fun openAccountAlterOptionsDialog(account: Account) {
+        MaterialDialog.Builder(activity!!)
+                .items(R.array.account_alter_dialog_options)
+                .itemsCallback { _, _, w, _ -> presenter.alterOptionsDialogItemPicked(account, w) }
+                .show()
+    }
+
+    override fun openConfirmClearTransactionsDialog(account: Account) {
+        MaterialDialog.Builder(activity!!)
+                .title(R.string.confirm_transaction_dialog_title)
+                .content(R.string.confirm_transaction_dialog_description, account.name)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .onNegative{ d, w -> d.dismiss() }
+                .onPositive{ d, w -> presenter.clearAccountTransactions(account)}
+                .build()
+                .show()
+    }
+
+    override fun openConfirmDeleteAccountDialog(account: Account) {
+        MaterialDialog.Builder(activity!!)
+                .title(R.string.confirm_delete_account_dialog_title)
+                .content(R.string.confirm_delete_account_dialog_description, account.name)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .onNegative{ d, w -> d.dismiss() }
+                .onPositive{ d, w -> presenter.deleteAccount(account)}
+                .build()
+                .show()
+    }
+
+    override fun showDialogErrorAccountAlreadyExists() {
+        dialogEditTextName.error = resources.getString(R.string.account_already_exists_error)
+    }
+
+    override fun dismissDialog() {
+        accountCreateDialog.dismiss()
     }
 
     private fun openWelcomeDialog() {
@@ -152,6 +205,17 @@ class AccountsFragment : Fragment(), AccountsContract.AccountsView {
                     d.dismiss()
                     activity!!.onBackPressed()}
                 .show()
+    }
+
+
+    override fun showTransactionsDeletedToast(accountName: String) {
+        Toast.makeText(activity!!, getString(R.string.account_transactions_deleted_message, accountName),
+                Toast.LENGTH_LONG).show()
+    }
+
+    override fun showAccountDeletedToast(accountName: String) {
+        Toast.makeText(activity!!, getString(R.string.account_deleted_message, accountName),
+                Toast.LENGTH_LONG).show()
     }
 
     companion object {
@@ -166,4 +230,5 @@ class AccountsFragment : Fragment(), AccountsContract.AccountsView {
             return fragment
         }
     }
+
 }

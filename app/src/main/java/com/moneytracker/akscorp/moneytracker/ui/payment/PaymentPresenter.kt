@@ -67,12 +67,8 @@ class PaymentDialogPresenter(val view: IPaymentDialog,
     fun addTransaction() {
         transactionsRepository.insertTransaction(account, model.sum, model.purpose,
                 model.description, model.date, model.repeat, model.repeatMode,
-                object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
-            override fun onTransactionInsertSuccess(transaction: Transaction) {
-                super.onTransactionInsertSuccess(transaction)
-                view.finishLayoutAnim()
-            }
-        })
+                object : ITransactionsRepository.DefaultTransactionsRepoCallback() {})
+        view.finishLayoutAnim()
     }
 
     fun setRepeat(repeatMode: Int) {
