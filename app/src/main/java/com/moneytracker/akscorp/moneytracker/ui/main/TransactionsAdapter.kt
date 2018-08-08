@@ -17,13 +17,13 @@ import java.util.*
  * akscorp2014@gmail.com
  * web site aksenov-vladimir.herokuapp.com
  */
-class TransactionsAdapter(private val transactions: ArrayList<Transaction>,
+class TransactionsAdapter(private val mData: ArrayList<Transaction>,
                           private val mEventListener: TransactionsRecyclerEventListener) :
     RecyclerView.Adapter<TransactionsAdapter.TransactionHolder>() {
 
 
     override fun getItemCount(): Int {
-        return transactions.size
+        return mData.size
     }
 
     override fun onCreateViewHolder(
@@ -35,7 +35,7 @@ class TransactionsAdapter(private val transactions: ArrayList<Transaction>,
     }
 
     override fun onBindViewHolder(holder: TransactionHolder, position: Int) {
-        val transaction = transactions[position]
+        val transaction = mData[position]
 
         holder.sum.text = StringBuilder(transaction.moneyQuantity.normalizeCountString())
                 .append(transaction.moneyQuantity.currency.currencySymbol)
@@ -56,10 +56,16 @@ class TransactionsAdapter(private val transactions: ArrayList<Transaction>,
 
     }
 
+    fun replaceData(transactions: List<Transaction>) {
+        mData.clear()
+        mData.addAll(transactions)
+        notifyDataSetChanged()
+    }
+
     fun updateItem(transaction: Transaction) {
-        for ((index, item) in transactions.withIndex()) {
+        for ((index, item) in mData.withIndex()) {
             if (item.id == transaction.id) {
-                transactions[index] = transaction
+                mData[index] = transaction
                 notifyItemChanged(index)
                 break
             }

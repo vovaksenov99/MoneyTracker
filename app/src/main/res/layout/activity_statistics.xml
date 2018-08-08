@@ -32,4 +32,14 @@
         app:layout_constraintTop_toBottomOf="@id/statistics_appbar_layout"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/statistics_period_fab"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_timelapse_white_24dp" />
+
 </android.support.constraint.ConstraintLayout>

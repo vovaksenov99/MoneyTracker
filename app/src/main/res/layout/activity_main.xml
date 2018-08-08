@@ -33,6 +33,17 @@
                 android:textColor="@color/black"/>
 
             <ImageButton
+                android:id="@+id/statisticsButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toLeftOf="@+id/accountsButton"
+                android:layout_marginRight="6dp"
+                app:srcCompat="@drawable/ic_data_usage_black_24dp"
+                android:background="@drawable/circle_ripple_selector_common"
+                android:layout_marginEnd="6dp"
+                android:layout_toStartOf="@+id/accountsButton" />
+
+            <ImageButton
                 android:id="@+id/accountsButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -41,7 +52,8 @@
                 android:background="@drawable/circle_ripple_selector_common"
                 app:srcCompat="@drawable/ic_account_balance_wallet_black_24dp"
                 android:layout_toLeftOf="@id/settingsButton"
-                android:layout_toStartOf="@id/settingsButton" />
+                android:layout_toStartOf="@id/settingsButton"
+                android:layout_marginEnd="6dp" />
 
             <ImageButton
                 android:id="@+id/settingsButton"

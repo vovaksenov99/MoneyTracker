@@ -142,6 +142,7 @@ class AccountsPresenter : AccountsContract.Presenter {
         })
     }
 
+
     private fun updateAccountsRecycler() {
         view.replaceAccountsRecyclerData(accountsList)
     }

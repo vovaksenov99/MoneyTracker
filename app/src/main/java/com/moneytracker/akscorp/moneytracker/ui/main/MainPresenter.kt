@@ -30,6 +30,8 @@ interface IMainActivity {
 
     fun showSettingsActivity()
 
+    fun openStatisticsActivity()
+
     fun showWelcomeMessage()
 
     fun openAccountsActivity(fromWelcomeScreen: Boolean)
@@ -53,6 +55,9 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
 
     @Inject
     lateinit var transactionsRepository: ITransactionsRepository
+
+    private lateinit var dialog: PaymentDialog
+    private var dialogOnScreen: Boolean = false
 
     init {
         ScashApp.instance.component.inject(this)
@@ -112,7 +117,8 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
      * Show Fullscreen [PaymentDialog]
      */
     fun showPaymentDialog(supportFragmentManager: FragmentManager) {
-        val dialog = PaymentDialog()
+        dialog = PaymentDialog()
+        dialogOnScreen = true
 
         val bundle = Bundle()
         bundle.putParcelable("account", account)
@@ -121,6 +127,14 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
         supportFragmentManager.executePendingTransactions()
         dialog.dialog.setOnDismissListener {
            start()
+            dialogOnScreen = false
+        }
+    }
+
+    fun closePaymentDialog() {
+        if (dialogOnScreen) {
+            dialog.dismiss()
+            dialogOnScreen = false
         }
     }
 
@@ -143,6 +157,10 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
                         }
             })
         }
+    }
+
+    fun showStatisticsActivity() {
+        view.openStatisticsActivity()
     }
 
     private fun initCurrenciesWorkManager() {

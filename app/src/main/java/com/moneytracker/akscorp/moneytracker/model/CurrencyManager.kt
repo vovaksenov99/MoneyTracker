@@ -65,7 +65,8 @@ fun initCurrencies(context: Context) {
                         context.getString(R.string.not_update_yet))
                 for (currency in Currency.values()) {
                     if (currency.toString() == key) {
-                        currency.rate = sharedPreferences.getFloat(currency.toString(), 0.0f).toDouble()
+                        val value = sharedPreferences.getFloat(currency.toString(), 0.0f).toDouble()
+                        if (value != 0.0) currency.rate = value
                         break
                     }
                 }
@@ -77,7 +78,8 @@ fun initCurrencies(context: Context) {
                 pref.getString("lastUpdateDate", context.getString(R.string.not_update_yet))
 
         for (currency in Currency.values()) {
-            currency.rate = pref.getFloat(currency.toString(), 0.0f).toDouble()
+            val value = pref.getFloat(currency.toString(), 0.0f).toDouble()
+            if (value != 0.0) currency.rate = value
         }
 
     }

@@ -62,7 +62,7 @@ class AccountsFragment : Fragment(), AccountsContract.AccountsView {
         accountsAdapter.setHasStableIds(true)
         rv_accounts.setHasFixedSize(true)
         rv_accounts.adapter = accountsAdapter
-        rv_accounts.layoutManager = AccountsLinearLayoutManager(activity!!)
+        rv_accounts.layoutManager = PredictiveAnimationsLinearLayoutManager(activity!!)
 
         if (fromWelcomeScreen) presenter.addAccountButtonClick()
 

@@ -19,6 +19,7 @@ import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsActivity
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsFragment.Companion.FROM_WELCOME_SCREEN_KEY
 import com.moneytracker.akscorp.moneytracker.ui.settings.SettingsActivity
+import com.moneytracker.akscorp.moneytracker.ui.statistics.StatisticsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -50,6 +51,11 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         presenter.start()
     }
 
+    override fun onStop() {
+        super.onStop()
+        presenter.closePaymentDialog()
+    }
+
     /**
      * Start UI initialization
      */
@@ -65,11 +71,15 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         accountsButton.setOnClickListener {
             presenter.showAccountsActivity()
         }
+
+        statisticsButton.setOnClickListener {
+            presenter.showStatisticsActivity()
+        }
     }
 
     override fun initAccountTransactionRV(transactions: List<Transaction>) {
         Log.d(TAG, "initAccountTransactionRV: ")
-        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
         last_transactions.layoutManager = layoutManager
         last_transactions.isNestedScrollingEnabled = false
         mTransactionsRecyclerViewAdapter = TransactionsAdapter(ArrayList(transactions), presenter)
@@ -134,6 +144,10 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         startActivity(intent)
     }
 
+    override fun openStatisticsActivity() {
+        startActivity(Intent(this, StatisticsActivity::class.java))
+    }
+
     override fun openTransactionSettingsDialog(transaction: Transaction) {
         mTransactionSettingsDialog = MaterialDialog.Builder(this)
                 .customView(R.layout.dialog_transaction_settings, false)
@@ -178,9 +192,9 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
         fun updateRadioButtons() {
             radioButtonOption1.isChecked = false
-            radioButtonOption1.isChecked = false
-            radioButtonOption1.isChecked = false
-            radioButtonOption1.isChecked = false
+            radioButtonOption2.isChecked = false
+            radioButtonOption3.isChecked = false
+            radioButtonOption4.isChecked = false
             when(mDialogTransactionRepeatMode) {
                 Transaction.RepeatMode.NONE -> radioButtonOption1.isChecked = true
                 Transaction.RepeatMode.DAY -> radioButtonOption2.isChecked = true
