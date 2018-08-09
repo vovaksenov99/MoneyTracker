@@ -184,7 +184,7 @@ public class MainActivityTestFirstLaunch {
         appCompatButton4.check(matches(isDisplayed()));
         appCompatButton4.perform(scrollTo(), click());
 
-        ViewInteraction appCompatImageButton2 = onView(withId(R.id.categoty_btn));
+        ViewInteraction appCompatImageButton2 = onView(withId(R.id.category_btn));
         appCompatImageButton2.perform(click());
 
         ViewInteraction viewGroup5 = onView(childAtPosition(
