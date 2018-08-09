@@ -70,4 +70,13 @@
         \nЭто действие нельзя будет отменить после нажатия кнопки OK
     </string>
     <string name="account_deleted_message">Счет %1$s успешно удален</string>
+
+    <string name="statistics_activity_title">Статистика</string>
+    <string name="income_button_label_text">Доходы</string>
+    <string name="expenses_button_label_text">Расходы</string>
+    <string name="statistics_period_dialog_title">Выбор периода</string>
+    <string name="day">День</string>
+    <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
+    <string name="all_time">Все время</string>
 </resources>

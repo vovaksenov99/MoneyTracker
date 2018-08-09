@@ -119,7 +119,7 @@ class AccountsPresenter : AccountsContract.Presenter {
                 object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
                     override fun onTransactionsByAccountLoaded(transactions: List<Transaction>) {
                         super.onTransactionsByAccountLoaded(transactions)
-                        transactionsRepository.deleteTransactions(transactions, object :
+                        transactionsRepository.deleteAllTransactions(transactions, object :
                                 ITransactionsRepository.DefaultTransactionsRepoCallback() {
                             override fun onTransactionsDeleteSuccess(numberOfTransactionsDeleted: Int, alteredAccount: Account) {
                                 super.onTransactionsDeleteSuccess(numberOfTransactionsDeleted, alteredAccount)

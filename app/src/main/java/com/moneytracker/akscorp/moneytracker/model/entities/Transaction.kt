@@ -47,6 +47,10 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
                 return R.drawable.ic_auto
             }
 
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_auto_white
+            }
+
         },
         FOOD {
             override fun toString(): String = "food"
@@ -57,6 +61,10 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
 
             override fun getIconResource(): Int {
                 return R.drawable.ic_food
+            }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_food_white
             }
         },
         OTHER {
@@ -69,6 +77,10 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
             override fun getIconResource(): Int {
                 return R.drawable.ic_category
             }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_category_white
+            }
         },
         EDUCATION {
             override fun toString(): String = "education"
@@ -79,6 +91,10 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
 
             override fun getIconResource(): Int {
                 return R.drawable.ic_school_black_24dp
+            }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_school_white_24dp
             }
         },
         HEALTH {
@@ -91,6 +107,10 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
             override fun getIconResource(): Int {
                 return R.drawable.ic_healing_black_24dp
             }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_healing_white_24dp
+            }
         },
         ENTERTAINMENT {
             override fun toString(): String = "entertainment"
@@ -102,11 +122,16 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
             override fun getIconResource(): Int {
                 return R.drawable.ic_mood_black_24dp
             }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_mood_white_24dp
+            }
         };
 
 
         abstract fun getStringResource(): Int
         abstract fun getIconResource(): Int
+        abstract fun getWhiteIconResource(): Int
         abstract override fun toString(): String
     }
 

@@ -42,7 +42,7 @@ class CurrenciesRateWorker : Worker() {
     }
 
     override fun doWork(): Result {
-        Log.i(::CurrenciesRateWorker.name, "Worker run " + System.currentTimeMillis())
+        Log.i(TAG, "Worker run " + System.currentTimeMillis())
 
         try {
             val client = OkHttpClient()
@@ -55,6 +55,7 @@ class CurrenciesRateWorker : Worker() {
             val response = client.newCall(request).execute()
             val rawResponse = response.body()?.string()
 
+            Log.d(TAG, "doWork: respone = ${rawResponse.toString()}")
 
             val parser = JsonParser()
 
@@ -73,7 +74,6 @@ class CurrenciesRateWorker : Worker() {
             val exceptionCatcher = HawkExceptionCatcher(applicationContext,
                 HAWK_TOKEN)
             exceptionCatcher.logException(e)
-
             return Result.RETRY
         }
 

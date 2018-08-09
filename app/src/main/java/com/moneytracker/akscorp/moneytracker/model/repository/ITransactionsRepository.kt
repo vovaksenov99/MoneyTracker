@@ -40,7 +40,9 @@ interface ITransactionsRepository {
 
     fun updateTransaction(transaction: Transaction, callback: TransactionsRepoCallback)
 
-    fun deleteTransactions(transactions: List<Transaction>, callback: TransactionsRepoCallback)
+    fun deleteTransaction(transaction: Transaction, callback: TransactionsRepoCallback)
+
+    fun deleteAllTransactions(transactions: List<Transaction>, callback: TransactionsRepoCallback)
     /**
      * Add new transactions with [Transaction.shouldRepeat] == true
      * Implementation gets all transactions from db matching this condition and

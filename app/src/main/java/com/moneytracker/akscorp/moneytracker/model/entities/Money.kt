@@ -24,6 +24,11 @@ data class Money(var count: Double, var currency: Currency) : Parcelable {
     operator fun plusAssign(increment: Money) {
         count += if (currency != increment.currency) convertCurrency(increment, currency).count
         else increment.count
+    }
+
+    operator fun minusAssign(dicrement: Money) {
+        count -= if (currency != dicrement.currency) convertCurrency(dicrement, currency).count
+        else dicrement.count
 
     }
 

@@ -1,6 +1,7 @@
 package com.moneytracker.akscorp.moneytracker.ui.main
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ class TransactionsAdapter(private val mData: ArrayList<Transaction>,
                           private val mEventListener: TransactionsRecyclerEventListener) :
     RecyclerView.Adapter<TransactionsAdapter.TransactionHolder>() {
 
+    private val TAG = "debug"
 
     override fun getItemCount(): Int {
         return mData.size
@@ -45,7 +47,7 @@ class TransactionsAdapter(private val mData: ArrayList<Transaction>,
             holder.description.text = transaction.paymentDescription
         }
 
-        holder.date.text = SimpleDateFormat("d MMM yyyy hh:mm", Locale.getDefault())
+        holder.date.text = SimpleDateFormat("d MMM yyyy HH:mm", Locale.getDefault())
                 .format(transaction.date)
 
         holder.itemView.setOnClickListener {
@@ -67,6 +69,17 @@ class TransactionsAdapter(private val mData: ArrayList<Transaction>,
             if (item.id == transaction.id) {
                 mData[index] = transaction
                 notifyItemChanged(index)
+                break
+            }
+        }
+    }
+
+    fun deleteItem(transaction: Transaction) {
+        Log.d(TAG, "deleteItem: ${transaction.id}")
+        for ((index, item) in mData.withIndex()) {
+            if (item.id == transaction.id) {
+                mData.remove(transaction)
+                notifyItemRemoved(index)
                 break
             }
         }

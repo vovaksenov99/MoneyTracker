@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.di.component.DaggerFragmentComponent
 import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
@@ -63,10 +63,12 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
         transactions_recycler_view.isNestedScrollingEnabled = false
 
         //Setup chart
-        chart.centerText = getString(R.string.income_button_label_text)
+        chart.centerText = getString(R.string.expenses_button_label_text)
         chart.setUsePercentValues(false)
         chart.description.isEnabled = false
-        chart.setDrawEntryLabels(false)
+        chart.legend.isEnabled = false
+        //chart.setDrawEntryLabels(false)
+        chart.setExtraOffsets(35.0f, 0.0f, 35.0f, 0.0f);
 
         val l = chart.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
@@ -89,11 +91,20 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
     }
 
     override fun setupTransactionsRecycler(transactions: List<Transaction>) {
+        if (transactions.isEmpty()) {
+            chart.centerText = getString(R.string.lbl_empty_operation_history)
+        }
         transactionsAdapter.replaceData(transactions)
     }
 
-    override fun setupChartData(dataSet: PieDataSet) {
-        Log.d(TAG, "setupChartData: dataset = $dataSet")
+    override fun setupChartData(categorySums: HashMap<Transaction.PaymentPurpose, Double>) {
+        val chartEntries: ArrayList<PieEntry> = ArrayList()
+        categorySums.forEach {
+            chartEntries.add(PieEntry(it.value.toFloat(),
+                    resources.getDrawable(it.key.getWhiteIconResource())))
+        }
+
+        val dataSet = PieDataSet(chartEntries, "Expenses")
         val colorsArray = resources.obtainTypedArray(R.array.custom_account_colors)
         val colors = ArrayList<Int>()
         for (i in 0 until colorsArray.length()) {
@@ -105,9 +116,15 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
 
+        dataSet.valueLinePart1OffsetPercentage = 80f
+        dataSet.valueLinePart1Length = 0.2f
+        dataSet.valueLinePart2Length = 0.4f
+        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE;
+
         val data = PieData(dataSet)
-        data.setValueTextSize(12f)
-        data.setValueTextColor(Color.WHITE)
+        data.setValueTextSize(14f)
+        data.setValueTextColor(Color.BLACK)
+        data.setValueFormatter(StatisticsDataFormatter())
         chart.data = data
         chart.invalidate()
         chart.animateY(400)
@@ -185,6 +202,12 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
             expenses_btn.isClickable = true
             income_btn.isClickable = false
         }
+    }
+
+    override fun updateChartCenterText(expensesState: Boolean) {
+        if (expensesState) chart.centerText = getString(R.string.expenses_button_label_text)
+        else chart.centerText = getString(R.string.income_button_label_text)
+
     }
 }
 

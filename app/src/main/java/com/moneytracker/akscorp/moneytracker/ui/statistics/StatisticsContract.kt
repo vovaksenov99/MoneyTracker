@@ -1,6 +1,5 @@
 package com.moneytracker.akscorp.moneytracker.ui.statistics
 
-import com.github.mikephil.charting.data.PieDataSet
 import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 import com.moneytracker.akscorp.moneytracker.ui.main.TransactionsAdapter
 import com.moneytracker.akscorp.moneytracker.utilites.StatisticsPeriod
@@ -19,13 +18,15 @@ interface StatisticsContract {
 
         fun setupTransactionsRecycler(transactions: List<Transaction>)
 
-        fun setupChartData(dataSet: PieDataSet)
+        fun setupChartData(categorySums: HashMap<Transaction.PaymentPurpose, Double>)
 
         fun showPeriodDialog(period: StatisticsPeriod)
 
         fun updatePeriodTextView(stringResource: Int)
 
         fun updateButtonsState(expensesState: Boolean)
+
+        fun updateChartCenterText(expensesState: Boolean)
 
     }
 

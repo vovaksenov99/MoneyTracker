@@ -85,4 +85,16 @@
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="all_time">All time</string>
+
+    <string name="transaction_deleted_message">Transaction has been deleted</string>
+
+    <string name="info_dialog_content">
+        Scash is the fast, convenient and easy to use application which will take care of your
+        budgeting routine that you have been looking for
+        \n\nCurrencies are provided by <a href="https://fixer.io/">Fexer API</a>
+        \nAPI is used in accordance with all guidelines specified in the documentation
+        \n\nThis application has been created as a homework project as a part of first phase of
+        <a href="https://academy.yandex.ru/events/mobdev/msk-2018/">Yandex School of Mobile Development 2018</a>
+        \n\nDeveloped by <a href="https://github.com/millerovv">Alexander Melnikov</a>
+    </string>
 </resources>

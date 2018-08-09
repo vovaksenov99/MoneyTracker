@@ -29,6 +29,15 @@
         android:layout_marginStart="14dp"
         tools:text="900,00$"/>
 
+    <ImageButton
+        android:id="@+id/delete_transaction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toTopOf="@id/category_icon_image_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_delete_forever_accent_24dp"/>
+
     <ImageView
         android:id="@+id/on_repeat_icon_image_view"
         android:layout_width="wrap_content"

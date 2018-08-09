@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="custom_account_colors">
-        <item>#607D8B</item>
-        <item>#2196F3</item>
+        <item>#03A9F4</item>
+        <item>#E91E63</item>
+        <item>#3F51B5</item>
         <item>#FF9800</item>
         <item>#4CAF50</item>
-        <item>#F44336</item>
-        <item>#009688</item>
+        <item>#607D8B</item>
 
     </array>
 </resources>

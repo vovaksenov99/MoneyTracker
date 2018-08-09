@@ -2,12 +2,10 @@ package com.moneytracker.akscorp.moneytracker.ui.main
 
 import android.content.Context
 import android.support.v4.view.PagerAdapter
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.moneytracker.akscorp.moneytracker.R
-
 import com.moneytracker.akscorp.moneytracker.model.currentBalanceToAnotherCurrencies
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
 import com.moneytracker.akscorp.moneytracker.model.lastCurrencyUpdateTime
@@ -47,9 +45,9 @@ class AccountsPagerAdapter(private val mContext: Context,
                     .append("   ")
         }
 
-        Log.d(TAG, "instantiateItem: ${account.name}")
         layout.other_currencies.text = otherCurrenciesText
         layout.other_currencies.isSelected = true
+        layout.tag = account.id
         container.addView(layout)
         return layout
     }

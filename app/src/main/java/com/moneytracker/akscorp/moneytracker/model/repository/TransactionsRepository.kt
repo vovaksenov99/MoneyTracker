@@ -126,7 +126,20 @@ class TransactionsRepository(private val transactionDao: TransactionDao,
                         {callback.onDatabaseTransactionError()})
     }
 
-    override fun deleteTransactions(transactions: List<Transaction>, callback: ITransactionsRepository.TransactionsRepoCallback) {
+    override fun deleteTransaction(transaction: Transaction, callback: ITransactionsRepository.TransactionsRepoCallback) {
+        lateinit var transactionAccount: Account
+        Completable.fromAction {
+            transactionAccount = accountDao.findById(transaction.accountId!!)
+            transactionAccount.balance -= transaction.moneyQuantity
+            accountDao.update(transactionAccount)
+            transactionDao.delete(transaction)
+        }.subscribeOn(processSchedulers)
+                .observeOn(androidScheduler)
+                .subscribe({callback.onTransactionsDeleteSuccess(1, transactionAccount)},
+                        {callback.onTransactionsNotAvailable()})
+    }
+
+    override fun deleteAllTransactions(transactions: List<Transaction>, callback: ITransactionsRepository.TransactionsRepoCallback) {
         lateinit var alteredAccount: Account
         Completable.fromAction {
             // Set account balance to 0

@@ -20,6 +20,7 @@ import org.jetbrains.anko.defaultSharedPreferences
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+
 interface IMainActivity {
 
     fun hideBottomContainer()
@@ -28,7 +29,7 @@ interface IMainActivity {
 
     fun initAccountTransactionRV(transactions: List<Transaction>)
 
-    fun showSettingsActivity()
+    fun showAboutDialog()
 
     fun openStatisticsActivity()
 
@@ -45,6 +46,12 @@ interface IMainActivity {
     fun openTransactionSettingsDialog(transaction: Transaction)
 
     fun updateTransactionInRecycler(transaction: Transaction)
+
+    fun deleteTransactionInRecycler(transaction: Transaction)
+
+    fun showTransactionDeletedToast()
+
+    fun updateAccountBalanceINItemViewPager(account: Account)
 
 }
 
@@ -96,8 +103,8 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
     /**
      * Run setting activity [ISettingsButton]
      */
-    fun showSettingsActivity() {
-        view.showSettingsActivity()
+    fun showAboutDialog() {
+        view.showAboutDialog()
     }
 
     fun showAccountsActivity() {
@@ -127,8 +134,10 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
         supportFragmentManager.executePendingTransactions()
         dialog.dialog.setOnDismissListener {
            start()
+            Log.d(TAG, "showPaymentDialog: dialog dismissed")
             dialogOnScreen = false
         }
+
     }
 
     fun closePaymentDialog() {
@@ -161,6 +170,17 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
 
     fun showStatisticsActivity() {
         view.openStatisticsActivity()
+    }
+
+    fun deleteTransactionButtonClick(transaction: Transaction) {
+        transactionsRepository.deleteTransaction(transaction, object : ITransactionsRepository.DefaultTransactionsRepoCallback() {
+            override fun onTransactionsDeleteSuccess(numberOfTransactionsDeleted: Int, alteredAccount: Account) {
+                super.onTransactionsDeleteSuccess(numberOfTransactionsDeleted, alteredAccount)
+                view.deleteTransactionInRecycler(transaction)
+                view.showTransactionDeletedToast()
+                view.updateAccountBalanceINItemViewPager(alteredAccount)
+            }
+        })
     }
 
     private fun initCurrenciesWorkManager() {

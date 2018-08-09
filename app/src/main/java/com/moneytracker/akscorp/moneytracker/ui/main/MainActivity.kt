@@ -6,21 +6,19 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
 import com.moneytracker.akscorp.moneytracker.R
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
 import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsActivity
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsFragment.Companion.FROM_WELCOME_SCREEN_KEY
-import com.moneytracker.akscorp.moneytracker.ui.settings.SettingsActivity
 import com.moneytracker.akscorp.moneytracker.ui.statistics.StatisticsActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_money_balance.view.*
 
 
 class MainActivity : AppCompatActivity(), IMainActivity {
@@ -60,8 +58,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
      * Start UI initialization
      */
     private fun setupEventListeners() {
-        settingsButton.setOnClickListener {
-            presenter.showSettingsActivity()
+        infoButton.setOnClickListener {
+            presenter.showAboutDialog()
         }
 
         payment_button.setOnClickListener {
@@ -75,6 +73,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         statisticsButton.setOnClickListener {
             presenter.showStatisticsActivity()
         }
+
     }
 
     override fun initAccountTransactionRV(transactions: List<Transaction>) {
@@ -83,12 +82,16 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         last_transactions.layoutManager = layoutManager
         last_transactions.isNestedScrollingEnabled = false
         mTransactionsRecyclerViewAdapter = TransactionsAdapter(ArrayList(transactions), presenter)
-
         last_transactions.adapter = mTransactionsRecyclerViewAdapter
+        layoutManager.scrollToPositionWithOffset(transactions.size - 1, 0)
     }
 
     override fun updateTransactionInRecycler(transaction: Transaction) {
         mTransactionsRecyclerViewAdapter.updateItem(transaction)
+    }
+
+    override fun deleteTransactionInRecycler(transaction: Transaction) {
+        mTransactionsRecyclerViewAdapter.deleteItem(transaction)
     }
 
     override fun hideBottomContainer() {
@@ -99,8 +102,15 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         container.visibility = View.VISIBLE
     }
 
-    override fun showSettingsActivity() {
-        startActivity(Intent(this, SettingsActivity::class.java))
+    override fun showAboutDialog() {
+        val appInfoDialog = MaterialDialog.Builder(this)
+                .customView(R.layout.dialog_app_info, false)
+                .positiveText(android.R.string.ok)
+                //.dismissListener { d -> mMainActivityPresenter.hideApplicationInfo() }
+                .build()
+        val text = appInfoDialog.view.findViewById<TextView>(R.id.tv_content)
+        text.movementMethod = LinkMovementMethod.getInstance()
+        appInfoDialog.show()
     }
 
     override fun initCards(accounts: List<Account>) {
@@ -127,6 +137,12 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         })
     }
 
+    override fun updateAccountBalanceINItemViewPager(account: Account) {
+        val balanceView = accountViewPager.findViewWithTag<View>(account.id)
+        if (balanceView != null) {
+            balanceView.amountTextView.text = account.balance.normalizeCountString()
+        }
+    }
 
     override fun showWelcomeMessage() {
         welcome_card.visibility = View.VISIBLE
@@ -136,6 +152,10 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         welcome_next_btn.setOnClickListener {
             openAccountsActivity(true)
         }
+    }
+
+    override fun showTransactionDeletedToast() {
+        Toast.makeText(this, R.string.transaction_deleted_message, Toast.LENGTH_SHORT).show()
     }
 
     override fun openAccountsActivity(fromWelcomeScreen: Boolean) {
@@ -165,6 +185,13 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 .findViewById(R.id.category_icon_image_view) as ImageView
         val transactionSum: TextView = mTransactionSettingsDialog
                 .findViewById(R.id.transaction_sum_text_view) as TextView
+        val deleteButton: ImageButton = mTransactionSettingsDialog.
+                findViewById(R.id.delete_transaction_button) as ImageButton
+
+        deleteButton.setOnClickListener {
+            presenter.deleteTransactionButtonClick(transaction)
+            mTransactionSettingsDialog.dismiss()
+        }
 
         categoryImageView.setImageResource(transaction.paymentPurpose.getIconResource())
         transactionSum.text = StringBuilder(transaction.moneyQuantity.normalizeCountString())

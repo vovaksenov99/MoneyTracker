@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.dialog_new_payment.view.*
 import org.jetbrains.anko.dimen
 import java.util.*
 
+
 val PAYMENT_DIALOG_TAG = "PAYMENT_DIALOG_TAG"
 
 
