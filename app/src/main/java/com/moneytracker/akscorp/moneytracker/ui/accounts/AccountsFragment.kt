@@ -3,7 +3,6 @@ package com.moneytracker.akscorp.moneytracker.ui.accounts
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +27,6 @@ import javax.inject.Inject
  */
 
 class AccountsFragment : Fragment(), AccountsContract.AccountsView {
-
-    private val TAG = "debug"
 
     @Inject
     override lateinit var presenter: AccountsContract.Presenter
@@ -84,7 +81,6 @@ class AccountsFragment : Fragment(), AccountsContract.AccountsView {
     }
 
     override fun addAccountToRecyclerData(account: Account) {
-        Log.d(TAG, "addAccountToRecyclerData: ")
         accountsAdapter.addAccountToEnd(account)
 
         //Check if app has been launched first time

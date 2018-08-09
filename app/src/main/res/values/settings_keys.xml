@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="default_currency_pref" type="string" translatable="false">default_currency_pref</item>
     <item name="about_pref" type="string" translatable="false">about_pref</item>
 </resources>

@@ -33,14 +33,12 @@ import javax.inject.Inject
 
 class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
 
-    private val TAG = "debug"
-
     @Inject
     override lateinit var presenter: StatisticsContract.Presenter
 
     private lateinit var transactionsAdapter: TransactionsAdapter
 
-    private lateinit var mSatisticsPeriodDialog: MaterialDialog
+    private lateinit var mStatisticsPeriodDialog: MaterialDialog
     private lateinit var mDialogStatisticsPeriodRadioGroup: RadioGroup
 
     override fun onAttach(context: Context?) {
@@ -68,7 +66,7 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
         //chart.setDrawEntryLabels(false)
-        chart.setExtraOffsets(35.0f, 0.0f, 35.0f, 0.0f);
+        chart.setExtraOffsets(35.0f, 0.0f, 35.0f, 0.0f)
 
         val l = chart.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
@@ -119,7 +117,7 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
         dataSet.valueLinePart1OffsetPercentage = 80f
         dataSet.valueLinePart1Length = 0.2f
         dataSet.valueLinePart2Length = 0.4f
-        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE;
+        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
 
         val data = PieData(dataSet)
         data.setValueTextSize(14f)
@@ -133,7 +131,7 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
     override fun showPeriodDialog(period: StatisticsPeriod) {
         var currentPeriod = period
 
-        mSatisticsPeriodDialog = MaterialDialog.Builder(activity!!)
+        mStatisticsPeriodDialog = MaterialDialog.Builder(activity!!)
                 .customView(R.layout.dialog_statistics_period, false)
                 .title(R.string.statistics_period_dialog_title)
                 .positiveText(android.R.string.ok)
@@ -143,15 +141,15 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
                 }
                 .build()
 
-        mDialogStatisticsPeriodRadioGroup = mSatisticsPeriodDialog
+        mDialogStatisticsPeriodRadioGroup = mStatisticsPeriodDialog
                 .findViewById(R.id.period_radio_group) as RadioGroup
-        val radioButtonOption1: RadioButton = mSatisticsPeriodDialog
+        val radioButtonOption1: RadioButton = mStatisticsPeriodDialog
                 .findViewById(R.id.period_1_radio_button) as RadioButton
-        val radioButtonOption2: RadioButton = mSatisticsPeriodDialog
+        val radioButtonOption2: RadioButton = mStatisticsPeriodDialog
                 .findViewById(R.id.period_2_radio_button) as RadioButton
-        val radioButtonOption3: RadioButton = mSatisticsPeriodDialog
+        val radioButtonOption3: RadioButton = mStatisticsPeriodDialog
                 .findViewById(R.id.period_3_radio_button) as RadioButton
-        val radioButtonOption4 = mSatisticsPeriodDialog
+        val radioButtonOption4 = mStatisticsPeriodDialog
                 .findViewById(R.id.period_4_radio_button) as RadioButton
 
         radioButtonOption1.text = getString(DAY.getStringResource())
@@ -179,7 +177,7 @@ class StatisticsFragment : Fragment(), StatisticsContract.StatisticsView {
 
 
         updateRadioButtons()
-        mSatisticsPeriodDialog.show()
+        mStatisticsPeriodDialog.show()
     }
 
     override fun updatePeriodTextView(stringResource: Int) {

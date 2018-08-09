@@ -86,7 +86,7 @@
                     app:srcCompat="@drawable/ic_date" />
 
                 <ImageButton
-                    android:id="@+id/categoty_btn"
+                    android:id="@+id/category_btn"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="16dp"

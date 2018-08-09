@@ -18,7 +18,6 @@ import javax.inject.Inject
 
 class AccountsPresenter : AccountsContract.Presenter {
 
-    private val TAG = "debug"
 
     private lateinit var view: AccountsView
 

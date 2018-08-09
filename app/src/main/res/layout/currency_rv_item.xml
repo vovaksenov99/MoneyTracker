@@ -7,7 +7,8 @@
     android:background="@drawable/ripple_selector_common"
     android:clickable="true"
     android:clipToPadding="false"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/designation"

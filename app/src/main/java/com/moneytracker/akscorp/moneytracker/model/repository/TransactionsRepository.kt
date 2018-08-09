@@ -1,6 +1,5 @@
 package com.moneytracker.akscorp.moneytracker.model.repository
 
-import android.util.Log
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
 import com.moneytracker.akscorp.moneytracker.model.entities.Money
 import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
@@ -25,7 +24,6 @@ class TransactionsRepository(private val transactionDao: TransactionDao,
                              private val processSchedulers: io.reactivex.Scheduler,
                              private val androidScheduler: io.reactivex.Scheduler): ITransactionsRepository {
 
-    private val TAG = "TransactionsRepository"
 
     override fun getAllTransactions(callback: ITransactionsRepository.TransactionsRepoCallback) {
         Single.create<List<Transaction>> {
@@ -178,8 +176,5 @@ class TransactionsRepository(private val transactionDao: TransactionDao,
                 }
             }
         }.subscribeOn(processSchedulers)
-                .observeOn(androidScheduler)
-                .subscribe({Log.i(TAG, "Repeating transactions updated")},
-                        {Log.i(TAG, "Repeating transactions update failed")})
     }
 }

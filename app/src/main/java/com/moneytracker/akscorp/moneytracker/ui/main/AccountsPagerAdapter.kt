@@ -21,8 +21,6 @@ import kotlinx.android.synthetic.main.item_money_balance.view.*
 class AccountsPagerAdapter(private val mContext: Context,
                            private val mAccounts: ArrayList<Account>) : PagerAdapter() {
 
-    private val TAG = "debug"
-    
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val layout = LayoutInflater.from(mContext).inflate(
                 mContext.resources.getLayout(R.layout.account_card_v2), container, false)

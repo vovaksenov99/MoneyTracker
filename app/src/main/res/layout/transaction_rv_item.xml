@@ -46,7 +46,8 @@
             app:srcCompat="@drawable/ic_timer_gray_24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/date"

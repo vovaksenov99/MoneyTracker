@@ -1,7 +1,6 @@
 package com.moneytracker.akscorp.moneytracker.model
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -15,8 +14,6 @@ import okhttp3.Request
 
 
 class CurrenciesRateWorker : Worker() {
-
-    private val TAG = "debug"
 
     /**
      * Put [currencies] in [CurrenciesStorage] sharedPref.
@@ -42,7 +39,6 @@ class CurrenciesRateWorker : Worker() {
     }
 
     override fun doWork(): Result {
-        Log.i(TAG, "Worker run " + System.currentTimeMillis())
 
         try {
             val client = OkHttpClient()
@@ -54,8 +50,6 @@ class CurrenciesRateWorker : Worker() {
 
             val response = client.newCall(request).execute()
             val rawResponse = response.body()?.string()
-
-            Log.d(TAG, "doWork: respone = ${rawResponse.toString()}")
 
             val parser = JsonParser()
 

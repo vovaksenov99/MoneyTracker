@@ -29,8 +29,6 @@ interface IPaymentDialog {
 class PaymentDialogPresenter(val view: IPaymentDialog,
                              val account: Account) {
 
-    private val TAG = "debug"
-
     lateinit var model: MyViewModel
 
     @Inject

@@ -130,7 +130,7 @@ public class MainActivityTestFirstLaunch {
         imageButton.check(matches(isDisplayed()));
 
         ViewInteraction imageButton2 = onView(
-                allOf(withId(R.id.settingsButton),
+                allOf(withId(R.id.infoButton),
                         childAtPosition(
                                 allOf(withId(R.id.bar_container),
                                         childAtPosition(

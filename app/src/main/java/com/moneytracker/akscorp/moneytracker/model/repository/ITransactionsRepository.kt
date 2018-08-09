@@ -21,9 +21,6 @@ interface ITransactionsRepository {
 
     fun getTransactionsByAccount(account: Account, callback: TransactionsRepoCallback)
 
-    /**
-     * [onAccountsNotAvailable] will be called if there is no account with [name] in the DB
-     */
     fun getAccountByName(name: String, callback: TransactionsRepoCallback)
 
     fun insertAccount(name: String, callback: TransactionsRepoCallback,

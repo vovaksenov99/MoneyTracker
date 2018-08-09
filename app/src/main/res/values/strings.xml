@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="your_balance">Your balance</string>
-    <string name="choose_default_currency">Choose default currency</string>
-    <string name="general_settings">General settings</string>
     <string name="about">About</string>
     <string name="about_message">Money tracker\n\n©Aksenov Vladimir</string>
     <string name="add_payment">Create transaction</string>
-    <string name="note">Note</string>
-    <string name="currency">Currency</string>
-    <string name="transaction_sum">Transaction sum</string>
     <string name="sum">Sum</string>
     <string name="transaction_desc">Transaction description</string>
 
@@ -90,11 +84,12 @@
 
     <string name="info_dialog_content">
         Scash is the fast, convenient and easy to use application which will take care of your
-        budgeting routine that you have been looking for
+        budgeting routine that you have been looking for!
         \n\nCurrencies are provided by <a href="https://fixer.io/">Fexer API</a>
         \nAPI is used in accordance with all guidelines specified in the documentation
         \n\nThis application has been created as a homework project as a part of first phase of
         <a href="https://academy.yandex.ru/events/mobdev/msk-2018/">Yandex School of Mobile Development 2018</a>
-        \n\nDeveloped by <a href="https://github.com/millerovv">Alexander Melnikov</a>
+        \n\nDeveloped by <a href="https://github.com/vovaksenov99v">Vladimir Aksenov</a> and
+        <a href="https://github.com/millerovv">Alexander Melnikov</a>
     </string>
 </resources>

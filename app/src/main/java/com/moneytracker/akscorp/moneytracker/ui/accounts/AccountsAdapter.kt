@@ -20,8 +20,6 @@ class AccountsAdapter(private val mContext: Context,
                       private val mEventListener: AccountsRecyclerEventListener)
     : RecyclerView.Adapter<AccountsAdapter.AccountsViewHolder>() {
 
-    private val TAG = "debug"
-
     class AccountsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.tv_acc_name
         val balance: TextView = itemView.tv_balance

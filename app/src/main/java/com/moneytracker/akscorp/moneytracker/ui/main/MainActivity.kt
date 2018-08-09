@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.View
 import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
@@ -23,7 +22,6 @@ import kotlinx.android.synthetic.main.item_money_balance.view.*
 
 class MainActivity : AppCompatActivity(), IMainActivity {
 
-    private val TAG = "debug"
 
     lateinit var presenter: MainPresenter
 
@@ -40,7 +38,6 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     }
 
     override fun onStart() {
-        Log.d(TAG, "onStart: ")
         super.onStart()
         welcome_card.visibility = View.GONE
         appBar.visibility = View.VISIBLE
@@ -77,7 +74,6 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     }
 
     override fun initAccountTransactionRV(transactions: List<Transaction>) {
-        Log.d(TAG, "initAccountTransactionRV: ")
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
         last_transactions.layoutManager = layoutManager
         last_transactions.isNestedScrollingEnabled = false
@@ -104,9 +100,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     override fun showAboutDialog() {
         val appInfoDialog = MaterialDialog.Builder(this)
-                .customView(R.layout.dialog_app_info, false)
+                .customView(R.layout.dialog_app_info, true)
                 .positiveText(android.R.string.ok)
-                //.dismissListener { d -> mMainActivityPresenter.hideApplicationInfo() }
                 .build()
         val text = appInfoDialog.view.findViewById<TextView>(R.id.tv_content)
         text.movementMethod = LinkMovementMethod.getInstance()

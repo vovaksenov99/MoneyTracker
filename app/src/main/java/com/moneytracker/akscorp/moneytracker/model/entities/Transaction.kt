@@ -15,8 +15,6 @@ import java.util.*
  *  https://github.com/millerovv
  */
 
-//TODO: replace calendar with OffsetDataTime
-//https://medium.com/@chrisbanes/room-time-2b4cf9672b98
 @Entity(tableName = "transactions",
         foreignKeys = arrayOf(ForeignKey(entity = Account::class,
                                          parentColumns = arrayOf("id"),

@@ -3,7 +3,6 @@ package com.moneytracker.akscorp.moneytracker.ui.main
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
-import android.util.Log
 import androidx.work.PeriodicWorkRequest
 import androidx.work.State
 import androidx.work.WorkManager
@@ -58,8 +57,6 @@ interface IMainActivity {
 class MainPresenter(val context: Context, val view: IMainActivity) : TransactionsAdapter.TransactionsRecyclerEventListener {
     var account: Account? = null
 
-    private val TAG = "debug"
-
     @Inject
     lateinit var transactionsRepository: ITransactionsRepository
 
@@ -86,11 +83,7 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
     }
 
 
-    /**
-     * Init RV with different currencies [ICurrencyRecyclerView]
-     */
     fun initAccountViewPager() {
-        Log.d(TAG, "initAccountViewPager: ")
         transactionsRepository.getAllAccounts(object: ITransactionsRepository.DefaultTransactionsRepoCallback() {
             override fun onAllAccountsLoaded(accounts: List<Account>) {
                 super.onAllAccountsLoaded(accounts)
@@ -100,9 +93,6 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
 
     }
 
-    /**
-     * Run setting activity [ISettingsButton]
-     */
     fun showAboutDialog() {
         view.showAboutDialog()
     }
@@ -133,8 +123,7 @@ class MainPresenter(val context: Context, val view: IMainActivity) : Transaction
         dialog.show(supportFragmentManager, PAYMENT_DIALOG_TAG)
         supportFragmentManager.executePendingTransactions()
         dialog.dialog.setOnDismissListener {
-           start()
-            Log.d(TAG, "showPaymentDialog: dialog dismissed")
+            start()
             dialogOnScreen = false
         }
 
