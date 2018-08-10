@@ -1,6 +1,5 @@
 package com.moneytracker.akscorp.moneytracker.model.repository
 
-import android.util.Log
 import com.moneytracker.akscorp.moneytracker.model.entities.Account
 import com.moneytracker.akscorp.moneytracker.model.entities.Money
 import com.moneytracker.akscorp.moneytracker.model.entities.Transaction
@@ -25,7 +24,6 @@ class TransactionsRepository(private val transactionDao: TransactionDao,
                              private val processSchedulers: io.reactivex.Scheduler,
                              private val androidScheduler: io.reactivex.Scheduler): ITransactionsRepository {
 
-    private val TAG = "TransactionsRepository"
 
     override fun getAllTransactions(callback: ITransactionsRepository.TransactionsRepoCallback) {
         Single.create<List<Transaction>> {
@@ -76,6 +74,24 @@ class TransactionsRepository(private val transactionDao: TransactionDao,
                         {callback.onDatabaseTransactionError()})
     }
 
+    override fun updateAccount(account: Account, callback: ITransactionsRepository.TransactionsRepoCallback) {
+        Completable.fromAction {
+            accountDao.update(account)
+        }.subscribeOn(processSchedulers)
+                .observeOn(androidScheduler)
+                .subscribe({callback.onAccountUpdateSuccess(account)},
+                        {callback.onDatabaseTransactionError()})
+    }
+
+    override fun deleteAccount(account: Account, callback: ITransactionsRepository.TransactionsRepoCallback) {
+        Completable.fromAction {
+            accountDao.delete(account)
+        }.subscribeOn(processSchedulers)
+                .observeOn(androidScheduler)
+                .subscribe({callback.onAccountDeleteSuccess()},
+                        {callback.onDatabaseTransactionError()})
+    }
+
     override fun insertTransaction(account: Account,
                                    sum: Money,
                                    purpose: Transaction.PaymentPurpose,
@@ -99,6 +115,42 @@ class TransactionsRepository(private val transactionDao: TransactionDao,
                         {callback.onDatabaseTransactionError()})
     }
 
+    override fun updateTransaction(transaction: Transaction, callback: ITransactionsRepository.TransactionsRepoCallback) {
+        Completable.fromAction {
+            transactionDao.update(transaction)
+        }.subscribeOn(processSchedulers)
+                .observeOn(androidScheduler)
+                .subscribe({callback.onTransactionUpdateSuccess(transaction)},
+                        {callback.onDatabaseTransactionError()})
+    }
+
+    override fun deleteTransaction(transaction: Transaction, callback: ITransactionsRepository.TransactionsRepoCallback) {
+        lateinit var transactionAccount: Account
+        Completable.fromAction {
+            transactionAccount = accountDao.findById(transaction.accountId!!)
+            transactionAccount.balance -= transaction.moneyQuantity
+            accountDao.update(transactionAccount)
+            transactionDao.delete(transaction)
+        }.subscribeOn(processSchedulers)
+                .observeOn(androidScheduler)
+                .subscribe({callback.onTransactionsDeleteSuccess(1, transactionAccount)},
+                        {callback.onTransactionsNotAvailable()})
+    }
+
+    override fun deleteAllTransactions(transactions: List<Transaction>, callback: ITransactionsRepository.TransactionsRepoCallback) {
+        lateinit var alteredAccount: Account
+        Completable.fromAction {
+            // Set account balance to 0
+            alteredAccount = accountDao.findById(transactions[0].accountId!!)
+            alteredAccount.balance.count = 0.0
+            accountDao.update(alteredAccount)
+            transactionDao.delete(*transactions.toTypedArray())
+        }.subscribeOn(processSchedulers)
+                .observeOn(androidScheduler)
+                .subscribe({callback.onTransactionsDeleteSuccess(transactions.size, alteredAccount)},
+                        {callback.onTransactionsNotAvailable()})
+    }
+
     override fun updateTransactionsOnRepeat() {
         val now = DateTime()
         Completable.fromAction {
@@ -117,15 +169,12 @@ class TransactionsRepository(private val transactionDao: TransactionDao,
 
                 if (shouldAddNewTransaction) {
                     transactionDao.insert(Transaction(null, it.accountId, it.moneyQuantity,
-                            it.paymentPurpose, it.paymentDescription, Date(), false, Transaction.RepeatMode.NONE))
+                            it.paymentPurpose, it.paymentDescription, Date(), true, Transaction.RepeatMode.NONE))
                     val account = accountDao.findById(it.accountId!!)
                     account.balance += it.moneyQuantity
                     accountDao.update(account)
                 }
             }
         }.subscribeOn(processSchedulers)
-                .observeOn(androidScheduler)
-                .subscribe({Log.i(TAG, "Repeating transactions updated")},
-                        {Log.i(TAG, "Repeating transactions update failed")})
     }
 }

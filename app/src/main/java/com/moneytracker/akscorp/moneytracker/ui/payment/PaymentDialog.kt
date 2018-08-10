@@ -30,12 +30,11 @@ import kotlinx.android.synthetic.main.dialog_new_payment.view.*
 import org.jetbrains.anko.dimen
 import java.util.*
 
+
 val PAYMENT_DIALOG_TAG = "PAYMENT_DIALOG_TAG"
 
 
 class PaymentDialog : DialogFragment(), IPaymentDialog {
-
-    private val TAG = "debug"
 
     lateinit var presenter: PaymentDialogPresenter
 
@@ -56,13 +55,11 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
         }
         presenter.setModel(this)
 
-        Log.d(TAG, "onCreate: ")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         fragmentView = inflater.inflate(R.layout.dialog_new_payment, container, false)
-        Log.d(TAG, "onCreateView: ")
         return fragmentView
     }
 
@@ -85,7 +82,7 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
     }
 
     private fun setupEventListeners() {
-        categoty_btn.setOnClickListener {
+        category_btn.setOnClickListener {
             if (lastPressedChooser == ChooseButton.CATEGORY) {
                 expand(rv_container, 0)
                 lastPressedChooser = ChooseButton.NONE
@@ -115,10 +112,6 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
         }
 
         date_btn.setOnClickListener {
-            if (lastPressedChooser == ChooseButton.DATE) {
-                lastPressedChooser = ChooseButton.NONE
-                return@setOnClickListener
-            }
             datePicker()
             lastPressedChooser = ChooseButton.DATE
         }
@@ -198,8 +191,8 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
                 sum_et.setText(presenter.model.sum.count.toString())
 
             transaction_description_et.setText(presenter.model.description)
-            categoty_btn.setImageResource(presenter.model.purpose.getIconResource())
-            categoty_btn.setColorFilter(ContextCompat.getColor(context, android.R.color.white),
+            category_btn.setImageResource(presenter.model.purpose.getIconResource())
+            category_btn.setColorFilter(ContextCompat.getColor(context, android.R.color.white),
                 PorterDuff.Mode.SRC_IN)
             currency_btn.text = presenter.model.sum.currency.currencySymbol
         }
@@ -246,7 +239,7 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
         }
     }
 
-    inner class ChooseCurrencyAdapter(val currencies: List<Currency>) :
+    inner class ChooseCurrencyAdapter(private val currencies: List<Currency>) :
         RecyclerView.Adapter<ChooseCurrencyAdapter.CurrencyHolder>() {
         override fun getItemId(position: Int): Long {
             return position.toLong()
@@ -283,7 +276,7 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
 
     }
 
-    inner class ChooseCategoryAdapter(val categories: List<Transaction.PaymentPurpose>) :
+    inner class ChooseCategoryAdapter(private val categories: List<Transaction.PaymentPurpose>) :
         RecyclerView.Adapter<ChooseCategoryAdapter.CurrencyHolder>() {
 
         override fun getItemId(position: Int): Long {
@@ -311,12 +304,14 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
             holder.name.setText(categories[position].getStringResource())
 
             holder.itemView.setOnClickListener {
-                fragmentView.categoty_btn.setImageResource(categories[position].getIconResource())
-                fragmentView.categoty_btn.setColorFilter(ContextCompat.getColor(context!!,
+                fragmentView.category_btn.setImageResource(categories[position].getIconResource())
+                fragmentView.category_btn.setColorFilter(ContextCompat.getColor(context!!,
                     android.R.color.white),
                     PorterDuff.Mode.SRC_IN)
                 expand(fragmentView.rv_container, 0)
                 presenter.setPurpose(categories[position])
+
+                lastPressedChooser = ChooseButton.NONE
             }
         }
 
@@ -330,7 +325,7 @@ class PaymentDialog : DialogFragment(), IPaymentDialog {
         MaterialDialog.Builder(activity!!)
                 .title(R.string.dialog_repeat_title)
                 .items(R.array.dialog_repeat_options)
-                .itemsCallback{d,v,w,t -> presenter.setRepeat(w)}
+                .itemsCallback{_,_,w,_ -> presenter.setRepeat(w)}
                 .show()
     }
 

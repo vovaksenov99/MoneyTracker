@@ -41,6 +41,7 @@
                 android:layout_marginEnd="48dp"
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="16dp"
+                app:met_baseColor="@color/colorPrimary"
                 android:focusable="auto"
                 android:gravity="center"
                 android:hint="@string/sum"
@@ -50,7 +51,7 @@
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelTextColor="@color/add_payment_dialog_icon_color"
                 app:met_floatingLabelTextSize="20sp"
-                app:met_primaryColor="@color/add_payment_dialog_icon_color"
+                app:met_primaryColor="@color/colorPrimary"
                 app:met_textColor="@color/add_payment_dialog_icon_color"
                 app:met_textColorHint="@android:color/darker_gray"
                 app:met_validateOnFocusLost="true" />
@@ -85,7 +86,7 @@
                     app:srcCompat="@drawable/ic_date" />
 
                 <ImageButton
-                    android:id="@+id/categoty_btn"
+                    android:id="@+id/category_btn"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="16dp"

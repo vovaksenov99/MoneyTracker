@@ -2,6 +2,7 @@ package com.moneytracker.akscorp.moneytracker.di.component
 
 import com.moneytracker.akscorp.moneytracker.di.module.FragmentModule
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsFragment
+import com.moneytracker.akscorp.moneytracker.ui.statistics.StatisticsFragment
 import dagger.Component
 
 /**
@@ -14,5 +15,7 @@ import dagger.Component
 interface FragmentComponent {
 
     fun inject(accountsFragment: AccountsFragment)
+
+    fun inject(statisticsFragment: StatisticsFragment)
 
 }

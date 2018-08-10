@@ -16,8 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.moneytracker.akscorp.moneytracker.ui.settings.SettingsActivity" />
         <activity android:name=".ui.accounts.AccountsActivity"/>
+        <activity android:name=".ui.statistics.StatisticsActivity"/>
     </application>
 
 </manifest>

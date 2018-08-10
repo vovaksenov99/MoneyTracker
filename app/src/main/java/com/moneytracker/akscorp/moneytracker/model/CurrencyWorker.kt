@@ -1,7 +1,6 @@
 package com.moneytracker.akscorp.moneytracker.model
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -40,7 +39,6 @@ class CurrenciesRateWorker : Worker() {
     }
 
     override fun doWork(): Result {
-        Log.i(::CurrenciesRateWorker.name, "Worker run " + System.currentTimeMillis())
 
         try {
             val client = OkHttpClient()
@@ -52,7 +50,6 @@ class CurrenciesRateWorker : Worker() {
 
             val response = client.newCall(request).execute()
             val rawResponse = response.body()?.string()
-
 
             val parser = JsonParser()
 
@@ -71,7 +68,6 @@ class CurrenciesRateWorker : Worker() {
             val exceptionCatcher = HawkExceptionCatcher(applicationContext,
                 HAWK_TOKEN)
             exceptionCatcher.logException(e)
-
             return Result.RETRY
         }
 

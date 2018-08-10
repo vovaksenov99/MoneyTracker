@@ -17,18 +17,20 @@ import kotlinx.android.parcel.Parcelize
 data class Money(var count: Double, var currency: Currency) : Parcelable {
 
     fun normalizeCountString(): String? {
-        if (count == 0.0 || count.isNaN()) return "0,00"
-        return String.format("%.2f", count)
+        return if (count == 0.0 || count.isNaN()) "0,00"
+        else String.format("%.2f", count)
     }
-
-    /*operator fun plus(increment: Money) =
-            Money(this.count + convertCurrency(increment, this.currency).count, this.currency)*/
 
     operator fun plusAssign(increment: Money) {
-        this.count += convertCurrency(increment, this.currency).count
-
+        count += if (currency != increment.currency) convertCurrency(increment, currency).count
+        else increment.count
     }
 
+    operator fun minusAssign(dicrement: Money) {
+        count -= if (currency != dicrement.currency) convertCurrency(dicrement, currency).count
+        else dicrement.count
+
+    }
 
 }
 

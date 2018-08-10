@@ -32,7 +32,6 @@ class ScashApp : Application() {
         setup()
         component.inject(this)
 
-        //Update transactions with repeat = true
         transactionRepository.updateTransactionsOnRepeat()
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)

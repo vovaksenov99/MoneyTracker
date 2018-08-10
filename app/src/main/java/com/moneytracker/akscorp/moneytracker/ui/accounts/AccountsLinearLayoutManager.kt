@@ -10,7 +10,7 @@ import android.util.AttributeSet
  *  https://github.com/millerovv
  */
 
-class AccountsLinearLayoutManager : LinearLayoutManager {
+class PredictiveAnimationsLinearLayoutManager : LinearLayoutManager {
 
     constructor(context: Context) : super(context) {}
 

@@ -11,28 +11,32 @@ import com.moneytracker.akscorp.moneytracker.model.entities.Currency.*
 enum class Currency {
     EUR {
         override val currencySymbol = "€"
-        override var rate: Double = 0.8611
+        //override var rate: Double = 0.8611
+        override var rate: Double = 1.0 / 75.0
         override fun toString(): String {
             return "EUR"
         }
     },
     USD {
         override val currencySymbol = "$"
-        override var rate: Double = 1.0
+     //   override var rate: Double = 1.0
+        override var rate: Double = 1.0 / 63.0
         override fun toString(): String {
             return "USD"
         }
     },
     RUB {
         override val currencySymbol = "\u20BD"
-        override var rate: Double = 63.0
+       // override var rate: Double = 63.0
+        override var rate: Double = 1.0
         override fun toString(): String {
             return "RUB"
         }
     },
     GBP {
         override val currencySymbol = "£"
-        override var rate: Double = 0.76
+       //override var rate: Double = 0.76
+        override var rate: Double = 1.0 / 84.0
         override fun toString(): String {
             return "GBP"
         }

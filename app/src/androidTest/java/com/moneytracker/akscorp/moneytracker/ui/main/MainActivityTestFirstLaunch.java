@@ -130,7 +130,7 @@ public class MainActivityTestFirstLaunch {
         imageButton.check(matches(isDisplayed()));
 
         ViewInteraction imageButton2 = onView(
-                allOf(withId(R.id.settingsButton),
+                allOf(withId(R.id.infoButton),
                         childAtPosition(
                                 allOf(withId(R.id.bar_container),
                                         childAtPosition(
@@ -184,7 +184,7 @@ public class MainActivityTestFirstLaunch {
         appCompatButton4.check(matches(isDisplayed()));
         appCompatButton4.perform(scrollTo(), click());
 
-        ViewInteraction appCompatImageButton2 = onView(withId(R.id.categoty_btn));
+        ViewInteraction appCompatImageButton2 = onView(withId(R.id.category_btn));
         appCompatImageButton2.perform(click());
 
         ViewInteraction viewGroup5 = onView(childAtPosition(

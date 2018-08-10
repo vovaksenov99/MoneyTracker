@@ -14,14 +14,29 @@ interface AccountsContract {
 
         var presenter: Presenter
 
-        fun openAddAccountDialog(changeExistingAccount: Boolean = false,
-                                 accountForChangeName: String = "")
+        fun openAddAccountDialog(alterAccount: Boolean = false, account: Account? = null)
+
+        fun openAccountAlterOptionsDialog(account: Account)
+
+        fun openConfirmClearTransactionsDialog(account: Account)
+
+        fun openConfirmDeleteAccountDialog(account: Account)
 
         fun replaceAccountsRecyclerData(accounts: List<Account>)
 
         fun addAccountToRecyclerData(account: Account)
 
-        fun showAccountAlreadyExistsErrorToast()
+        fun updateAccountItemInRecycler(account: Account)
+
+        fun deleteAccountItemFromRecycler(account: Account)
+
+        fun showDialogErrorAccountAlreadyExists()
+
+        fun showTransactionsDeletedToast(accountName: String)
+
+        fun showAccountDeletedToast(accountName: String)
+
+        fun dismissDialog()
 
     }
 
@@ -34,6 +49,14 @@ interface AccountsContract {
         fun addAccountButtonClick()
 
         fun addAccount(name: String, currency: String)
+
+        fun alterOptionsDialogItemPicked(account: Account, option: Int)
+
+        fun alterAccount(account: Account, newName: String, newCurrency: String)
+
+        fun clearAccountTransactions(account: Account)
+
+        fun deleteAccount(account: Account)
 
     }
 

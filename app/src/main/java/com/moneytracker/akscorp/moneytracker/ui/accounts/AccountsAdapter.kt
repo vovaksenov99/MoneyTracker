@@ -17,10 +17,8 @@ import kotlinx.android.synthetic.main.item_account.view.*
  */
 class AccountsAdapter(private val mContext: Context,
                       private val mData: ArrayList<Account>,
-                      private val eventListener: AccountsRecyclerEventListener)
+                      private val mEventListener: AccountsRecyclerEventListener)
     : RecyclerView.Adapter<AccountsAdapter.AccountsViewHolder>() {
-
-    private val TAG = "debug"
 
     class AccountsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.tv_acc_name
@@ -40,7 +38,7 @@ class AccountsAdapter(private val mContext: Context,
 
         holder.itemView.setOnClickListener {
             if (holder.adapterPosition != RecyclerView.NO_POSITION) {
-                eventListener.itemClick(holder.adapterPosition, mData[holder.adapterPosition])
+                mEventListener.itemClick(holder.adapterPosition, mData[holder.adapterPosition])
             }
         }
 
@@ -63,8 +61,27 @@ class AccountsAdapter(private val mContext: Context,
 
     fun addAccountToEnd(account: Account) {
         mData.add(account)
-        //notifyItemInserted(mData.size - 1)
         notifyDataSetChanged()
+    }
+    
+    fun updateItem(account: Account) {
+        for ((index, item) in mData.withIndex()) {
+            if (item.id == account.id) {
+                mData[index] = account
+                notifyItemChanged(index)
+                break
+            }
+        }
+    }
+
+    fun deleteItem(account: Account) {
+        for ((index, item) in mData.withIndex()) {
+            if (item.id == account.id) {
+                mData.remove(account)
+                notifyItemChanged(index)
+                break
+            }
+        }
     }
 
     interface AccountsRecyclerEventListener {

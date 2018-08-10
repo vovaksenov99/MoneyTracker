@@ -5,6 +5,7 @@ import com.moneytracker.akscorp.moneytracker.di.module.ApplicationModule
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsPresenter
 import com.moneytracker.akscorp.moneytracker.ui.main.MainPresenter
 import com.moneytracker.akscorp.moneytracker.ui.payment.PaymentDialogPresenter
+import com.moneytracker.akscorp.moneytracker.ui.statistics.StatisticsPresenter
 import dagger.Component
 import javax.inject.Singleton
 
@@ -25,5 +26,7 @@ interface ApplicationComponent {
     fun inject(accountsPresenter: AccountsPresenter)
 
     fun inject(paymentDialogPresenter: PaymentDialogPresenter)
+
+    fun inject(statisticsPresenter: StatisticsPresenter)
 
 }

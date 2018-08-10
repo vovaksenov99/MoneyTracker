@@ -2,6 +2,8 @@ package com.moneytracker.akscorp.moneytracker.di.module
 
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsContract
 import com.moneytracker.akscorp.moneytracker.ui.accounts.AccountsPresenter
+import com.moneytracker.akscorp.moneytracker.ui.statistics.StatisticsContract
+import com.moneytracker.akscorp.moneytracker.ui.statistics.StatisticsPresenter
 import dagger.Module
 import dagger.Provides
 
@@ -16,4 +18,7 @@ class FragmentModule {
 
     @Provides
     fun provideAccountsPresenter(): AccountsContract.Presenter = AccountsPresenter()
+
+    @Provides
+    fun provideStatisticsPresenter(): StatisticsContract.Presenter = StatisticsPresenter()
 }

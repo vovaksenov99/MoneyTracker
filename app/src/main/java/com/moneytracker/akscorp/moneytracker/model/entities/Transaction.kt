@@ -15,8 +15,6 @@ import java.util.*
  *  https://github.com/millerovv
  */
 
-//TODO: replace calendar with OffsetDataTime
-//https://medium.com/@chrisbanes/room-time-2b4cf9672b98
 @Entity(tableName = "transactions",
         foreignKeys = arrayOf(ForeignKey(entity = Account::class,
                                          parentColumns = arrayOf("id"),
@@ -28,8 +26,8 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
                        @TypeConverters(PaymentPurposeTypeConverters::class) val paymentPurpose: PaymentPurpose = OTHER,
                        val paymentDescription: String = "",
                        @TypeConverters(DateTypeConverters::class) val date: Date = Date(),
-                       val repeat: Boolean = false,
-                       @TypeConverters(RepeatModeTypeConverters::class) val repeatMode: RepeatMode = NONE) {
+                       var shouldRepeat: Boolean = false,
+                       @TypeConverters(RepeatModeTypeConverters::class) var repeatMode: RepeatMode = NONE) {
 
     @Ignore
     constructor() : this(-1L, -1L)
@@ -47,6 +45,10 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
                 return R.drawable.ic_auto
             }
 
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_auto_white
+            }
+
         },
         FOOD {
             override fun toString(): String = "food"
@@ -57,6 +59,10 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
 
             override fun getIconResource(): Int {
                 return R.drawable.ic_food
+            }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_food_white
             }
         },
         OTHER {
@@ -69,10 +75,61 @@ data class Transaction(@PrimaryKey(autoGenerate = true) val id: Long?,
             override fun getIconResource(): Int {
                 return R.drawable.ic_category
             }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_category_white
+            }
+        },
+        EDUCATION {
+            override fun toString(): String = "education"
+
+            override fun getStringResource(): Int {
+                return R.string.education
+            }
+
+            override fun getIconResource(): Int {
+                return R.drawable.ic_school_black_24dp
+            }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_school_white_24dp
+            }
+        },
+        HEALTH {
+            override fun toString(): String = "health"
+
+            override fun getStringResource(): Int {
+                return R.string.health
+            }
+
+            override fun getIconResource(): Int {
+                return R.drawable.ic_healing_black_24dp
+            }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_healing_white_24dp
+            }
+        },
+        ENTERTAINMENT {
+            override fun toString(): String = "entertainment"
+
+            override fun getStringResource(): Int {
+                return R.string.entertainment
+            }
+
+            override fun getIconResource(): Int {
+                return R.drawable.ic_mood_black_24dp
+            }
+
+            override fun getWhiteIconResource(): Int {
+                return R.drawable.ic_mood_white_24dp
+            }
         };
+
 
         abstract fun getStringResource(): Int
         abstract fun getIconResource(): Int
+        abstract fun getWhiteIconResource(): Int
         abstract override fun toString(): String
     }
 
@@ -103,6 +160,9 @@ class PaymentPurposeTypeConverters {
             TRANSPORT.toString() ->  TRANSPORT
             FOOD.toString() ->  FOOD
             OTHER.toString() ->  OTHER
+            EDUCATION.toString() -> EDUCATION
+            HEALTH.toString() -> HEALTH
+            ENTERTAINMENT.toString() -> ENTERTAINMENT
             else -> throw IllegalArgumentException("Can't recognize payment purpose $name")
         }
 
@@ -122,7 +182,7 @@ class RepeatModeTypeConverters {
                 WEEK.toString() ->  WEEK
                 MONTH.toString() ->  MONTH
                 NONE.toString() -> NONE
-                else -> throw IllegalArgumentException("Can't recognize repeat mode $name")
+                else -> throw IllegalArgumentException("Can't recognize shouldRepeat mode $name")
             }
 
 

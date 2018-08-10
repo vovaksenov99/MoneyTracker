@@ -39,8 +39,8 @@ class MainPresenterTest {
 
     @Test
     fun showSettingsActivity_shouldShowSettingsActivity() {
-        presenter.showSettingsActivity()
-        verify(view).showSettingsActivity()
+        presenter.showAboutDialog()
+        verify(view).showAboutDialog()
     }
 
     @Test
