@@ -1,22 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="your_balance">Your balance</string>
-    <string name="choose_default_currency">Choose default currency</string>
-    <string name="general_settings">General settings</string>
     <string name="about">About</string>
     <string name="about_message">Money tracker\n\n©Aksenov Vladimir</string>
-    <string name="add_payment">Add payment</string>
-    <string name="note">Note</string>
-    <string name="currency">Currency</string>
-    <string name="transaction_sum">Transaction sum</string>
+    <string name="add_payment">Create transaction</string>
     <string name="sum">Sum</string>
     <string name="transaction_desc">Transaction description</string>
 
     <string name="transport">Transport</string>
     <string name="food">Food</string>
+    <string name="education">Education</string>
+    <string name="health">Health</string>
+    <string name="entertainment">Entertainment</string>
     <string name="confirm">Confirm</string>
     <string name="other">Other</string>
-    <string name="not_update_yet">Not update yet</string>
+    <string name="not_update_yet">08/2018</string>
     <string name="last_currency_update">Last currency update:</string>
     <string name="done">Done</string>
+    <string name="content_desc_transaction_icon">transaction icon</string>
+
+    <string name="welcome_message_h1">Welcome to the Scash!</string>
+    <string name="welcome_message_h2">Scash will help you to take care of tracking your finances</string>
+    <string name="welcome_message_h3">Let\'s create your first account!</string>
+    <string name="welcome_confirm_button">Next</string>
+
+    <string name="accounts_activity_title">Accounts</string>
+    <string name="label_currency">Currency</string>
+
+    <string name="add_account_dialog_label">Add account</string>
+    <string name="add_account_dialog_label_alter">Change account</string>
+    <string name="add_account_dialog_et_hint">Name</string>
+    <string name="dialog_emtpty_acc_name_error">Enter name of the new account</string>
+    <string name="account_already_exists_error">Account with this name already exists</string>
+
+    <string name="sp_key_first_launch">FIRST_LAUNCH</string>
+
+    <string name="dialog_welcome_h1">Great!</string>
+    <string name="dialog_welcome_h2">
+        Now you can add new incomes and expenses to your new account and track
+        your current balance on the main screen
+    </string>
+    <string name="dialog_continue">Continue</string>
+    <string name="lbl_empty_operation_history">Transaction history is empty</string>
+
+    <string name="dialog_repeat_title">Repeat transaction</string>
+    <string name="repeat_transaction_label">Transaction auto-schedule</string>
+    <string-array name="dialog_repeat_options">
+        <item>Don't repeat</item>
+        <item>Every day</item>
+        <item>Every week</item>
+        <item>Every month</item>
+    </string-array>
+
+    <string-array name="account_alter_dialog_options">
+        <item>Change account</item>
+        <item>Clear transactions history</item>
+        <item>Delete account</item>
+    </string-array>
+
+    <string name="confirm_transaction_dialog_title">Clean transactions history</string>
+    <string name="confirm_transaction_dialog_description">
+        Are you sure that you want to delete all transactions for %1$s?
+        \nThis action will be irreversible once you click OK
+    </string>
+    <string name="account_transactions_deleted_message">Transactions history has been deleted for %1$s</string>
+
+    <string name="confirm_delete_account_dialog_title">Delete account</string>
+    <string name="confirm_delete_account_dialog_description">
+        Are you sure that you want to delete account %1$s?
+        \nThis action will be irreversible once you click OK
+    </string>
+    <string name="account_deleted_message">Account %1$s has been deleted</string>
+
+    <string name="statistics_activity_title">Statistics</string>
+    <string name="income_button_label_text">Income</string>
+    <string name="expenses_button_label_text">Expenses</string>
+    <string name="statistics_period_dialog_title">Choose period</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="all_time">All time</string>
+
+    <string name="transaction_deleted_message">Transaction has been deleted</string>
+
+    <string name="info_dialog_content">
+        Scash is the fast, convenient and easy to use application which will take care of your
+        budgeting routine that you have been looking for!
+        \n\nCurrencies are provided by <a href="https://fixer.io/">Fexer API</a>
+        \nAPI is used in accordance with all guidelines specified in the documentation
+        \n\nThis application has been created as a homework project as a part of first phase of
+        <a href="https://academy.yandex.ru/events/mobdev/msk-2018/">Yandex School of Mobile Development 2018</a>
+        \n\nDeveloped by <a href="https://github.com/vovaksenov99v">Vladimir Aksenov</a> and
+        <a href="https://github.com/millerovv">Alexander Melnikov</a>
+    </string>
 </resources>

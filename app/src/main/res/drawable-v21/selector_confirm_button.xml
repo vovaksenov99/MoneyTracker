@@ -4,12 +4,12 @@
         android:state_enabled = "false"
         android:state_focused = "true"
         android:state_pressed = "true"
-        android:drawable="@android:color/white">
+        android:drawable="@android:color/black">
     </item>
     <item
         android:state_enabled = "false"
         android:state_focused = "true"
-        android:drawable="@android:color/white">
+        android:drawable="@android:color/black">
     </item>
 
     <!-- Pressed State -->
@@ -17,16 +17,16 @@
         android:state_pressed = "true"
         android:state_focused = "true">
         <shape>
-            <solid android:color="@color/white"/>
+            <solid android:color="@color/black"/>
         </shape>
     </item>
     <item
         android:state_pressed = "true"
         android:state_focused = "false">
         <shape>
-            <solid android:color="@color/white"/>
+            <solid android:color="@color/black"/>
         </shape>
     </item>
-    <item android:drawable="@android:color/white" />
+    <item android:drawable="@android:color/black" />
 
 </selector>

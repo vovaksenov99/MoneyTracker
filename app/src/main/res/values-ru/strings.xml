@@ -1,24 +1,83 @@
 <resources>
     <string name="app_name">Scash</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    
-    <string name="another_currencies">Другие валюты</string>
-    <string name="your_balance">Ваш баланс</string>
-    <string name="choose_default_currency">Выберите валюту по умолчанию</string>
-    <string name="general_settings">Общие настройки</string>
+
     <string name="about">О приложении</string>
-    <string name="add_payment">Добавить платеж</string>
-    <string name="note">Назначение платежа</string>
-    <string name="transaction_sum">Сумма транзакции</string>
+    <string name="add_payment">Добавить транзакцию</string>
     <string name="sum">Сумма</string>
     <string name="transaction_desc">Описание транзакции</string>
     <string name="confirm">Подтвердить</string>
     <string name="other">Другое</string>
     <string name="food">Еда</string>
     <string name="transport">Транспорт</string>
-    <string name="not_update_yet">Не обновлено</string>
+    <string name="education">Образование</string>
+    <string name="health">Здоровье</string>
+    <string name="entertainment">Развлечения</string>
+    <string name="not_update_yet">08/2018</string>
     <string name="last_currency_update">Последнее обновление курса:</string>
     <string name="done">Готово</string>
+    <string name="welcome_message_h1">Добро пожаловать в Scash!</string>
+    <string name="welcome_message_h2">Scash поможет вам вести учет ваших финансов</string>
+    <string name="welcome_message_h3">Давайте создадим ваш первый счет!</string>
+    <string name="welcome_confirm_button">Продолжить</string>
+    <string name="accounts_activity_title">Счета</string>
+    <string name="label_currency">Валюта</string>
+    <string name="add_account_dialog_label">Добавить счет</string>
+    <string name="add_account_dialog_et_hint">Название</string>
+    <string name="dialog_emtpty_acc_name_error">Введите название нового счета</string>
+    <string name="account_already_exists_error">Счет с таким названием уже существует</string>
+    <string name="dialog_welcome_h1">Отлично!</string>
+    <string name="dialog_continue">Продолжить</string>
+    <string name="lbl_empty_operation_history">История транзакций пуста</string>
+    <string name="dialog_welcome_h2">Теперь вы можете добавлять все свои доходы и расходы к балансу вашего счета и вести учет вашего бюджета на главном экране</string>
+    <string name="dialog_repeat_title">Повторять транзакцию</string>
+    <string name="repeat_transaction_label">Автоповтор операции</string>
+
+    <string-array name="dialog_repeat_options">
+        <item>Не повторять</item>
+        <item>Каждый день</item>
+        <item>Каждую неделю</item>
+        <item>Каждый месяц</item>
+    </string-array>
+
+    <string-array name="account_alter_dialog_options">
+        <item>Изменить</item>
+        <item>Отчистить историю транзакций</item>
+        <item>Удалить счет</item>
+    </string-array>
+
+    <string name="content_desc_transaction_icon">transaction icon</string>
+    <string name="add_account_dialog_label_alter">Изменить счет</string>
+    <string name="confirm_transaction_dialog_title">Отчистить историю транзакций</string>
+    <string name="confirm_transaction_dialog_description">
+        Вы уверены, что хотите удалить все тарнзакции счета %1$s?
+        \nЭто действие нельзя будет отменить после нажатия кнопки OK
+    </string>
+    <string name="account_transactions_deleted_message">История транзакций была отчищена для %1$s</string>
+
+    <string name="confirm_delete_account_dialog_title">Удалить счет</string>
+    <string name="confirm_delete_account_dialog_description">
+        Вы уверины что хотите удалить счет %1$s?
+        \nЭто действие нельзя будет отменить после нажатия кнопки OK
+    </string>
+    <string name="account_deleted_message">Счет %1$s успешно удален</string>
+
+    <string name="statistics_activity_title">Статистика</string>
+    <string name="income_button_label_text">Доходы</string>
+    <string name="expenses_button_label_text">Расходы</string>
+    <string name="statistics_period_dialog_title">Выбор периода</string>
+    <string name="day">День</string>
+    <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
+    <string name="all_time">Все время</string>
+
+    <string name="info_dialog_content">
+        Scash это быстрое, удобное и легкое в использовании приложение, которое возьмет на себя
+        выполнение ведения учета ваших финансов!
+        \n\nКурсы валют предоставлены сервисом <a href="https://fixer.io/">Fexer API</a>
+        \nAPI используется в соответствии со всеми пунктами, указанными в документаци сервиса
+        \n\nЭто приложение было создано в качестве выполнения домешнего задания первого этапа
+        <a href="https://academy.yandex.ru/events/mobdev/msk-2018/">Мобильной школы разработки Яндекса 2018</a>
+        \n\Разработали <a href="https://github.com/vovaksenov99">Аксенов Владимир</a> и
+        <a href="https://github.com/millerovv">Мельников Александр</a>
+    </string>
 </resources>
